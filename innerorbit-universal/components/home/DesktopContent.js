@@ -4,7 +4,7 @@ import { View, Text, Image } from 'react-native';
 import { getHomeStyles } from "../../styles/home.styles";
 import { select } from "../../utils/platform";
 import { ProfileDetailView, SecurityDetailView, PrivacyDetailView, NotificationDetailView, ConnectDetailView } from "./DetailViews";
-import { StealthSettingsView, ThemeSettingsView, AboutSettingsView } from "./DesktopSettingsViews";
+import { ThemeSettingsView, AboutSettingsView } from "./DesktopSettingsViews";
 import { CallsDetailView, StoriesDetailView } from "./FeatureViews";
 import { ChatInterface } from "../chat/chat-interface";
 import { UpdateSettingsView } from "./UpdateSettingsView";
@@ -86,16 +86,7 @@ export const DesktopContent = ({
           hardwareSupported={security.hardwareSupported}
           handleToggleHardwareLock={security.handleToggleHardwareLock}
         />
-      ) : desktopDetailView === 'stealth' ? (
-        <StealthSettingsView
-          THEME={THEME}
-          stealthMode={stealth.stealthMode}
-          stealthButton={stealth.stealthButton}
-          stealthCode={stealth.stealthCode}
-          handleUpdateStealth={(m) => stealth.handleUpdateStealth(m, showSuccess, showError)}
-          handleUpdateStealthButton={stealth.handleUpdateStealthButton}
-          handleUpdateStealthCode={stealth.handleUpdateStealthCode}
-        />
+
       ) : desktopDetailView === 'theme' ? (
         <ThemeSettingsView
           THEME={THEME}

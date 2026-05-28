@@ -12,9 +12,42 @@
      * Main authentication check loop
      */
     function checkAuthentication() {
+        // Auto-recover/fallback if firebase is initialized but window.auth was not exported (e.g. mock server interception)
+        if (!window.auth && typeof firebase !== 'undefined' && firebase.apps.length) {
+            try {
+                window.auth = firebase.auth();
+                window.db = firebase.firestore();
+                console.log("Firebase Auth auto-recovered from initialized Firebase app.");
+            } catch (e) {
+                console.error("Firebase auth recovery error:", e);
+            }
+        }
+
         // 1. Wait for Firebase Auth to initialize from window.auth (set in firebase-config.js)
         if (!window.auth) {
             console.warn("Waiting for Firebase Auth initialization...");
+            
+            // Failsafe connection check: If Firebase is completely missing or blocked on CDN, redirect to server down
+            if (typeof firebase === 'undefined') {
+                console.error("Firebase library could not be loaded. Redirecting to status offline.");
+                window.location.replace('404.html?error=server_down');
+                return;
+            }
+
+            // If auth is still not defined after 25 attempts, assume Firebase server initialization issues
+            window.authInitAttempts = (window.authInitAttempts || 0) + 1;
+            if (window.authInitAttempts > 25) {
+                const isLocalHost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                if (isLocalHost) {
+                    console.log("Local development: Firebase Auth timed out, using mock environment bypass.");
+                    document.body.style.visibility = 'visible';
+                    return;
+                }
+                console.error("Firebase auth initialization timed out. Redirecting to maintenance down state.");
+                window.location.replace('404.html?error=server_down');
+                return;
+            }
+
             setTimeout(checkAuthentication, 100);
             return;
         }
@@ -82,6 +115,12 @@
             const loginView = document.getElementById('login-view');
             if (loginView) loginView.style.display = 'none';
 
+            const loginToggle = document.getElementById('loginThemeToggle');
+            if (loginToggle) loginToggle.style.display = 'none';
+
+            const loginFooter = document.querySelector('.page-footer');
+            if (loginFooter) loginFooter.style.display = 'none';
+
             const portalView = document.getElementById('portal-view');
             if (portalView) {
                 portalView.style.display = 'block';
@@ -104,14 +143,22 @@
     checkAuthentication();
 
     /**
-     * Failsafe: If authentication logic hangs for > 3s, force visibility 
-     * to prevent users from being stuck on a blank screen.
+     * Failsafe: If authentication logic hangs for > 3.5s (due to Firebase free plan tier halts / quota blockages),
+     * redirect immediately to the user-friendly maintenance status screen.
+     * We bypass this failsafe during local development (localhost / 127.0.0.1) so developers don't get stuck.
      */
     setTimeout(() => {
-        if (!document.body.classList.contains('authenticated') && document.body.style.visibility !== 'visible') {
-             console.warn("Authentication failsafe triggered.");
-             document.body.style.visibility = 'visible';
+        const isLocalHost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        if (isLocalHost) {
+            console.log("Local development environment detected: Bypassing server down failsafe.");
+            document.body.style.visibility = 'visible';
+            return;
         }
-    }, 3000);
+
+        if (!document.body.classList.contains('authenticated') && !window.ALREADY_AUTHENTICATED) {
+             console.warn("Authentication failsafe triggered. Redirecting to server status check.");
+             window.location.replace('404.html?error=server_down');
+        }
+    }, 3500);
 
 })();

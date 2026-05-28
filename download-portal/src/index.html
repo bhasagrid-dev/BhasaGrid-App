@@ -7,15 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InnerOrbit - Secure Access Portal</title>
     <meta name="description"
-<!DOCTYPE html>
-<!-- InnerOrbit Portal v1.0.1 -->
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InnerOrbit - Secure Access Portal</title>
-    <meta name="description"
         content="Secure access portal for InnerOrbit application downloads. Authorized personnel only.">
     <meta name="keywords" content="InnerOrbit, CalcX, Secure Download, Android App, APK, Encrypted Chat, Portal">
 
@@ -41,15 +33,15 @@
     <!-- AngularJS -->
     <script src="js/vendor/angular.min.js"></script>
 
-    <!-- Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <!-- Animations (local vendor - no CDN dependency) -->
+    <script src="js/vendor/gsap.min.js"></script>
+    <script src="js/vendor/ScrollTrigger.min.js"></script>
+    <script src="js/vendor/lenis.min.js"></script>
 
-    <!-- Firebase SDKs (Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <!-- Firebase SDKs (local vendor - no CDN dependency) -->
+    <script src="js/vendor/firebase-app-compat.js"></script>
+    <script src="js/vendor/firebase-firestore-compat.js"></script>
+    <script src="js/vendor/firebase-auth-compat.js"></script>
 
     <!-- Firebase Configuration (Exposes window.auth) -->
     <script src="js/firebase-config.js"></script>
@@ -65,6 +57,70 @@
 </head>
 
 <body>
+    <!-- Floating Pill Theme Toggler for Login Screen -->
+    <div id="loginThemeToggle" class="theme-pill-toggle" aria-label="Toggle Theme" style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; align-items: center; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 100px; padding: 3px; width: 68px; height: 34px; cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        <!-- Sliding Highlight Indicator -->
+        <div id="loginThemeIndicator" style="position: absolute; top: 2px; left: 36px; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-orange)); box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+
+        <!-- Sun Icon (Light Mode) -->
+        <div id="sunWrapper" style="flex: 1; display: flex; align-items: center; justify-content: center; z-index: 2; color: var(--text-secondary); transition: color 0.3s;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </div>
+
+        <!-- Moon Icon (Dark Mode) -->
+        <div id="moonWrapper" style="flex: 1; display: flex; align-items: center; justify-content: center; z-index: 2; color: #ffffff; transition: color 0.3s;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const toggleBtn = document.getElementById('loginThemeToggle');
+            const indicator = document.getElementById('loginThemeIndicator');
+            const sunWrap = document.getElementById('sunWrapper');
+            const moonWrap = document.getElementById('moonWrapper');
+            
+            function updateTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('innerorbit-theme', theme);
+                toggleBtn.setAttribute('data-tooltip', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+                
+                if (theme === 'dark') {
+                    indicator.style.left = '36px';
+                    moonWrap.style.color = '#ffffff';
+                    sunWrap.style.color = 'var(--text-secondary)';
+                } else {
+                    indicator.style.left = '2px';
+                    sunWrap.style.color = '#ffffff';
+                    moonWrap.style.color = 'var(--text-secondary)';
+                }
+            }
+            
+            // Hide login theme toggle if user is already authenticated
+            if (localStorage.getItem('innerorbit-theme-auth') === 'true' || window.ALREADY_AUTHENTICATED) {
+                toggleBtn.style.display = 'none';
+            }
+            
+            let currentTheme = localStorage.getItem('innerorbit-theme') || 'dark';
+            updateTheme(currentTheme);
+            
+            toggleBtn.addEventListener('click', () => {
+                currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                updateTheme(currentTheme);
+                window.dispatchEvent(new CustomEvent('theme-changed', { detail: currentTheme }));
+            });
+            
+            window.addEventListener('theme-changed', (e) => {
+                currentTheme = e.detail;
+                updateTheme(currentTheme);
+            });
+
+            // Hide toggle when successfully transition / logged in
+            window.addEventListener('auth-success', () => {
+                toggleBtn.style.display = 'none';
+            });
+        })();
+    </script>
+
     <!-- Persistent Background for Transitions -->
     <div class="portal-background"></div>
     
@@ -75,7 +131,7 @@
                 <p>Access your secure download portal. Enter your credentials to continue.</p>
             </div>
 
-            <form class="password-form" id="passwordForm">
+            <form class="password-form" id="passwordForm" novalidate>
                 <div class="error-message" id="errorMessage">
                     Access denied. Please check your credentials and try again.
                 </div>
@@ -84,7 +140,7 @@
                     <label for="password">Access Password</label>
                     <div class="input-wrapper">
                         <input type="password" id="password" placeholder="Enter current year" autocomplete="off"
-                            required enterkeyhint="go" autofocus>
+                            enterkeyhint="go" autofocus>
                         <button type="button" class="password-toggle" id="passwordToggle"
                             aria-label="Toggle password visibility">
                             <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -148,18 +204,6 @@
         <div class="portal-text">Access Granted</div>
     </div>
 
-    <!-- Development Optimization: Bypass Service Worker during local dev for instant reloading -->
-    <script>
-        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    for (let registration of registrations) {
-                        registration.unregister();
-                    }
-                });
-            }
-        }
-    </script>
 
     <!-- SPA Logic & Transitions -->
     <script src="js/crypto-utils.js"></script>

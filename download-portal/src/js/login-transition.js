@@ -61,6 +61,21 @@
 
         const enteredPassword = passwordInput.value.trim();
         
+        if (!enteredPassword) {
+            errorMessage.textContent = '⚠️ Please enter your access password.';
+            errorMessage.classList.add('show');
+            
+            // Shake animation for empty password validation
+            gsap.to('.login-container', {
+                x: 10,
+                duration: 0.1,
+                repeat: 5,
+                yoyo: true,
+                onComplete: () => gsap.set('.login-container', { x: 0 })
+            });
+            return;
+        }
+
         // Configuration for portal auth
         const PORTAL_EMAIL = 'portal@innerorbit.app'; // Unified portal account
 
@@ -163,13 +178,23 @@
         const iconContainer = document.getElementById('portalIconContainer');
         const portalIcon = iconContainer.querySelector('.portal-icon');
         const portalText = iconContainer.querySelector('.portal-text');
+        const loginToggle = document.getElementById('loginThemeToggle');
+
+        if (loginToggle) {
+            loginToggle.style.display = 'none';
+        }
 
         const tl = gsap.timeline();
 
         // 1. Start preloading portal content immediately
         if (window.PortalLoader) window.PortalLoader.preloadPortal();
 
-        // 2. Hide Login Form Completely
+        // 2. Hide Login Form and Footer Completely
+        const loginFooter = document.querySelector('.page-footer');
+        if (loginFooter) {
+            gsap.to(loginFooter, { opacity: 0, duration: 0.4, onComplete: () => { loginFooter.style.display = 'none'; } });
+        }
+
         tl.to(container, {
             opacity: 0,
             scale: 0.9,

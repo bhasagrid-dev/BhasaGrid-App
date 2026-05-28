@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "localId": "portal-user-innerorbit-001",
+      "email": "portal@innerorbit.app",
+      "emailVerified": true,
+      "displayName": "InnerOrbit Portal",
+      "passwordHash": "2026-io",
+      "disabled": false
+    }
+  ]
+}

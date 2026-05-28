@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "firebase-admin": "^13.10.0"
   }
 }

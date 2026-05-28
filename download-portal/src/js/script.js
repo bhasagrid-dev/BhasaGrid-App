@@ -85,7 +85,7 @@ const Navbar = (props) => {
         if (menuOpen) return;
 
         const ctx = gsap.context(() => {
-            // Animate Navbar to Pill Shape
+            // Animate Outer Navbar Layout on Scroll
             gsap.to(navRef.current, {
                 scrollTrigger: {
                     trigger: "body",
@@ -101,9 +101,9 @@ const Navbar = (props) => {
                         }
                     }
                 },
-                top: 15,
-                width: "90%",
-                maxWidth: 1200,
+                top: 8,
+                width: "calc(100% - 24px)",
+                maxWidth: 960,
                 borderRadius: 100,
                 left: "50%",
                 xPercent: -50,
@@ -120,7 +120,7 @@ const Navbar = (props) => {
                     end: "100",
                     scrub: true,
                 },
-                padding: "12px 24px",
+                padding: "8px 16px",
                 ease: "power2.out"
             });
         });
@@ -276,6 +276,76 @@ const Navbar = (props) => {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                         </button>
 
+                        {/* Integrated Pill Theme Toggler */}
+                        <div
+                            onClick={props.toggleTheme}
+                            aria-label="Toggle Theme"
+                            data-tooltip={props.theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                border: '1px solid var(--glass-border)',
+                                borderRadius: '100px',
+                                padding: '3px',
+                                width: '68px',
+                                height: '34px',
+                                position: 'relative',
+                                cursor: 'pointer',
+                                outline: 'none',
+                                WebkitTapHighlightColor: 'transparent',
+                                marginRight: '15px',
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                            }}
+                            onMouseOver={e => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                e.currentTarget.style.borderColor = 'var(--accent-cyan)';
+                            }}
+                            onMouseOut={e => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                e.currentTarget.style.borderColor = 'var(--glass-border)';
+                            }}
+                        >
+                            {/* Sliding Highlight Indicator */}
+                            <div style={{
+                                position: 'absolute',
+                                top: '2px',
+                                left: props.theme === 'dark' ? '36px' : '2px',
+                                width: '28px',
+                                height: '28px',
+                                borderRadius: '50%',
+                                background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-orange))',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                                transition: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s'
+                            }} />
+
+                            {/* Sun Icon */}
+                            <div style={{
+                                flex: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 2,
+                                color: props.theme === 'light' ? '#ffffff' : 'var(--text-secondary)',
+                                transition: 'color 0.3s'
+                            }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            </div>
+
+                            {/* Moon Icon */}
+                            <div style={{
+                                flex: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 2,
+                                color: props.theme === 'dark' ? '#ffffff' : 'var(--text-secondary)',
+                                transition: 'color 0.3s'
+                            }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                            </div>
+                        </div>
+
                     </div>
 
                     <button className="mobile-menu-btn"
@@ -346,10 +416,85 @@ const Navbar = (props) => {
 
                 <div style={{ margin: '10px 0', height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
 
-                <a href="#" className="mobile-nav-item" onClick={(e) => { e.preventDefault(); window.logout(); }} style={{ borderColor: 'rgba(239, 68, 68, 0.2)' }}>
-                    <span style={{ background: '#ef4444', WebkitTextFillColor: '#ef4444' }}>Logout</span>
+                {/* Mobile Theme Toggle Card */}
+                <div
+                    className="mobile-nav-item"
+                    style={{
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.85rem 1.5rem'
+                    }}
+                >
+                    <span style={{ color: 'var(--text-primary)' }}>Theme Mode</span>
+                    
+                    {/* Integrated Pill Theme Toggler for Mobile */}
+                    <div
+                        onClick={props.toggleTheme}
+                        aria-label="Toggle Theme"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            border: '1px solid var(--glass-border)',
+                            borderRadius: '100px',
+                            padding: '3px',
+                            width: '68px',
+                            height: '34px',
+                            position: 'relative',
+                            cursor: 'pointer',
+                            outline: 'none',
+                            WebkitTapHighlightColor: 'transparent',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                    >
+                        {/* Sliding Highlight Indicator */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '2px',
+                            left: props.theme === 'dark' ? '36px' : '2px',
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '50%',
+                            background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-orange))',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                            transition: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }} />
+
+                        {/* Sun Icon */}
+                        <div style={{
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2,
+                            color: props.theme === 'light' ? '#ffffff' : 'var(--text-secondary)',
+                            transition: 'color 0.3s'
+                        }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                        </div>
+
+                        {/* Moon Icon */}
+                        <div style={{
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2,
+                            color: props.theme === 'dark' ? '#ffffff' : 'var(--text-secondary)',
+                            transition: 'color 0.3s'
+                        }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#" className="mobile-nav-item" onClick={(e) => { e.preventDefault(); window.logout(); }} style={{ borderColor: 'rgba(239, 68, 68, 0.35)', background: 'rgba(239, 68, 68, 0.08)' }}>
+                    <span style={{ color: '#ff4a4a', WebkitTextFillColor: '#ff4a4a', background: 'none', backgroundClip: 'unset', WebkitBackgroundClip: 'unset' }}>Logout</span>
                     <div className="icon" style={{ opacity: 1 }}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff4a4a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </div>
                 </a>
             </div>
@@ -469,8 +614,8 @@ const HeroSection = () => {
                             justify-content: center;
                             text-align: center;
                             gap: 10px;
-                            font-size: 1.1rem;
-                            padding: 16px 32px;
+                            font-size: 0.95rem;
+                            padding: 12px 24px;
                             border-radius: 12px;
                             font-weight: 600;
                         }
@@ -509,9 +654,9 @@ const HeroSection = () => {
                             }
                         }
                     `}</style>
-
+ 
                         <div className="flex-btn-group" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <a href="#download" className="btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', fontSize: '1.1rem', padding: '16px 32px' }}>
+                            <a href="#download" className="btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', fontSize: '0.95rem', padding: '12px 24px' }}>
                                 Download App
                             </a>
                             <a href="#social-privacy" className="btn-comparison">
@@ -807,7 +952,7 @@ const DownloadSection = () => {
                     </h2>
                     <p>
                         Be among the first to reclaim your digital privacy.
-                        Available on Android and Windows.
+                        Available on Android, Windows, macOS, and Linux.
                     </p>
 
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
@@ -846,24 +991,39 @@ const DownloadSection = () => {
                             </div>
                         </button>
 
-                        {/* Web Version Button */}
+                        {/* macOS App Store Button */}
                         <button
-                            onClick={() => document.getElementById('web-version').scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => window.downloadFile('macos')}
                             className="btn"
                             style={{
                                 display: 'flex', alignItems: 'center', gap: '15px',
                                 padding: '16px 32px', fontSize: '1.1rem',
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                border: '1px solid var(--accent-purple)30',
-                                boxShadow: '0 0 20px rgba(147, 51, 234, 0.1)'
+                                background: 'linear-gradient(135deg, #1e1b4b, #312e81)',
+                                border: '1px solid rgba(255,255,255,0.15)'
                             }}
-                            onMouseOver={e => e.currentTarget.style.background = 'rgba(147, 51, 234, 0.1)'}
-                            onMouseOut={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'}
                         >
-                            <div style={{ fontSize: '1.8rem' }}>🌐</div>
+                            <div style={{ fontSize: '1.8rem', lineHeight: '1' }}>🍎</div>
                             <div style={{ textAlign: 'left' }}>
-                                <div style={{ fontSize: '0.7rem', opacity: 0.8, textTransform: 'uppercase' }}>Explore</div>
-                                <div style={{ fontWeight: 700 }}>Web Application</div>
+                                <div style={{ fontSize: '0.7rem', opacity: 0.8, textTransform: 'uppercase' }}>Download on the</div>
+                                <div style={{ fontWeight: 700 }}>Mac App Store</div>
+                            </div>
+                        </button>
+
+                        {/* Linux Button */}
+                        <button
+                            onClick={() => window.downloadFile('linux')}
+                            className="btn"
+                            style={{
+                                display: 'flex', alignItems: 'center', gap: '15px',
+                                padding: '16px 32px', fontSize: '1.1rem',
+                                background: 'linear-gradient(135deg, #27272a, #09090b)',
+                                border: '1px solid rgba(255,255,255,0.1)'
+                            }}
+                        >
+                            <div style={{ fontSize: '1.8rem', lineHeight: '1' }}>🐧</div>
+                            <div style={{ textAlign: 'left' }}>
+                                <div style={{ fontSize: '0.7rem', opacity: 0.8, textTransform: 'uppercase' }}>Download for</div>
+                                <div style={{ fontWeight: 700 }}>Linux / Tarball</div>
                             </div>
                         </button>
                     </div>
@@ -886,10 +1046,6 @@ const DownloadSection = () => {
 };
 
 const Footer = () => {
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('innerorbit-theme', 'dark');
-    }, []);
 
     return (
         <footer className="bg-footer" style={{ position: 'relative', padding: '6rem 0 2rem', overflow: 'hidden' }}>
@@ -975,6 +1131,12 @@ const Footer = () => {
 
 const App = () => {
     const [revealed, setRevealed] = useState(window.ALREADY_AUTHENTICATED || false);
+    const [theme, setTheme] = useState(localStorage.getItem('innerorbit-theme') || 'dark');
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('innerorbit-theme', theme);
+    }, [theme]);
 
     useEffect(() => {
         const handleLogoImpact = () => {
@@ -1007,7 +1169,7 @@ const App = () => {
 
     return (
         <div style={{ overflowX: 'hidden' }}>
-            <Navbar revealed={revealed} />
+            <Navbar revealed={revealed} theme={theme} toggleTheme={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')} />
             <div className={revealed ? 'reveal-visible' : 'reveal-hidden'} style={{ transitionDelay: '1.2s' }}>
                 <HeroSection />
                 <SocialPrivacyComparison />
@@ -1119,6 +1281,11 @@ window.downloadFile = async function (platform) {
         } else if (platform === 'playstore') {
             url = (config && config.androidUrl) || "https://your-storage.com/cipherplay.apk";
             isExternal = true;
+        } else if (platform === 'macos') {
+            url = (config && config.macUrl) || "https://apps.apple.com/app/innerorbit";
+            isExternal = true;
+        } else if (platform === 'linux') {
+            url = (config && config.linuxUrl) || "downloads/InnerOrbit_Linux.tar.gz";
         }
 
         if (isExternal) {

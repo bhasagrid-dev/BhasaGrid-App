@@ -9,29 +9,34 @@
     styleSheet.textContent = `
         #networkNotification {
             position: fixed;
-            top: -80px;
+            top: -120px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 165, 0, 0.9);
-            color: #000;
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(25px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+            border: 1px solid var(--glass-border) !important;
+            border-top: none;
+            color: var(--text-primary) !important;
             padding: 12px 25px;
-            border-radius: 0 0 15px 15px;
+            border-radius: 0 0 20px 20px;
             font-family: 'Inter', sans-serif;
-            font-weight: bold;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            font-weight: 600;
+            box-shadow: var(--glass-shadow) !important;
             z-index: 99999;
             transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 15px;
-            backdrop-filter: blur(5px);
             pointer-events: auto;
+            width: max-content;
+            max-width: 90vw;
         }
         #networkNotification button {
             background: none; 
             border: none; 
-            color: inherit; 
+            color: var(--text-primary) !important;
             font-weight: bold; 
             cursor: pointer; 
             font-size: 16px;
@@ -41,6 +46,7 @@
         }
         #networkNotification button:hover {
             opacity: 1;
+            transform: scale(1.1);
         }
     `;
     document.head.appendChild(styleSheet);
@@ -57,7 +63,8 @@
         document.body.appendChild(div);
 
         document.getElementById('netCloseBtn').onclick = () => {
-            div.style.top = '-80px';
+            isClosedByUser = true;
+            div.style.top = '-120px';
         };
     }
 
@@ -66,6 +73,7 @@
     let isSlow = false;
     let isBackOnline = false; // State to track "Back Online" notification
     let pingInterval;
+    let isClosedByUser = false;
 
     // Cooldown logic for Slow Network notifications
     let lastSlowNotificationTime = 0;
@@ -91,9 +99,11 @@
                 window.location.href = 'offline.html';
             }
         } else if (isBackOnline) {
+            if (isClosedByUser) return;
             // Priority 2: Back Online (Show briefly)
             msgSpan.innerText = "✅ Back Online";
-            notification.style.background = "rgba(34, 197, 94, 0.95)"; // Green
+            notification.style.background = "rgba(34, 197, 94, 0.25)"; 
+            notification.style.borderColor = "rgba(34, 197, 94, 0.4)";
             notification.style.top = "0";
 
             notificationTimeout = setTimeout(() => {
@@ -101,23 +111,25 @@
                 showStatus(); // Re-evaluate to hide or show slow status
             }, 3000);
         } else if (isSlow) {
+            if (isClosedByUser) return;
             // Priority 3: Slow Network (With cooldown)
             const now = Date.now();
             if (now - lastSlowNotificationTime > SLOW_NOTIFICATION_COOLDOWN) {
                 lastSlowNotificationTime = now;
 
                 msgSpan.innerText = "🚀 Network Slow - Optimization Active";
-                notification.style.background = "rgba(255, 165, 0, 0.95)";
+                notification.style.background = "rgba(234, 88, 12, 0.25)";
+                notification.style.borderColor = "rgba(234, 88, 12, 0.4)";
                 notification.style.top = "0";
 
                 notificationTimeout = setTimeout(() => {
-                    notification.style.top = "-80px";
+                    notification.style.top = "-120px";
                 }, 5000); // 5s Auto-hide
             }
             // If cooldown hasn't passed, do nothing
         } else {
             // Everything good
-            notification.style.top = "-80px";
+            notification.style.top = "-120px";
         }
     }
 
@@ -125,10 +137,12 @@
         // Active check to confirm status (Ping)
         const start = Date.now();
         try {
-            // Changed to root path '/' for reliable connectivity check
-            const response = await fetch('/', {
+            // Request the explicit index.html file with a timestamp query param to completely bypass local browser proxies/cache
+            const pingUrl = `/index.html?t=${Date.now()}`;
+            const response = await fetch(pingUrl, {
                 method: 'HEAD',
                 cache: 'no-store',
+                mode: 'same-origin',
                 headers: { 'Cache-Control': 'no-cache' }
             });
             const duration = Date.now() - start;
@@ -179,7 +193,7 @@
     }
 
     // MASTER SWITCH: Change to true to enable Service Worker, false to disable
-    const ENABLE_SERVICE_WORKER = false;
+    const ENABLE_SERVICE_WORKER = true;
 
     // Initialize
     window.addEventListener('load', () => {
@@ -208,6 +222,7 @@
 
     // Event Listeners
     window.addEventListener('online', () => {
+        isClosedByUser = false; // Reset dismissal on status changes
         if (isOffline) {
             isOffline = false;
             isBackOnline = true; // Trigger "Back Online"
@@ -219,6 +234,7 @@
     });
 
     window.addEventListener('offline', () => {
+        isClosedByUser = false; // Reset dismissal on status changes
         isOffline = true;
         showStatus();
     });

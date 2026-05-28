@@ -199,7 +199,10 @@
             btn.style.opacity = "0.7";
             btn.disabled = true;
 
-            fetch('/', { method: 'HEAD', cache: 'no-store' })
+            // Use Timestamp Query Parameter to completely bypass browser caching (forces live ping check)
+            const pingUrl = `/index.html?t=${Date.now()}`;
+            
+            fetch(pingUrl, { method: 'HEAD', cache: 'no-store', mode: 'same-origin' })
                 .then(response => {
                     if (response.ok) {
                         statusDiv.textContent = "Connection restored! Redirecting...";
@@ -213,7 +216,6 @@
                 })
                 .catch(() => {
                     const time = new Date().toLocaleTimeString();
-                    // statusDiv.textContent = `Still offline. Retrying in 5s... (${time})`;
                     statusDiv.style.color = "#ef4444";
                     
                     // Reset button
@@ -232,8 +234,11 @@
         // Immediate check on button click
         document.getElementById('retryBtn').addEventListener('click', () => checkConnection(false));
 
-        // Browser online event
-        window.addEventListener('online', () => checkConnection(false));
+        // Browser online event (Instant reload triggers when Chrome DevTools offline mode is disabled)
+        window.addEventListener('online', () => {
+            console.log("Device network is online. Triggering immediate connectivity ping.");
+            checkConnection(false);
+        });
     </script>
 
 </body>

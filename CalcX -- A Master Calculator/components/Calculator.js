@@ -12,7 +12,7 @@ import { BlurView } from 'expo-blur';
 import { UpdateManager } from "../lib/update-manager";
 import { useAuth } from "../context/auth-context";
 import { useAppTheme } from "../store/themeStore";
-import { AuthProtector, StealthCodeProtector } from '../lib/security-utils';
+
 import UpdateScreen from "./updates/UpdateScreen";
 import * as Haptics from 'expo-haptics';
 import { Logger } from "../lib/logger";
@@ -635,7 +635,7 @@ const Keypad = React.memo(({ calcMode, btnSize, handlePress, handleEmergencyRese
 // ===== MAIN COMPONENT =====
 export default React.memo(function CalculatorComponent({ onSwitchMode, setIsHistoryOpen, themeProps }) {
   const { THEME, isDark, themePreference, toggleTheme, platformType, savePreference, updateSavePreference } = themeProps;
-  const { triggerStealthUnlock } = useAuth();
+  
   const router = useRouter();
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -837,7 +837,7 @@ export default React.memo(function CalculatorComponent({ onSwitchMode, setIsHist
 
       if (tapCountRef.current === 3) {
         Logger.log("[Stealth] Display Triple Tap Triggered -> Unlocking");
-        triggerStealthUnlock(); // Use unified unlock function
+        // Standalone Mode - Bypass Secure Unlock // Use unified unlock function
         tapCountRef.current = 0;
         return;
       }
@@ -897,7 +897,7 @@ export default React.memo(function CalculatorComponent({ onSwitchMode, setIsHist
         keyTapRef.lastTime = now;
 
         if (keyTapRef.count === 3) {
-          triggerStealthUnlock(); // Unlock
+          // Standalone Mode - Bypass Secure Unlock // Unlock
           keyTapRef.count = 0;
           return;
         }
@@ -917,7 +917,7 @@ export default React.memo(function CalculatorComponent({ onSwitchMode, setIsHist
       if (currentDisplay === currentMode.code) {
         // Success
         await StealthCodeProtector.recordSuccess();
-        triggerStealthUnlock();
+        // Standalone Mode - Bypass Secure Unlock
         return;
       } else {
         // Check if this looks like a failed stealth code attempt
@@ -1115,7 +1115,7 @@ export default React.memo(function CalculatorComponent({ onSwitchMode, setIsHist
   const handleSecretPressIn = () => {
     if (stealthConfig.mode !== 'display_long') return;
     const timer = setTimeout(() => {
-      triggerStealthUnlock();
+      // Standalone Mode - Bypass Secure Unlock
     }, 2000);
     setLongPressTimer(timer);
   };
@@ -1188,7 +1188,7 @@ export default React.memo(function CalculatorComponent({ onSwitchMode, setIsHist
       const timer = setTimeout(() => {
         Logger.log("[Stealth Footer] SUCCESS! 2s Hold confirmed. Unlocking App...");
         // triggerHaptic('success');
-        triggerStealthUnlock();
+        // Standalone Mode - Bypass Secure Unlock
         setIsHoldingUnlock(false);
         footerTapRef.current.count = 0;
         footerTimerRef.current = null;

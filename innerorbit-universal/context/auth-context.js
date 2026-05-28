@@ -26,7 +26,7 @@ export const AuthContext = createContext(undefined);
 const SESSION_TIMEOUT = isWeb ? (48 * 60 * 60 * 1000) : (7 * 24 * 60 * 60 * 1000);
 
 // --- JS SESSION CACHE (Survives Remounts, resets on full App Closure) ---
-let lastDecoyState = !isWeb;
+let lastDecoyState = false;
 let lastUnlockingState = false;
 let lastUserSession = null; // Store user object for PIN sessions across remounts
 let sessionHasInitialized = false; // Persistent flag for the whole JS session
@@ -50,7 +50,7 @@ export function AuthProvider({ children }) {
   });
 
   // Use session cache as initial values
-  const [isDecoyModeInternal, setIsDecoyModeInternal] = useState(lastDecoyState);
+  const [isDecoyModeInternal, setIsDecoyModeInternal] = useState(false);
   const [isUnlocking, setIsUnlocking] = useState(lastUnlockingState);
   const [isBiometricLocked, setIsBiometricLocked] = useState(false);
   const [sessionPin, setSessionPin] = useState(null); // In-memory only

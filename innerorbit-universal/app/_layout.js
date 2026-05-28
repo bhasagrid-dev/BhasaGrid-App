@@ -384,8 +384,6 @@ function RootLayoutNav() {
           <Stack.Screen name="signup" options={{ gestureEnabled: false, animation: 'none' }} />
           <Stack.Screen name="home" options={{ animation: 'slide_from_right' }} />
           <Stack.Screen name="chat-detail" options={{ animation: 'none' }} />
-          <Stack.Screen name="game/[id]" options={{ animation: 'slide_from_bottom' }} />
-          <Stack.Screen name="CalcX" options={{ animation: 'fade' }} />
           <Stack.Screen name="user-profile" options={{ animation: 'slide_from_right' }} />
         </Stack>
 

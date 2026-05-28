@@ -5,27 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Status - InnerOrbit</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicons/error-favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- Firebase SDKs (Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="js/vendor/firebase-app-compat.js"></script>
+    <script src="js/vendor/firebase-firestore-compat.js"></script>
     <!-- Firebase Configuration (Exposes window.db) -->
     <script src="js/firebase-config.js"></script>
 
     <style>
         :root {
-            --primary-color: #00ff00; /* Default Green */
-            --bg-color: #050505;
+            --primary-color: var(--accent-purple, #a855f7); /* Default purple matched to portal theme */
+            --bg-color: var(--bg-primary, #050505);
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: 
-                linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: var(--primary-color);
-            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color) !important;
+            color: var(--text-primary) !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             margin: 0;
             padding: 20px;
             height: 100vh;
@@ -35,7 +32,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            transition: all 0.5s ease;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease !important;
         }
 
         /* Red Theme Class */
@@ -43,16 +40,16 @@
             --primary-color: #ff3333;
             background-image: 
                 linear-gradient(rgba(255, 0, 0, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03) 1px, transparent 1px) !important;
         }
 
         h1 {
-            color: var(--primary-color);
+            color: var(--primary-color) !important;
             font-size: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 10px;
-            border-bottom: 1px solid var(--primary-color);
+            border-bottom: 1px solid var(--glass-border);
             padding-bottom: 10px;
             display: inline-block;
         }
@@ -63,25 +60,30 @@
         }
 
         .error-message {
-            color: #ff3333;
+            color: var(--accent-orange, #ea580c) !important;
             font-size: clamp(2rem, 8vw, 6rem);
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 51, 51, 0.6);
+            text-shadow: 0 0 10px rgba(234, 88, 12, 0.2);
             animation: pulse 2s infinite;
             line-height: 1.1;
             word-wrap: break-word;
+        }
+
+        body.locked-mode .error-message {
+            color: #ff3333 !important;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.6);
         }
 
         .status-text {
             font-size: 1.2rem;
             margin-top: 10px;
             opacity: 0.8;
-            color: var(--primary-color);
+            color: var(--text-secondary) !important;
         }
 
         .timer {
             font-size: clamp(1.5rem, 6vw, 2.5rem);
-            color: #ffffff;
+            color: var(--text-primary) !important;
             margin: 20px 0;
             font-weight: bold;
             display: none; /* Hidden by default */
@@ -94,9 +96,10 @@
         }
 
         .action-btn {
-            background: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
+            background: var(--glass-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--glass-border) !important;
+            backdrop-filter: blur(5px);
             padding: 12px 24px;
             font-size: 16px;
             text-transform: uppercase;
@@ -105,39 +108,33 @@
             text-decoration: none;
             display: inline-block;
             margin-top: 20px;
+            border-radius: 8px;
             font-family: inherit;
         }
 
         .action-btn:hover {
-            background: var(--primary-color);
-            color: #000000;
+            background: var(--primary-color) !important;
+            color: #ffffff !important;
             box-shadow: 0 0 15px var(--primary-color);
+            border-color: var(--primary-color) !important;
         }
 
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.2) 50%,
-                rgba(0,0,0,0.2)
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 10;
+        h1 {
+            color: var(--primary-color) !important;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 10px;
+            display: inline-block;
+            font-family: inherit !important;
         }
-
     </style>
 </head>
 <body>
     <!-- Modern Dynamic Background -->
     <div class="portal-background"></div>
-    <div class="scanlines"></div>
     
     <h1 id="pageTitle">InnerOrbit Portal</h1>
     
@@ -178,13 +175,19 @@
                 if (iteration >= finalString.length) {
                     clearInterval(element.scrambleInterval);
                 }
-                iteration += 1 / 2;
-            }, 30);
+                iteration += 1.5;
+            }, 15);
         }
 
         function init() {
+            // Load and apply theme synchronization instantly
+            const currentTheme = localStorage.getItem('innerorbit-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.body.style.visibility = 'visible';
+
             const params = new URLSearchParams(window.location.search);
             const isLockout = params.get('error') === 'locked';
+            const isServerDown = params.get('error') === 'server_down';
             const lockoutTimestamp = localStorage.getItem('lockoutTimestamp');
             const severity = params.get('severity');
 
@@ -194,7 +197,9 @@
             }
 
             // Determine Mode
-            if (isLockout || (lockoutTimestamp && isActiveLockout(lockoutTimestamp))) {
+            if (isServerDown) {
+                activateServerDownMode();
+            } else if (isLockout || (lockoutTimestamp && isActiveLockout(lockoutTimestamp))) {
                 activateLockoutMode(parseInt(lockoutTimestamp));
             } else {
                 activate404Mode();
@@ -281,6 +286,25 @@
             
             scrambleText(ticketIdDiv, ticketId);
             adminPanel.style.display = "block";
+        }
+
+        function activateServerDownMode() {
+            document.body.classList.remove('locked-mode');
+            scrambleText(document.getElementById('pageTitle'), "InnerOrbit PORTAL");
+            scrambleText(document.getElementById('mainMessage'), "MAINTENANCE ACTIVE");
+            
+            const statusMsg = document.getElementById('statusMessage');
+            statusMsg.style.display = 'block';
+            scrambleText(statusMsg, "Our servers are temporarily offline due to technical adjustments. Please try again shortly.");
+            
+            document.getElementById('countdown').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            
+            const btn = document.getElementById('actionButton');
+            btn.style.display = "inline-block";
+            btn.href = "/";
+            scrambleText(btn, "[ TRY RECONNECTING ]");
+            btn.onclick = null;
         }
 
         function activate404Mode() {

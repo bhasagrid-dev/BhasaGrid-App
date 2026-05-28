@@ -49,7 +49,6 @@ import { AccountLinkModal } from "../components/modals/AccountLinkModal";
 import { useConversations } from "../hooks/useConversations";
 import { useProfile } from "../hooks/useProfile";
 import { useSecurity } from "../hooks/useSecurity";
-import { useStealth } from "../hooks/useStealth";
 import { useUI } from "../hooks/useUI";
 import { useSidebar } from "../hooks/useSidebar";
 import { useFeedback } from "../hooks/useFeedback";
@@ -88,10 +87,9 @@ export default function ChatListScreen() {
     desktopDetailView, setDesktopDetailView
   } = ui;
 
-  // Privacy & Stealth
+  // Privacy
   const privacy = usePrivacy(showSuccess);
   const { privacyLevel, handlePrivacyLevel } = privacy;
-  const stealth = useStealth(user, showSuccess, showError);
 
   // Conversations Data
   // We need to pass selectedConversationId to useConversations for notification logic
@@ -254,7 +252,7 @@ export default function ChatListScreen() {
   const profile = useProfile(user, showError, showSuccess);
 
   // Security Data
-  const security = useSecurity(stealth.settingsStealthExpanded);
+  const security = useSecurity();
 
   // Sidebar Logic
   const sidebar = useSidebar(isDesktop);
@@ -508,7 +506,6 @@ export default function ChatListScreen() {
             isDecoyMode={isDecoyMode}
             setIsDecoyMode={setIsDecoyMode}
             handleLogout={handleLogout}
-            stealth={stealth}
             themePreference={themePreference}
             toggleTheme={toggleTheme}
             security={security}
@@ -560,7 +557,6 @@ export default function ChatListScreen() {
             setActiveSettingsSubPage={setActiveSettingsSubPage}
             profile={profile}
             user={user}
-            stealth={stealth}
             themePreference={themePreference}
             toggleTheme={toggleTheme}
             isDecoyMode={isDecoyMode}
@@ -596,7 +592,6 @@ export default function ChatListScreen() {
             setSelectedConversationId={setSelectedConversationId}
             showSuccess={showSuccess}
             showError={showError}
-            stealth={stealth}
             themePreference={themePreference}
             toggleTheme={toggleTheme}
             updates={updates}

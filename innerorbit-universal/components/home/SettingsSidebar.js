@@ -243,13 +243,7 @@ export const SettingsSidebar = ({
                         onPress={() => setDesktopDetailView('privacy')}
                         active={selectedView === 'privacy'}
                     />
-                    <CardItem
-                        THEME={THEME} isDesktop={isDesktop} renderInlineDetail={renderInlineDetail}
-                        icon="shield" color="#10B981" label="Stealth Mode" desc="Triggers & Decoy App"
-                        viewTarget="stealth"
-                        onPress={() => setDesktopDetailView('stealth')}
-                        active={selectedView === 'stealth'}
-                    />
+
                 </SettingsSection>
 
                 {/* Account & Security Section */}

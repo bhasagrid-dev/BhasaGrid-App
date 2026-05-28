@@ -357,55 +357,58 @@
         background: transparent !important; /* Removed subtle background */
         border: none !important; /* Removed border as requested */
         border-radius: 12px !important;
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
     }
 
-    .mobile-menu-btn:active {
+    .mobile-menu-btn:active,
+    .mobile-menu-btn:focus,
+    .mobile-menu-btn:focus-visible {
         transform: scale(0.95);
         background: rgba(255, 255, 255, 0.1) !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
 }
 
 /* --- NAVBAR PILL SHAPE REFINEMENTS --- */
 @media (min-width: 769px) {
     .navbar-main.scrolled {
-        top: 15px !important;
+        top: 8px !important;
         margin-top: 0 !important;
         overflow: hidden;
         /* Ensure gradient border is clipped to radius */
     }
 
     .navbar-main.crystal-card {
-        background: rgba(15, 23, 42, 0.4) !important;
-        backdrop-filter: blur(25px) saturate(200%) brightness(1.1) !important;
-        -webkit-backdrop-filter: blur(25px) saturate(200%) brightness(1.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        background: var(--nav-bg) !important;
+        backdrop-filter: blur(var(--glass-blur)) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%) !important;
+        border: 1px solid var(--glass-border) !important;
         border-top: none !important;
-        box-shadow:
-            0 10px 40px rgba(0, 0, 0, 0.3),
-            0 0 0 1px rgba(255, 255, 255, 0.05),
-            inset 0 0 20px rgba(255, 255, 255, 0.02);
+        box-shadow: var(--nav-shadow) !important;
     }
 }
 
 @media (max-width: 768px) {
     .navbar-main.scrolled:not(.menu-open) {
-        width: 90% !important;
-        /* Matched to script.js 90% */
+        width: calc(100% - 24px) !important;
+        /* Matched to script.js */
         left: 50% !important;
         transform: translateX(-50%) !important;
-        top: 15px !important;
-        /* Matched to script.js 15px */
+        top: 8px !important;
+        /* Matched to script.js */
         border-radius: 100px !important;
         overflow: hidden;
     }
 
     .navbar-main.crystal-card {
-        background: rgba(15, 23, 42, 0.6) !important;
-        backdrop-filter: blur(20px) saturate(180%) brightness(1.1) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        background: var(--nav-bg) !important;
+        backdrop-filter: blur(var(--glass-blur)) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%) !important;
+        border: 1px solid var(--glass-border) !important;
         border-top: none !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        box-shadow: var(--nav-shadow) !important;
     }
 }
 

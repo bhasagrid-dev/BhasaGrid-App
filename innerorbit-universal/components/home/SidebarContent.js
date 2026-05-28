@@ -145,20 +145,7 @@ export const SidebarContent = ({
             isInline={true}
           />
         );
-      case 'stealth':
-        return (
-          <StealthDetailView
-            THEME={THEME}
-            stealthMode={stealth.stealthMode}
-            handleUpdateStealth={(m) => stealth.handleUpdateStealth(m, showSuccess, showError)}
-            stealthButton={stealth.stealthButton}
-            handleUpdateStealthButton={stealth.handleUpdateStealthButton}
-            stealthCode={stealth.stealthCode}
-            handleUpdateStealthCode={stealth.handleUpdateStealthCode}
-            showSuccess={showSuccess}
-            isInline={true}
-          />
-        );
+
       case 'notifications':
         return <NotificationDetailView THEME={THEME} isInline={true} />;
       case 'theme':

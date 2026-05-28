@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "CalcX -- A Master Calculator",
+    "slug": "calcx-master-calculator",
+    "version": "1.0.3",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F8FAFC"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.innerorbit.calcx_decoy",
+      "versionCode": 3
+    }
+  }
+}

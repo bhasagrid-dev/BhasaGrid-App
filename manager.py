@@ -67,7 +67,7 @@ AUTOMATION SYSTEM:
 """
 
 
-VERSION = "5.0"
+VERSION = "8.0"
 
 import os
 import shutil
@@ -109,6 +109,54 @@ class C:
     RED  = "\033[38;5;196m"
     GRAY = "\033[38;5;240m"
     WHT  = "\033[38;5;255m"
+
+def log_event(category, action, status, message):
+    """Unified logger in the requested format."""
+    color = C.GRN if status == "SUCCESS" else (C.YEL if status == "WARN" else C.RED)
+    print(f"[MANAGER][{category}][{action}] {color}{status}{C.RST}: {message}")
+
+def verify_firebase_project():
+    """Verify that the currently active Firebase CLI project matches the .env config."""
+    env_path = os.path.join(UNIVERSAL_DIR, ".env")
+    if not os.path.exists(env_path):
+        log_event("firebase", "selectProject", "WARN", ".env file not found. Skipping verification.")
+        return True
+        
+    env_project_id = None
+    try:
+        with open(env_path, 'r') as f:
+            for line in f:
+                if line.strip().startswith("FIREBASE_PROJECT_ID"):
+                    env_project_id = line.split("=", 1)[1].strip().strip('"').strip("'")
+                    break
+    except Exception as e:
+        log_event("firebase", "selectProject", "WARN", f"Could not read .env: {e}")
+        return True
+
+    if not env_project_id:
+        log_event("firebase", "selectProject", "WARN", "FIREBASE_PROJECT_ID not defined in .env.")
+        return True
+
+    try:
+        # Check active firebase project
+        res = subprocess.run(["firebase", "use"], cwd=UNIVERSAL_DIR, capture_output=True, text=True, shell=True)
+        active_output = res.stdout.strip()
+        
+        # Matches: "Active project: <id>"
+        match = re.search(r"Active project:\s*([a-zA-Z0-9\-_]+)", active_output)
+        if match:
+            active_project = match.group(1).strip()
+            if active_project != env_project_id:
+                log_event("firebase", "selectProject", "WARN", f"Active Firebase CLI project is '{active_project}', but .env specifies '{env_project_id}'!")
+                confirm = input("  Are you sure you want to deploy anyway? (y/n): ").lower()
+                return confirm == 'y'
+            else:
+                log_event("firebase", "selectProject", "SUCCESS", f"Active Firebase project matches .env config: '{env_project_id}'")
+        else:
+            log_event("firebase", "selectProject", "WARN", f"Could not parse active Firebase project from CLI. Ensure you ran 'firebase use <project_name>'.")
+    except Exception as e:
+        log_event("firebase", "selectProject", "WARN", f"Could not execute 'firebase use' to verify active project: {e}")
+    return True
 
 # --- VENV BOOTSTRAP ---
 def bootstrap_venv():
@@ -158,10 +206,12 @@ def bootstrap_venv():
 
 # Run bootstrap before anything else
 if __name__ == "__main__":
-    if "SKIP_VENV_BOOTSTRAP" not in os.environ:
-        # Starting delay requested by user
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    venv_dir = os.path.normpath(os.path.join(project_root, ".venv"))
+    current_prefix = os.path.normpath(sys.prefix)
+    
+    if current_prefix.lower() != venv_dir.lower() and "SKIP_VENV_BOOTSTRAP" not in os.environ:
         print("\n  [*] Warming up InnerOrbit Console...")
-        time.sleep(2.5)
         bootstrap_venv()
 
 def main():
@@ -250,6 +300,8 @@ def get_key():
 def show_splash(restarted=False):
     os.system('cls' if os.name == 'nt' else 'clear')
     
+    logo_fast = os.environ.get("ORBIT_FAST_MODE") == "1" or restarted
+    
     if restarted:
         print(f"{C.CYAN}{'=' * 62}{C.RST}")
         print(f"  {C.BOLD}INNERORBIT PROJECT HUB{C.RST} {C.GRAY}│ v{VERSION}{C.RST} {C.GRN}(QUICK RELOAD){C.RST}")
@@ -266,14 +318,16 @@ def show_splash(restarted=False):
     ]
     for line in logo:
         print(line)
-        time.sleep(0.08) # Slower scanning effect
+        if not logo_fast:
+            time.sleep(0.01) # Faster scanning effect
 
     print()
-    _type(f"  {C.GRAY}Project Console  ·  v{VERSION}  ·  InnerOrbit Dev Tools{C.RST}", delay=0.03)
+    _type(f"  {C.GRAY}Project Console  ·  v{VERSION}  ·  InnerOrbit Dev Tools{C.RST}", delay=0 if logo_fast else 0.005)
     print(f"  {C.GRAY}{'─' * 62}{C.RST}")
-    time.sleep(1.2) # Increased transition delay
-    _type(f"  {C.GRN}●{C.RST}  Environment ready", delay=0.04)
-    _type(f"  {C.BLUE}●{C.RST}  All modules loaded", delay=0.04)
+    if not logo_fast:
+        time.sleep(0.1) # Fast transition delay
+    _type(f"  {C.GRN}●{C.RST}  Environment ready", delay=0 if logo_fast else 0.005)
+    _type(f"  {C.BLUE}●{C.RST}  All modules loaded", delay=0 if logo_fast else 0.005)
     print()
 
 def self_upgrade_version():
@@ -413,6 +467,7 @@ def ask_terminal():
         print(f"  {C.WHT} 2{C.RST}  {C.PURP}New terminal window{C.RST} {C.GRAY}(opens a fresh cmd/pwsh tab){C.RST}")
         print(f"  {C.WHT} G{C.RST}  {C.BLUE}Launch GUI Console{C.RST}  {C.GRAY}(visual project manager){C.RST}")
         print()
+        set_terminal_mode(True)
         choice = input(f"  {C.BOLD}>{C.RST} ").strip().lower()
         
         if choice in ['1', '2', 'g']:
@@ -427,6 +482,7 @@ def ask_terminal():
                 with open(TERMINAL_CHOICE_FILE, 'w') as f:
                     json.dump(data, f, indent=4)
                 print(f"  {C.GRN}✔ Preference saved to .terminal_choice{C.RST}")
+        set_terminal_mode(False)
 
     if choice == '2':
         script = os.path.abspath(__file__)
@@ -446,7 +502,9 @@ def ask_terminal():
         print(f"  {C.WHT} 1{C.RST}  {C.BLUE}Premium Flask GUI{C.RST}  {C.GRAY}(Web-based, Glassy Design){C.RST}")
         print(f"  {C.WHT} 2{C.RST}  {C.PURP}Classic Desktop GUI{C.RST} {C.GRAY}(Native Tkinter Window){C.RST}")
         
+        set_terminal_mode(True)
         g_choice = input(f"\n  {C.BOLD}>{C.RST} ").strip()
+        set_terminal_mode(False)
         if g_choice == '1':
             launch_flask_gui()
         else:
@@ -727,6 +785,54 @@ def check_dual_messenger_compatibility():
     except Exception as e:
         return False, f"Error checking manifest: {e}"
 
+def auto_heal_android_sdk():
+    """Checks for missing local.properties and ANDROID_HOME, and automatically generates/heals it."""
+    lp_path = os.path.join(ANDROID_DIR, "local.properties")
+    if os.path.exists(lp_path):
+        return True, f"local.properties already exists at {lp_path}"
+
+    log_event("health", "checkAndroidSDK", "WARN", "local.properties file is missing in android project.")
+    
+    # Check environment variables
+    sdk_path = os.environ.get("ANDROID_HOME") or os.environ.get("ANDROID_SDK_ROOT")
+    if sdk_path and os.path.isdir(sdk_path):
+        log_event("health", "checkAndroidSDK", "INFO", f"Detected Android SDK via env ANDROID_HOME: {sdk_path}")
+    else:
+        # Let's try to guess the default SDK path based on current user / OS
+        user_home = os.path.expanduser("~")
+        possible_paths = []
+        if os.name == 'nt': # Windows
+            possible_paths.append(os.path.join(user_home, "AppData", "Local", "Android", "Sdk"))
+            # Fallback to sreya explicitly since we know it's there
+            possible_paths.append(r"C:\Users\sreya\AppData\Local\Android\Sdk")
+        elif sys.platform == "darwin": # macOS
+            possible_paths.append(os.path.join(user_home, "Library", "Android", "sdk"))
+        else: # Linux
+            possible_paths.append(os.path.join(user_home, "Android", "Sdk"))
+            possible_paths.append(os.path.join(user_home, "android-sdk"))
+            possible_paths.append("/usr/lib/android-sdk")
+
+        for path in possible_paths:
+            if os.path.isdir(path):
+                sdk_path = path
+                break
+
+    if sdk_path:
+        try:
+            # Format path correctly for properties files (requires double backslashes in properties file for Windows)
+            formatted_path = sdk_path.replace("\\", "/")
+            with open(lp_path, 'w', encoding='utf-8') as f:
+                f.write(f"# Auto-generated by InnerOrbit Manager Hub\n")
+                f.write(f"sdk.dir={formatted_path}\n")
+            log_event("health", "autoHealSDK", "SUCCESS", f"Generated local.properties pointing to: {sdk_path}")
+            return True, f"Successfully created local.properties pointing to {sdk_path}"
+        except Exception as e:
+            log_event("health", "autoHealSDK", "FAILED", f"Failed to write local.properties: {e}")
+            return False, f"Failed to write local.properties: {e}"
+    else:
+        log_event("health", "autoHealSDK", "FAILED", "Could not locate Android SDK path. Please configure ANDROID_HOME environment variable.")
+        return False, "Could not locate Android SDK path."
+
 def check_project_health():
     """Runs a series of checks to ensure the project is ready for development."""
     print(f"\n{C.BOLD}--- [PROJECT HEALTH CHECK] ---{C.RST}")
@@ -766,6 +872,13 @@ def check_project_health():
     browser = get_preferred_browser()
     print(f"  {C.GRN}✔{C.RST} Preferred browser: {browser}")
 
+    # 6. Check & Auto-Heal Android SDK Location
+    sdk_ok, sdk_msg = auto_heal_android_sdk()
+    if sdk_ok:
+        print(f"  {C.GRN}✔{C.RST} Android SDK: {sdk_msg}")
+    else:
+        issues.append(f"{C.RED}[FAIL]{C.RST} Android SDK: {sdk_msg}")
+
     if issues:
         print(f"\n{C.RED}{C.BOLD}Found {len(issues)} issues:{C.RST}")
         for i in issues:
@@ -779,6 +892,7 @@ def run_command(command, cwd, label=None):
     if label:
         print(f"\n>>> {label}")
     print(f"Running: {' '.join(command)}")
+    captured_output = []
     try:
         process = subprocess.Popen(
             command,
@@ -794,6 +908,7 @@ def run_command(command, cwd, label=None):
         )
         
         for line in process.stdout:
+            captured_output.append(line)
             try:
                 print(line, end='')
             except UnicodeEncodeError:
@@ -801,23 +916,131 @@ def run_command(command, cwd, label=None):
                 print(line.encode(sys.stdout.encoding or 'utf-8', errors='replace').decode(sys.stdout.encoding or 'utf-8'), end='')
             
         process.wait()
-        return process.returncode
+        return process.returncode, "".join(captured_output)
+    except KeyboardInterrupt:
+        print(f"\n  {C.YEL}[!] Build interrupted by user (Ctrl+C){C.RST}")
+        try:
+            process.terminate()
+            process.wait(timeout=5)
+        except Exception:
+            process.kill()
+        return -1, "".join(captured_output)
     except Exception as e:
         print(f"Error executing command: {e}")
-        return 1
+        return 1, "".join(captured_output)
+
+def handle_android_build_failure(build_type="Debug", log_output=""):
+    """Smartest recovery analyzing logs to perform precise surgical repairs."""
+    print(f"\n{C.YEL}{C.BOLD}[⚠️ AUTOMATED SMART BUILD RECOVERY] Analyzing build failure...{C.RST}")
+    
+    repaired_issues = []
+    
+    # 0. Inspect for missing SDK location / local.properties issue
+    if "SDK location not found" in log_output or "local.properties" in log_output or "Failed to apply plugin" in log_output:
+        print(f"  {C.CYAN}Detected missing/invalid Android SDK location! Healing SDK setup...{C.RST}")
+        sdk_ok, sdk_msg = auto_heal_android_sdk()
+        if sdk_ok:
+            repaired_issues.append("Auto-healed missing Android SDK by generating local.properties")
+        else:
+            print(f"    {C.RED}✘ Auto-healing SDK failed: {sdk_msg}{C.RST}")
+    
+    # 1. Inspect for Gradle Out of Memory issue
+    if "Out of Memory" in log_output or "GC overhead limit" in log_output or "Java heap space" in log_output:
+        print(f"  {C.CYAN}Detected JVM Out of Memory error! Increasing Gradle heap size...{C.RST}")
+        prop_path = os.path.join(ANDROID_DIR, "gradle.properties")
+        if os.path.isfile(prop_path):
+            try:
+                with open(prop_path, 'r') as f:
+                    lines = f.readlines()
+                new_lines = []
+                jvm_replaced = False
+                for line in lines:
+                    if line.strip().startswith("org.gradle.jvmargs"):
+                        new_lines.append("org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError\n")
+                        jvm_replaced = True
+                    else:
+                        new_lines.append(line)
+                if not jvm_replaced:
+                    new_lines.append("org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError\n")
+                with open(prop_path, 'w') as f:
+                    f.writelines(new_lines)
+                repaired_issues.append("JVM Memory Limit increased to 4GB in gradle.properties")
+            except Exception as e:
+                print(f"    Failed to edit gradle.properties: {e}")
+
+    # 2. Inspect for prefab / ReactAndroid::jsi transforms issues
+    if "ReactAndroid::jsi" in log_output or "prefab" in log_output:
+        print(f"  {C.CYAN}Detected corrupt ReactAndroid/jsi Gradle transforms! Purging caches...{C.RST}")
+        _purge_cxx_caches()
+        repaired_issues.append("Stale/Corrupted C++ & Gradle transforms wiped clean")
+
+    # 3. Clean local build cache
+    print(f"  {C.CYAN}Step 2: Clearing temp build folders...{C.RST}")
+    app_build_dir = os.path.join(ANDROID_DIR, "app", "build")
+    root_build_dir = os.path.join(ANDROID_DIR, "build")
+    for d in [app_build_dir, root_build_dir]:
+        if os.path.isdir(d):
+            try:
+                shutil.rmtree(d, ignore_errors=True)
+                print(f"    {C.GRN}✔ Removed {os.path.basename(d)}{C.RST}")
+            except Exception:
+                pass
+
+    # 4. Clean Metro & Expo caches
+    print(f"  {C.CYAN}Step 3: Cleaning Metro and Expo caches...{C.RST}")
+    temp_dir = os.environ.get("TEMP", os.environ.get("TMP", "C:\\temp"))
+    metro_cache = os.path.join(temp_dir, "metro-cache")
+    if os.path.isdir(metro_cache):
+        shutil.rmtree(metro_cache, ignore_errors=True)
+    expo_cache = os.path.join(UNIVERSAL_DIR, ".expo")
+    if os.path.isdir(expo_cache):
+        shutil.rmtree(expo_cache, ignore_errors=True)
+
+    # 5. Check Port 8081 conflicts
+    port_conflict = False
+    if os.name == 'nt':
+        # Probe port 8081
+        try:
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(0.5)
+            s.connect(("127.0.0.1", 8081))
+            s.close()
+            port_conflict = True
+        except Exception:
+            pass
+
+    if port_conflict:
+        print(f"  {C.CYAN}Detected active server/process locking port 8081. Liberating...{C.RST}")
+        # Kill whatever process is holding 8081
+        os.system("taskkill /f /im node.exe 2>nul")
+        os.system("taskkill /f /im java.exe 2>nul")
+        repaired_issues.append("Liberated port 8081 by terminating lingering servers")
+
+    print(f"\n{C.GRN}{C.BOLD}[✔ SMART RECOVERY RUN COMPLETED]{C.RST}")
+    if repaired_issues:
+        print(f"  {C.GRN}Resolved issues:{C.RST}")
+        for ri in repaired_issues:
+            print(f"    - {ri}")
+    else:
+        print(f"  {C.WHT}Performed baseline cleanup (Cleared caches & unlocked directories).{C.RST}")
+    
+    print(f"\n  {C.PURP}{C.BOLD}RECOMMENDED ACTION:{C.RST} Choose option 6 (Clean + Build Debug APK) to retry the build. A manual restart is NOT required!")
 
 def build_android_debug():
     print("\n--- [BUILD ANDROID DEBUG] ---")
-    rc = run_command(["gradlew", "assembleDebug"], ANDROID_DIR, "Building Debug APK")
+    rc, out = run_command(["gradlew", "assembleDebug"], ANDROID_DIR, "Building Debug APK")
     if rc == 0:
         apk_path = os.path.join(ANDROID_DIR, "app", "build", "outputs", "apk", "debug", "app-debug.apk")
-        print(f"\n[SUCCESS] Debug APK Generated: {apk_path}")
+        log_event("build.py", "androidBuild", "SUCCESS", f"Debug APK Generated: {apk_path}")
         return True
+    log_event("build.py", "androidBuild", "FAILED", "assembleDebug compilation failed.")
+    handle_android_build_failure("Debug", out)
     return False
 
 def build_android_release():
     print("\n--- [BUILD ANDROID RELEASE] ---")
-    rc = run_command(["gradlew", "assembleRelease"], ANDROID_DIR, "Building Release APK")
+    rc, out = run_command(["gradlew", "assembleRelease"], ANDROID_DIR, "Building Release APK")
     if rc == 0:
         apk_path = os.path.join(ANDROID_DIR, "app", "build", "outputs", "apk", "release", "app-release.apk")
         print(f"\n[SUCCESS] Release APK Generated: {apk_path}")
@@ -828,6 +1051,7 @@ def build_android_release():
         else:
             print(f" - WARNING: {msg}")
         return True
+    handle_android_build_failure("Release", out)
     return False
 
 def build_android_both():
@@ -837,12 +1061,53 @@ def build_android_both():
         return True
     return False
 
+def _purge_cxx_caches():
+    """Delete all stale .cxx CMake cache directories and corrupt Gradle transforms before clean."""
+    count = 0
+    # App-level .cxx
+    app_cxx = os.path.join(ANDROID_DIR, "app", ".cxx")
+    if os.path.isdir(app_cxx):
+        shutil.rmtree(app_cxx, ignore_errors=True)
+        count += 1
+    # node_modules native module .cxx dirs
+    nm_dir = os.path.join(UNIVERSAL_DIR, "node_modules")
+    if os.path.isdir(nm_dir):
+        for root, dirs, _ in os.walk(nm_dir):
+            for d in dirs:
+                if d == ".cxx":
+                    cxx_path = os.path.join(root, d)
+                    shutil.rmtree(cxx_path, ignore_errors=True)
+                    count += 1
+            dirs[:] = [d for d in dirs if d != ".cxx"]
+    # Clear stale Gradle transform caches (ReactAndroid::jsi missing headers issue)
+    gradle_home = os.path.join(os.path.expanduser("~"), ".gradle", "caches")
+    if os.path.isdir(gradle_home):
+        for cache_ver in os.listdir(gradle_home):
+            transforms_dir = os.path.join(gradle_home, cache_ver, "transforms")
+            if os.path.isdir(transforms_dir):
+                # Check for broken react-android prefab transforms
+                for t in os.listdir(transforms_dir):
+                    t_path = os.path.join(transforms_dir, t, "transformed")
+                    if os.path.isdir(t_path):
+                        for item in os.listdir(t_path):
+                            if item.startswith("react-android-") and item.endswith("-release"):
+                                jsi_include = os.path.join(t_path, item, "prefab", "modules", "jsi", "include")
+                                if not os.path.isdir(jsi_include):
+                                    print(f"  {C.YEL}Found corrupt Gradle transform: {t} (missing jsi/include){C.RST}")
+                                    shutil.rmtree(os.path.join(transforms_dir, t), ignore_errors=True)
+                                    count += 1
+    if count:
+        print(f"  {C.GRAY}Purged {count} stale cache(s) (.cxx + Gradle transforms){C.RST}")
+
 def clean_android():
     print("\n--- [CLEAN ANDROID PROJECT] ---")
-    rc = run_command(["gradlew", "clean"], ANDROID_DIR, "Cleaning Gradle Build Files")
+    _purge_cxx_caches()
+    rc, _ = run_command(["gradlew", "clean"], ANDROID_DIR, "Cleaning Gradle Build Files")
     if rc == 0:
-        print("\n[SUCCESS] Android project cleaned.")
+        log_event("cleanup", "clearCache", "SUCCESS", "Android project cleaned successfully.")
         return True
+    log_event("cleanup", "clearCache", "FAILED", f"Gradle clean failed (exit code: {rc}).")
+    print(f"  {C.YEL}Tip: Run with --stacktrace for details, or clear ~/.gradle/caches/*/transforms{C.RST}")
     return False
 
 def fresh_build_android():
@@ -851,10 +1116,17 @@ def fresh_build_android():
         return build_android_both()
     return False
 
+def clean_build_android_debug():
+    print("\n--- [CLEAN + BUILD DEBUG APK] ---")
+    if clean_android():
+        return build_android_debug()
+    print(f"  {C.YEL}Skipping build step because clean failed.{C.RST}")
+    return False
+
 def build_desktop():
     print("\n--- [BUILD DESKTOP] ---")
     # Electron build
-    rc = run_command(["npm", "run", "electron:build"], UNIVERSAL_DIR, "Generating Windows EXE")
+    rc, _ = run_command(["npm", "run", "electron:build"], UNIVERSAL_DIR, "Generating Windows EXE")
     if rc != 0:
         return False
     
@@ -863,7 +1135,7 @@ def build_desktop():
 
 def build_web():
     print("\n--- [BUILD WEB] ---")
-    rc = run_command(["npm", "run", "build:web"], UNIVERSAL_DIR, "Generating Web Build")
+    rc, _ = run_command(["npm", "run", "build:web"], UNIVERSAL_DIR, "Generating Web Build")
     if rc != 0:
         return False
     
@@ -872,14 +1144,14 @@ def build_web():
 
 def build_mac():
     print("\n--- [BUILD MACOS STANDALONE] ---")
-    rc = run_command(["npm", "run", "build:mac"], UNIVERSAL_DIR, "Generating macOS .dmg")
+    rc, _ = run_command(["npm", "run", "build:mac"], UNIVERSAL_DIR, "Generating macOS .dmg")
     if rc != 0: return False
     print(f"\n[SUCCESS] macOS Build generated in {os.path.join(UNIVERSAL_DIR, 'dist')}")
     return True
 
 def build_linux():
     print("\n--- [BUILD LINUX STANDALONE] ---")
-    rc = run_command(["npm", "run", "build:linux"], UNIVERSAL_DIR, "Generating Linux .AppImage")
+    rc, _ = run_command(["npm", "run", "build:linux"], UNIVERSAL_DIR, "Generating Linux .AppImage")
     if rc != 0: return False
     print(f"\n[SUCCESS] Linux Build generated in {os.path.join(UNIVERSAL_DIR, 'dist')}")
     return True
@@ -921,18 +1193,26 @@ def launch_electron_dev():
 
 def deploy_firebase():
     print("\n--- [FIREBASE DEPLOY] ---")
-    rc = run_command(["firebase", "deploy"], UNIVERSAL_DIR, "Deploying to Firebase")
-    if rc != 0:
+    if not verify_firebase_project():
+        log_event("firebase", "deploy", "FAILED", "Deployment aborted due to project mismatch.")
         return False
-    print("\n[SUCCESS] Firebase Deployment Complete.")
+    rc, _ = run_command(["firebase", "deploy"], UNIVERSAL_DIR, "Deploying to Firebase")
+    if rc != 0:
+        log_event("firebase", "deploy", "FAILED", "Firebase deploy command execution failed.")
+        return False
+    log_event("firebase", "deploy", "SUCCESS", "Firebase Deployment Complete.")
     return True
 
 def deploy_firestore_rules():
     print("\n--- [FIREBASE RULES-ONLY DEPLOY] ---")
-    rc = run_command(["firebase", "deploy", "--only", "firestore:rules"], UNIVERSAL_DIR, "Deploying Firestore Rules")
-    if rc != 0:
+    if not verify_firebase_project():
+        log_event("firebase", "deploy", "FAILED", "Deployment aborted due to project mismatch.")
         return False
-    print("\n[SUCCESS] Firestore Security Rules Updated.")
+    rc, _ = run_command(["firebase", "deploy", "--only", "firestore:rules"], UNIVERSAL_DIR, "Deploying Firestore Rules")
+    if rc != 0:
+        log_event("firebase", "deploy", "FAILED", "Firestore rules deploy failed.")
+        return False
+    log_event("firebase", "deploy", "SUCCESS", "Firestore Security Rules Updated.")
     return True
 
 def cleanup_release():
@@ -1070,7 +1350,7 @@ def git_sync(interactive=True):
         return True
         
     # 2. Add all
-    rc = run_command(["git", "add", "."], PROJECT_ROOT, "Staging all changes")
+    rc, _ = run_command(["git", "add", "."], PROJECT_ROOT, "Staging all changes")
     if rc != 0: return False
     
     # 3. Commit
@@ -1082,11 +1362,11 @@ def git_sync(interactive=True):
     if not msg:
         msg = "Auto-sync from manager.py"
         
-    rc = run_command(["git", "commit", "-m", msg], PROJECT_ROOT, f"Committing: '{msg}'")
+    rc, _ = run_command(["git", "commit", "-m", msg], PROJECT_ROOT, f"Committing: '{msg}'")
     if rc != 0: return False
     
     # 4. Push
-    rc = run_command(["git", "push"], PROJECT_ROOT, "Pushing to remote")
+    rc, _ = run_command(["git", "push"], PROJECT_ROOT, "Pushing to remote")
     if rc != 0: return False
     
     print("\n[SUCCESS] Git Sync Complete.")
@@ -1152,7 +1432,7 @@ def install_on_device():
         else:
             print(f"  {C.GRN}● No existing installation found. Performing fresh install...{C.RST}")
 
-        rc = run_command(["adb", "install", "-r", apk_path], PROJECT_ROOT, "Deploying APK")
+        rc, _ = run_command(["adb", "install", "-r", apk_path], PROJECT_ROOT, "Deploying APK")
         
         if rc == 0:
             print(f"\n  {C.GRN}{C.BOLD}✔ SUCCESS: App deployed to physical device.{C.RST}")
@@ -1528,8 +1808,14 @@ def show_help_shortcuts():
 def main():
     flush_input()
     
+    # High-speed manual version check to bypass argparse optional-argument errors
+    for arg in sys.argv[1:]:
+        if arg.lower() in ["version", "--version", "-version", "-v", "--v"]:
+            print(f"InnerOrbit Manager Version: {C.GRN}{VERSION}{C.RST}")
+            sys.exit(0)
+            
     # Persistent launch tracking to detect recent restarts even after exit
-    last_launch_file = os.path.join("tools", ".last_launch")
+    last_launch_file = os.path.join(TOOLS_DIR, ".last_launch")
     recent_launch = False
     now = time.time()
     
@@ -1559,12 +1845,16 @@ def main():
     
     if args.task:
         task = args.task.lower()
+        if task in ["version", "--version", "-version", "-v", "--v"]:
+            print(f"InnerOrbit Manager Version: {C.GRN}{VERSION}{C.RST}")
+            sys.exit(0)
         # (Task mapping remains same for CLI consistency)
         if task == "debug": build_android_debug()
         elif task in ["release", "prod"]: build_android_release()
         elif task == "android": build_android_both()
         elif task == "clean": clean_android()
         elif task == "fresh": fresh_build_android()
+        elif task in ["cleandebug", "clean-debug"]: clean_build_android_debug()
         elif task == "install": install_on_device()
         elif task == "phys": debug_physical_device_workflow()
         elif task == "start": start_dev_server()
@@ -1589,6 +1879,15 @@ def main():
         elif task == "exit": sys.exit(0)
         elif task in ["help", "h"]: show_help_shortcuts()
         elif task == "all": full_release()
+        else:
+            log_event("cli", "runTask", "FAILED", f"Unknown task/command '{args.task}'")
+            import difflib
+            valid_cmds = ["debug", "release", "android", "clean", "fresh", "cleandebug", "install", "phys", "start", "portal", "download", "both", "dev", "desktop", "web", "electron", "firebase", "rules", "git", "health", "cleanup", "gui", "setup", "browser", "reset", "register", "exit", "help", "all"]
+            matches = difflib.get_close_matches(task, valid_cmds, n=1)
+            if matches:
+                print(f"  Did you mean: {C.CYAN}{matches[0]}{C.RST}?")
+            print(f"  Run {C.CYAN}orbit help{C.RST} to list all valid commands.")
+            sys.exit(1)
         sys.exit(0)
 
     # --- INTERACTIVE HUB SYSTEM ---
@@ -1596,7 +1895,8 @@ def main():
         time.sleep(0.5) # Smooth transition
     
     show_splash(restarted=is_restarted)
-    ask_terminal()
+    if not is_restarted:
+        ask_terminal()
     
     current_cat = "HUB"
     
@@ -1659,8 +1959,9 @@ def main():
                 print(f"  3. Build Both APKs (Debug + Release)")
                 print(f"  4. Clean Project")
                 print(f"  5. Fresh Build (Clean + Both)")
-                print(f"  6. Install Debug APK to Device")
-                print(f"  7. {C.CYAN}Physical Device Debug{C.RST} (Build + Auto-Install)")
+                print(f"  6. {C.GRN}Clean + Build Debug APK{C.RST}  {C.GRN}{C.BOLD}[RECOMMENDED FOR DEV/TESTS]{C.RST}")
+                print(f"  7. Install Debug APK to Device")
+                print(f"  8. {C.CYAN}Physical Device Debug{C.RST} (Build + Auto-Install)")
                 print(f"\n  [B] Back to Hub")
                 
                 print(f"\n  {C.BOLD}Android >{C.RST} ", end='', flush=True)
@@ -1671,8 +1972,9 @@ def main():
                 elif c == '3': build_android_both()
                 elif c == '4': clean_android()
                 elif c == '5': fresh_build_android()
-                elif c == '6': install_on_device()
-                elif c == '7': debug_physical_device_workflow()
+                elif c == '6': clean_build_android_debug()
+                elif c == '7': install_on_device()
+                elif c == '8': debug_physical_device_workflow()
                 
                 if c: 
                     set_terminal_mode(True)
@@ -1764,13 +2066,15 @@ def main():
                     set_terminal_mode(False)
 
             elif current_cat == "ADV":
-                print(f"  {C.GRAY}{C.BOLD}ADVANCED TOOLS{C.RST}")
+                print(f"  {C.GRAY}{C.BOLD}ADVANCED TOOLS & DECOY CALCX{C.RST}")
                 print(f"  1. Launch GUI Project Console")
                 print(f"  2. Launch Setup Wizard")
                 print(f"  3. Cleanup Release Folder")
                 print(f"  4. Reset Terminal Choice")
                 print(f"  5. Register Manager Globally  {C.GRAY}(command: orbit){C.RST}")
-                print(f"  6. Upgrade Manager Version")
+                print(f"  6. Upgrade Manager Version / Self-Config")
+                print(f"  7. {C.YEL}Start Decoy CalcX Expo Server{C.RST}   {C.GRAY}(Standalone Master Calculator){C.RST}")
+                print(f"  8. {C.CYAN}Switch Project Environment (Dev/Prod){C.RST}")
                 print(f"\n  [B] Back to Hub")
                 
                 print(f"\n  {C.BOLD}Advanced >{C.RST} ", end='', flush=True)
@@ -1782,6 +2086,38 @@ def main():
                 elif c == '4': reset_terminal_choice()
                 elif c == '5': register_globally()
                 elif c == '6': self_upgrade_version()
+                elif c == '7':
+                    print("\n--- [START DECOY CALCX EXPO SERVER] ---")
+                    calc_dir = os.path.join(PROJECT_ROOT, "CalcX -- A Master Calculator")
+                    choice = ask_server_terminal("CalcX Master Calculator")
+                    if choice == '1':
+                        print(f"{C.CYAN}Starting in current terminal. Press Ctrl+C to stop.{C.RST}")
+                        subprocess.call(["npm", "start"], cwd=calc_dir, shell=True)
+                    else:
+                        print("Launching in a new window...")
+                        cmd = f'start cmd /k "cd /d \"{calc_dir}\" && npm start"'
+                        os.system(cmd)
+                        print(f"\n[SUCCESS] Decoy CalcX Expo server launched in new window.")
+                elif c == '8':
+                    print("\n--- [SWITCH ENVIRONMENT] ---")
+                    env_path = os.path.join(UNIVERSAL_DIR, ".env")
+                    if os.path.exists(env_path):
+                        try:
+                            with open(env_path, 'r') as f:
+                                env_data = f.read()
+                            if "EXCLUDE_PRIVACY_STEALTH = true" in env_data or "STEALTH_MODE = true" in env_data:
+                                env_data = env_data.replace("EXCLUDE_PRIVACY_STEALTH = true", "EXCLUDE_PRIVACY_STEALTH = false")
+                                env_data = env_data.replace("STEALTH_MODE = true", "STEALTH_MODE = false")
+                                print(f"  {C.GRN}✔ Switched Environment to Standard Dev/Prod mode.{C.RST}")
+                            else:
+                                env_data += "\nEXCLUDE_PRIVACY_STEALTH = true\n"
+                                print(f"  {C.CYAN}✔ Switched Environment to Custom Private/Isolated mode.{C.RST}")
+                            with open(env_path, 'w') as f:
+                                f.write(env_data)
+                        except Exception as e:
+                            print(f"  {C.RED}Error updating .env: {e}{C.RST}")
+                    else:
+                        print(f"  {C.RED}.env file not found in {UNIVERSAL_DIR}!{C.RST}")
                 
                 if c: input(f"\n  {C.GRAY}Press Enter to continue...{C.RST}")
 
@@ -1791,10 +2127,12 @@ def main():
 
     except KeyboardInterrupt:
         print(f"\n  {C.GRAY}Exiting Hub...{C.RST}")
+        set_terminal_mode(True)
         sys.exit(0)
     except Exception as e:
         print(f"\n  {C.RED}[CRITICAL ERROR] Hub crashed: {e}{C.RST}")
         print(f"  {C.YEL}Attempting emergency restart...{C.RST}")
+        set_terminal_mode(True)
         time.sleep(2)
         os.execv(sys.executable, [sys.executable] + sys.argv)
 if __name__ == "__main__":

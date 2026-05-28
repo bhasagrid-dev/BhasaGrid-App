@@ -2,7 +2,7 @@ require('dotenv').config();
 
 module.exports = {
     expo: {
-        name: "CalcX",
+        name: "InnerOrbit",
         slug: "InnerOrbit-CalcX-A",
         version: "1.0.3",
         orientation: "portrait",

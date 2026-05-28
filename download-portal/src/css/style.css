@@ -69,30 +69,30 @@ html {
 }
 
 [data-theme='light'] {
-    --bg-primary: #f8fafc;
-    --bg-hero-color: #ffffff;
-    --accent-cyan: #9333ea;
-    /* Slightly darker purple for contrast */
-    --accent-purple: #9333ea;
+    /* Deeper, solid high-contrast carbon black and dark charcoal colors for perfect accessibility and readability in light mode */
+    --bg-primary: #e2e8f0; 
+    --bg-hero-color: #cbd5e1;
+    --accent-cyan: #7c3aed;
+    --accent-purple: #6d28d9;
     --accent-orange: #ea580c;
     --accent-pink: #db2777;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
+    --text-primary: #090d16;
+    --text-secondary: #1e293b;
 
-    /* Light mode SVG Intensity - Softer colors */
-    --hero-bg-svg: url("data:image/svg+xml,%3Csvg width='1920' height='1080' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='purpleGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23a855f7;stop-opacity:0.2'/%3E%3Cstop offset='100%25' style='stop-color:%23ec4899;stop-opacity:0.1'/%3E%3C/linearGradient%3E%3ClinearGradient id='orangeGrad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23f59e0b;stop-opacity:0.15'/%3E%3Cstop offset='100%25' style='stop-color:%23ea580c;stop-opacity:0.2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,800 Q400,600 800,700 T1600,650 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.3'/%3E%3Cpath d='M0,900 Q300,750 600,850 T1200,800 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.2'/%3E%3Cpath d='M1920,300 Q1500,200 1100,280 T300,250 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.25'/%3E%3Cpath d='M1920,200 Q1600,100 1200,180 T400,150 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.15'/%3E%3C/svg%3E");
-    --bg-svg-opacity: 0.4;
+    /* Light mode SVG Intensity - Extremely premium, high-visibility waves styled with beautiful soft modern gradients */
+    --hero-bg-svg: url("data:image/svg+xml,%3Csvg width='1920' height='1080' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='purpleGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23a855f7;stop-opacity:0.9'/%3E%3Cstop offset='100%25' style='stop-color:%23ec4899;stop-opacity:0.7'/%3E%3C/linearGradient%3E%3ClinearGradient id='orangeGrad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23fbbf24;stop-opacity:0.8'/%3E%3Cstop offset='100%25' style='stop-color:%23f97316;stop-opacity:0.9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,800 Q400,600 800,700 T1600,650 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.75'/%3E%3Cpath d='M0,900 Q300,750 600,850 T1200,800 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.65'/%3E%3Cpath d='M1920,300 Q1500,200 1100,280 T300,250 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.7'/%3E%3Cpath d='M1920,200 Q1600,100 1200,180 T400,150 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.6'/%3E%3C/svg%3E");
+    --bg-svg-opacity: 0.98;
 
-    /* Crystal Glassmorphism - Light Mode Optimized */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-bg-hover: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 0 40px rgba(168, 85, 247, 0.05);
-    --card-border: rgba(0, 0, 0, 0.05);
+    /* Crystal Glassmorphism - Light Mode Optimized (Warm, soft, ultra-translucent white instead of dark/blackish) */
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-bg-hover: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 0 40px rgba(124, 58, 237, 0.08);
+    --card-border: rgba(124, 58, 237, 0.08);
 
-    /* Navbar/Sticky Variables */
-    --nav-bg: rgba(255, 255, 255, 0.8);
-    --nav-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    /* Navbar/Sticky Variables - Translucent, clean, modern glass styling for Light Mode */
+    --nav-bg: rgba(255, 255, 255, 0.4);
+    --nav-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06), 0 1px 0 0 rgba(255, 255, 255, 0.6);
 }
 
 /* THEME TRANSITION */
@@ -226,6 +226,7 @@ body {
     line-height: 1.6;
     max-width: 700px;
     margin: 0 auto 3rem;
+    font-weight: 500; /* Increased from default 400 for strong light mode accessibility */
 }
 
 /* Footer: Dark Tech */
@@ -276,13 +277,19 @@ body.authenticated #portal-view {
 
 /* Responsive Headings (Authenticated Portal) */
 body.authenticated h1 {
-    font-size: clamp(2rem, 8vw, 5.5rem) !important;
-    line-height: 1.1 !important;
+    font-size: clamp(3.2rem, 12vw, 7.8rem) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.035em !important;
+    font-weight: 900 !important;
+    margin-bottom: 2.5rem !important;
 }
 
 body.authenticated h2 {
-    font-size: clamp(1.8rem, 6vw, 3.5rem) !important;
-    line-height: 1.2 !important;
+    font-size: clamp(2.2rem, 8vw, 4.2rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.025em !important;
+    font-weight: 800 !important;
+    margin-bottom: 2rem !important;
 }
 
 body.authenticated h3 {
@@ -291,6 +298,11 @@ body.authenticated h3 {
 
 body.authenticated p {
     font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+    font-weight: 450; /* Slightly elevated from 400 for strong light mode legibility */
+}
+
+[data-theme='light'] body.authenticated p {
+    font-weight: 550; /* Explicitly high-contrast bold charcoal weights for Light Mode */
 }
 
 /* Responsive Grids */
@@ -543,6 +555,15 @@ body.authenticated p {
 
 .mobile-menu-btn {
     display: none;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.mobile-menu-btn:focus,
+.mobile-menu-btn:active,
+.mobile-menu-btn:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 /* Mobile Navigation Dropdown Refined */
@@ -666,11 +687,10 @@ body.authenticated p {
     transform: scale(0.98);
 }
 
+/* Solid high-contrast text resolving dynamically to dark slate in light mode and white in dark mode */
 .mobile-nav-item span {
-    background: linear-gradient(90deg, #fff, #94a3b8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 /* Ultra-Narrow (Cover Displays of Z Flip/Fold) */
@@ -691,7 +711,10 @@ body.authenticated p {
 
 .portal-background {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -100px; /* Extends below the viewport to prevent the black gap during address bar collapsing */
     background:
         radial-gradient(ellipse at 20% 80%, rgba(234, 88, 12, 0.15) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
@@ -942,7 +965,13 @@ body::before,
     color: #fca5a5;
     font-size: 13px;
     line-height: 1.5;
-    font-weight: 500;
+    font-weight: 700;
+    text-align: center;
+}
+
+[data-theme='light'] .security-notice .text {
+    color: #dc2626 !important; /* Premium high-contrast bold red in light mode */
+    font-weight: 700 !important; /* Solid bold weight */
 }
 
 .page-footer {
@@ -1132,4 +1161,39 @@ body::before,
 .reveal-visible {
     opacity: 1 !important;
     transform: translateY(0) !important;
+}
+
+/* Premium Glassmorphic Tooltip */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -45px; /* Positions below the toggler */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(10, 10, 18, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    z-index: 10000;
+}
+
+[data-tooltip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
