@@ -1,0 +1,118 @@
+# System Files
+.DS_Store
+Thumbs.db
+*.local
+*.bak
+*.tmp
+temp/
+
+# Dependencies
+node_modules/
+
+# Build Outputs
+build/
+dist/
+out/
+web-build/
+.expo/
+
+# IDEs
+*.md
+.idea/
+.vscode/
+*.swp
+*.iml
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+
+# Environment Variables & Secrets
+.env
+.env.*
+*.pem
+*.key
+secrets.json
+service-account.json
+
+# Archive folder (old/backup files)
+archive/
+
+# RAG plugin development folder
+rag-v1/
+
+# Oracle server (formerly ignored)
+# oracle-server-backend/
+
+# Operations scripts
+ops-scripts/
+
+# Project Documentation (ignore all .md except whitelisted)
+
+!README.md
+!INNERORBIT_KNOWLEDGE_BASE.md
+!BeReady.md
+!innerorbit-universal/docs/*.md
+!tools/ops/README.md
+innerorbit-universal/docs/*.pdf
+
+# Resolved files (agent-generated)
+*.resolved
+!python_prompt_guide.md.resolved
+
+# Mobile Builds
+*.apk
+*.aab
+*.ipa
+*.asar
+
+# Desktop Builds
+*.exe
+*.dmg
+*.zip
+*.AppImage
+
+# Release builds
+release/
+innerorbit-universal/release/
+
+# Java JDK
+java-17/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Temporary / Scratch
+dist_v2/
+innerorbit-universal/test_output.txt
+scratch/
+query_result.txt
+temporary-prompts-or-messages.txt
+
+# Testing credentials (sensitive)
+Testing-Accounts
+
+# Tools
+tools/flask_manager/
+
+# Session state
+.terminal_choice
+.browser_choice
+.last_launch
+
+# Graphify (auto-generated knowledge graph)
+graphify-out/
+graphify.json

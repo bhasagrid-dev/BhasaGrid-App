@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - InnerOrbit</title>
+    <link rel="icon" type="image/webp" href="assets/favicons/access-portal-favicon.webp">
+    <link rel="shortcut icon" type="image/webp" href="assets/favicons/access-portal-favicon.webp">
+
+    <!-- Theme Initialization -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('innerorbit-theme') || 'default';
+            if (savedTheme !== 'default') {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        })();
+    </script>
+
+    <style>
+        :root {
+            /* DEFAULT THEME (Slate) */
+            --bg-primary: #1e293b;
+            --accent-purple: #a855f7;
+            --accent-orange: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            
+            /* Default SVGs and Opacity */
+            --hero-bg-svg: url("data:image/svg+xml,%3Csvg width='1920' height='1080' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='purpleGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23a855f7;stop-opacity:0.6'/%3E%3Cstop offset='100%25' style='stop-color:%23ec4899;stop-opacity:0.4'/%3E%3C/linearGradient%3E%3ClinearGradient id='orangeGrad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23f59e0b;stop-opacity:0.5'/%3E%3Cstop offset='100%25' style='stop-color:%23ea580c;stop-opacity:0.6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,800 Q400,600 800,700 T1600,650 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.3'/%3E%3Cpath d='M0,900 Q300,750 600,850 T1200,800 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.2'/%3E%3Cpath d='M1920,300 Q1500,200 1100,280 T300,250 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.25'/%3E%3Cpath d='M1920,200 Q1600,100 1200,180 T400,150 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.15'/%3E%3C/svg%3E");
+            --bg-svg-opacity: 0.4;
+            --bg-hero-color: #1e293b;
+
+            /* Crystal Glassmorphism Variables */
+            --glass-bg: rgba(20, 20, 30, 0.4); /* Darkened for better readability */
+            --glass-bg-hover: rgba(30, 30, 45, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-blur: 20px; /* Reduced for better text clarity */
+            --glass-reflection: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), 0 0 80px rgba(168, 85, 247, 0.05);
+            
+            /* Mappings */
+            --bg-color: var(--bg-primary);
+            --sidebar-bg: var(--glass-bg);
+            --text-color: var(--text-primary);
+            --text-muted: rgba(248, 252, 255, 0.85); /* High contrast fallback */
+            --primary: var(--accent-purple);
+            --accent: var(--accent-orange);
+            --border: var(--glass-border);
+            --sidebar-width: 320px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #cbd5e1;
+            --bg-hero-color: #94a3b8;
+            --accent-purple: #7e22ce;
+            --accent-orange: #ea580c;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --bg-svg-opacity: 0.45; 
+            
+            /* Light Crystal Glass */
+            --glass-bg: rgba(255, 255, 255, 0.65); /* Increased opacity for light mode readability */
+            --glass-blur: 15px;
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+            --text-muted: rgba(15, 23, 42, 0.9);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #020617;
+            --bg-hero-color: #020617;
+            --accent-purple: #c084fc;
+            --accent-orange: #f59e0b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --bg-svg-opacity: 0.7; 
+
+            /* Dark Crystal Glass */
+            --glass-bg: rgba(2, 6, 23, 0.7);
+            --glass-blur: 25px;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), 0 0 60px rgba(168, 85, 247, 0.05);
+            --text-muted: rgba(255, 255, 255, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif; /* Using Outfit for premium look */
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .portal-background {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+                var(--bg-primary);
+            z-index: -1;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .portal-background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--hero-bg-svg);
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            opacity: var(--bg-svg-opacity);
+            mix-blend-mode: soft-light;
+        }
+
+        /* Layout Grid */
+        .layout-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border-right: 1px solid var(--glass-border);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            padding: 2.5rem 2rem;
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transition: all 0.3s ease;
+        }
+        .brand:hover { color: var(--accent-purple); transform: translateX(-5px); }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 10px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-primary);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            transform: translateX(5px);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 6rem 5% 6rem 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        header {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-orange));
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1.5px;
+        }
+
+        h2 {
+            color: var(--text-primary);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            scroll-margin-top: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: '';
+            width: 8px;
+            height: 24px;
+            background: var(--accent-purple);
+            border-radius: 4px;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        p, li {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+
+        ul { 
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            list-style-type: none;
+        }
+
+        li {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
+        .alert-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            color: var(--text-primary);
+            backdrop-filter: blur(var(--glass-blur));
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-purple), var(--accent-orange));
+        }
+
+        a { 
+            color: var(--accent-purple); 
+            text-decoration: none; 
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+        a:hover { 
+            color: var(--accent-orange); 
+            border-bottom-color: var(--accent-orange);
+        }
+
+        /* Mobile Adjustments */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            width: 45px;
+            height: 45px;
+            z-index: 1000;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 1100px) {
+            .sidebar {
+                position: fixed;
+                left: -320px;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .sidebar.open { left: 0; }
+            .main-content { 
+                margin-left: 0; 
+                padding: 4rem 1.5rem;
+            }
+            .mobile-toggle { display: flex; align-items: center; justify-content: center; }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Dynamic Background -->
+    <div class="portal-background"></div>
+
+    <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+    <div class="layout-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="index.html" class="brand">← InnerOrbit</a>
+            <div class="nav-links">
+                <a href="#acceptance" class="nav-item">1. Acceptance of Terms</a>
+                <a href="#account" class="nav-item">2. Account Registration</a>
+                <a href="#usage" class="nav-item">3. Acceptable Use Policy</a>
+                <a href="#content" class="nav-item">4. User Content</a>
+                <a href="#ip" class="nav-item">5. Intellectual Property</a>
+                <a href="#privacy" class="nav-item">6. Privacy & Data</a>
+                <a href="#encryption" class="nav-item">7. End-to-End Encryption</a>
+                <a href="#stealth" class="nav-item">8. Stealth Features</a>
+                <a href="#payments" class="nav-item">9. Payments</a>
+                <a href="#disclaimers" class="nav-item">10. Disclaimers</a>
+                <a href="#indemnification" class="nav-item">11. Indemnification</a>
+                <a href="#export" class="nav-item">12. Export Control</a>
+                <a href="#governing" class="nav-item">13. Governing Law</a>
+                <a href="#dmca" class="nav-item">14. DMCA Copryight</a>
+                <a href="#disputes" class="nav-item">16. Dispute Resolution</a>
+                <a href="#contact" class="nav-item">18. Contact Info</a>
+                <a href="privacy-policy.html" class="nav-item" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">View Privacy Policy</a>
+            </div>
+             <div style="margin-top: auto; padding-top: 2rem; font-size: 0.8rem; color: var(--text-muted);">
+                &copy; 2026 InnerOrbit
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1>Terms of Service</h1>
+                <p>Last Updated: January 19, 2026 &bull; Effective Date: January 19, 2026</p>
+            </header>
+
+            <div class="alert-box">
+                <strong>Important:</strong> These Terms include a binding arbitration agreement and class action waiver for U.S. users. Please read Section 16 carefully.
+            </div>
+
+            <section>
+                 <div class="alert-box" style="margin-top: 0; background: var(--glass-bg); border-left: 4px solid var(--accent-orange);">
+                    <strong>Agreement to Terms:</strong> By accessing or using InnerOrbit ("the App," "Service," "we," "our," or "us"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the App.
+                </div>
+                <p>InnerOrbit is operated as an individual developer project.</p>
+            </section>
+
+            <section id="acceptance">
+                <h2>1. Acceptance of Terms</h2>
+                
+                <h3>1.1 Binding Agreement</h3>
+                <p>These Terms constitute a legally binding agreement between you ("User," "you," or "your") and InnerOrbit (Individual Developer). By creating an account, accessing the App, or using any features or services, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.</p>
+                
+                <h3>1.2 Age Requirements</h3>
+                <p><strong>You must be at least 13 years old</strong> (or 16 in the European Economic Area) to use InnerOrbit.</p>
+                <p>By using the App, you represent and warrant that:</p>
+                <ul>
+                    <li>You are at least 13 years old (or 16 in the EEA)</li>
+                    <li>You have the legal capacity to enter into this agreement</li>
+                    <li>You are not prohibited from using the Service under applicable law</li>
+                </ul>
+                <p><strong>Parental Consent:</strong> If you are between 13-18 (or 16-18 in EEA), you must have your parent or legal guardian's permission to use the App.</p>
+
+                <h3>1.3 Changes to Terms</h3>
+                <p>We reserve the right to modify these Terms at any time. Changes will be posted on this page with a new "Last Updated" date, notified via in-app alert for material changes, and effective immediately upon posting.</p>
+                <p><strong>Your continued use after changes constitutes acceptance.</strong> If you do not agree to the modified Terms, you must stop using the App.</p>
+            </section>
+
+            <section id="account">
+                <h2>2. Account Registration and Security</h2>
+                
+                <h3>2.1 Account Creation</h3>
+                <p>To use InnerOrbit, you must create an account by providing a valid email address and secure password. You will receive a 4-digit User ID (for PIN login) and a 6-digit Recovery PIN (encrypted).</p>
+
+                <h3>2.2 Account Security</h3>
+                <p>You are responsible for maintaining the confidentiality of your password and PIN, all activities that occur under your account, and notifying us immediately of any unauthorized access.</p>
+                <p><strong>We are not liable for any loss or damage from your failure to protect your account.</strong></p>
+
+                <h3>2.3 Account Restrictions</h3>
+                <p>You may not create multiple accounts for the same person, share your account with others, use another person's account without permission, create an account using false or misleading information, or create an account if you were previously banned.</p>
+
+                <h3>2.4 Account Termination</h3>
+                <p><strong>By You:</strong> You may delete your account at any time via Settings &rarr; Account &rarr; Delete Account. Deletion is permanent and cannot be undone. All your data will be deleted within 30 days.</p>
+                <p><strong>By Us:</strong> We may suspend or terminate your account if you violate these Terms, terminate accounts that are inactive for 12+ months, or terminate the Service entirely with 30 days' notice.</p>
+            </section>
+
+            <section id="usage">
+                <h2>3. Acceptable Use Policy</h2>
+                
+                <h3>3.1 Permitted Uses</h3>
+                <p>InnerOrbit is designed for private, secure messaging, sharing photos and media with contacts, using stealth features (calculator mode, games), and personal communication.</p>
+
+                <h3>3.2 Prohibited Activities</h3>
+                <p>You may NOT use InnerOrbit to:</p>
+                <ul>
+                    <li><strong>Illegal Activities:</strong> Violate laws, engage in illegal acts, distribute illegal content, or facilitate fraud.</li>
+                    <li><strong>Harmful Content:</strong> Harass, threaten, hate speech, explicit content involving minors, or distribute malware.</li>
+                    <li><strong>Abuse and Spam:</strong> Send spam, impersonate others, phishing, or create fake accounts.</li>
+                    <li><strong>Intellectual Property Violations:</strong> Infringe on copyrights/trademarks, share pirated content, or violate privacy rights.</li>
+                    <li><strong>Platform Abuse:</strong> Hack, reverse engineer, scrape data, or interfere with operations.</li>
+                </ul>
+
+                <h3>3.3 Enforcement</h3>
+                <p>Violations may result in warning, suspension, permanent termination, reporting to law enforcement, or legal action.</p>
+            </section>
+
+            <section id="content">
+                <h2>4. User Content</h2>
+                <h3>4.1 Your Content</h3>
+                <p>"User Content" means any messages, photos, media, or information you submit. <strong>You retain ownership</strong> of your User Content.</p>
+
+                <h3>4.2 License to Us</h3>
+                <p>By posting User Content, you grant InnerOrbit a non-exclusive, worldwide, royalty-free license to store, transmit, and display your content <strong>solely for the purpose of providing the Service</strong>. We do NOT claim ownership, use content for ads, or share with third parties (except as required).</p>
+
+                <h3>4.3 Content Responsibility</h3>
+                <p>You are solely responsible for your User Content. You warrant that you own rights to content and it violates no laws or rights. <strong>We are not responsible for User Content.</strong></p>
+
+                <h3>4.4 Content Removal</h3>
+                <p>We reserve the right to remove content violating these Terms or legal requests. We are not obligated to monitor content.</p>
+            </section>
+
+            <section id="ip">
+                <h2>5. Intellectual Property Rights</h2>
+                <h3>5.1 Our Rights & Limited License</h3>
+                <p>InnerOrbit and related materials are owned by InnerOrbit Team. We grant you a limited, non-exclusive, revocable license to use the App for personal, non-commercial purposes. You may NOT copy, modify, reverse engineer, or use our trademarks without permission.</p>
+
+                <h3>5.2 Feedback</h3>
+                <p>If you provide feedback, we may use it without obligation to you.</p>
+            </section>
+
+            <section id="privacy">
+                <h2>6. Privacy and Data Protection</h2>
+                <p>Your use of InnerOrbit is governed by our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+                <h3>Key Privacy Features:</h3>
+                <ul>
+                    <li>End-to-end encryption for all messages</li>
+                    <li>No message content access by InnerOrbit</li>
+                    <li>Minimal data collection & User control over data</li>
+                </ul>
+                <p><strong>Data Security:</strong> We implement industry-standard measures, but no system is 100% secure. You use the App at your own risk.</p>
+                <p><strong>Third-Party Services:</strong> We use Firebase/Google Cloud (their privacy policies apply).</p>
+            </section>
+
+            <section id="encryption">
+                <h2>7. End-to-End Encryption</h2>
+                <p><strong>Encryption Notice:</strong> Only you and your recipient can read messages. InnerOrbit cannot access message content. Messages are encrypted on your device.</p>
+                <p><strong>Limitations:</strong> We cannot recover lost messages, provide content to law enforcement (we don't have access), or decrypt messages if credentials are lost.</p>
+                <p><strong>Backup:</strong> Encrypted messages are stored on Firebase servers. No backup to third-party services supported.</p>
+            </section>
+
+            <section id="stealth">
+                <h2>8. Stealth Features</h2>
+                <p><strong>Calculator Mode:</strong> Disguises app as calculator; requires PIN for access.</p>
+                <p><strong>Decoy PIN:</strong> Opens empty account for emergencies (optional).</p>
+                <p><strong>Intended Use:</strong> Personal privacy and protection. <strong>Prohibited:</strong> Evading lawful surveillance or hiding illegal activities.</p>
+            </section>
+
+            <section id="payments">
+                <h2>9. Payments and Subscriptions</h2>
+                <p>InnerOrbit is currently <strong>free</strong>. We reserve the right to introduce paid features with 30 days' notice.</p>
+            </section>
+
+            <section id="disclaimers">
+                <h2>10. Disclaimers and Limitations</h2>
+                <p>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES. We do not guarantee absolute security.</p>
+                <p><strong>Limitation of Liability:</strong> To the maximum extent permitted by law, InnerOrbit is not liable for indirect damages or data loss. Total liability is limited to $100 USD.</p>
+            </section>
+
+            <section id="indemnification">
+                <h2>11. Indemnification</h2>
+                <p>You agree to indemnify and hold harmless InnerOrbit from claims arising from your use of the App, User Content, or violation of these Terms.</p>
+            </section>
+            
+            <section id="export">
+                <h2>12. Export Control</h2>
+                <p>You represent you are not in a prohibited country (e.g., Cuba, Iran, North Korea, Syria) or on any U.S. government prohibited list.</p>
+            </section>
+
+            <section id="governing">
+                <h2>13. Governing Law</h2>
+                <p>These Terms are governed by the laws of your country of residence.</p>
+            </section>
+
+            <section id="dmca">
+                <h2>14. DMCA Copyright Policy</h2>
+                <p>Send copyright infringement notices to <a href="mailto:dmca@InnerOrbit.app">dmca@InnerOrbit.app</a>.</p>
+            </section>
+            
+            <section id="disputes">
+                <h2>16. Dispute Resolution (U.S. Users)</h2>
+                <p><strong>Arbitration:</strong> U.S. users agree to resolve disputes through binding arbitration (AAA), not in court. You waive your right to class actions.</p>
+                <p><strong>Opt-Out:</strong> Email <a href="mailto:arbitration-opt-out@InnerOrbit.app">arbitration-opt-out@InnerOrbit.app</a> within 30 days to opt-out.</p>
+            </section>
+
+            <section id="contact">
+                <h2>18. Contact Information</h2>
+                <p>Email: <a href="mailto:legal@InnerOrbit.app">legal@InnerOrbit.app</a><br>
+                Support: <a href="mailto:support@InnerOrbit.app">support@InnerOrbit.app</a></p>
+            </section>
+            
+            <section>
+                <h2>Acknowledgment</h2>
+                <p>BY USING InnerOrbit, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE TERMS.</p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Smooth Scroll & Spy
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                document.querySelector('.sidebar').classList.remove('open');
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            let current = '';
+            sections.forEach(section => {
+                if (pageYOffset >= section.offsetTop - 150) current = section.getAttribute('id');
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').includes(current)) item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

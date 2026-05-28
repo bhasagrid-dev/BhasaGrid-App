@@ -1,0 +1,99 @@
+INNERORBIT PROJECT FILES OVERVIEW AND ARCHITECTURE (May 2026 Update)
+
+This document provides a comprehensive breakdown of the codebase, categorizing files into Frontend, Backend/Integration, and High-Assurance Security roles.
+
+1. ARCHITECTURE SUMMARY
+
+This application uses a Hybrid Serverless Architecture.
+- Frontend: Built with React Native (Expo) for Mobile/Web and Electron for Desktop.
+- Primary Backend: Firebase (Managed). All real-time signaling and auth are handled by Google's backend-as-a-service.
+- High-Assurance Core: Decoupled cryptographic primitives (`innerorbit-universal/lib/encryption-core.ts`) ensure that the backend never sees plaintext.
+
+2. FILE CLASSIFICATION
+
+
+A. FRONTEND (UI, Navigation, State)
+These files are responsible for what the user sees and interacts with.
+
+   /app (Expo Router - Navigation Logic)
+
+     _layout.js: Main entry point, sets up Providers (Auth, Theme, Network).
+     index.js: Landing page / logic to redirect to Login or Home.
+     login.js, signup.js: Authentication screens.
+     home.js: Main private screen (Chat List).
+     CalcX.js: The Stealth Calculator interface.
+     game/[id].js: Dynamic route for games (Ludo, etc.).
+
+   /components (Reusable UI Elements)
+     ChatList.js, ChatDetail.js: UI for messaging.
+     Calculator.js: The comprehensive calculator logic and UI.
+     LudoGame.js, TicTacToeGame.js: Game implementations.
+     FabMenu.js: Floating action menu for game switching.
+
+   /context (Global State Management)
+     auth-context.js: Manages user login state vs. Decoy Mode state.
+     theme-store.ts: Handles Dark/Light mode switching (Zustand).
+     network-context.js: Monitors internet connectivity.
+
+B. BACKEND INTERFACE & SECURITY (Service Layer)
+These files run on the device but serve as the Backend Connector and Encryption Engine.
+
+   /lib (Service Modules)
+     encryption-core.ts: [NEW] Decoupled synchronous primitives for PQC (ML-KEM) and AES-SIV.
+     encryption.ts: High-level orchestrator for cascading fallback and session management.
+     device-storage-service.ts: [HARDENED] Centralized hardware-binding (TPM, Secure Enclave, WebAuthn).
+     ratchet.ts: Implementation of Protocol v6 (PQXDH) Double Ratchet logic.
+     firebase.js: The Bridge. Initializes the connection to Firebase using API keys.
+     firestore-service.js: The Database API. Contains functions to Read/Write data (e.g., sendMessage).
+     notification-service.js: Handles Push Notifications via Firebase Cloud Messaging (FCM).
+
+3. FIREBASE INTEGRATION DETAILS
+
+The Backend is composed of three main Firebase services:
+
+   1. Authentication (Firebase Auth)
+   File: lib/firebase.js, context/auth-context.js
+   Integration:
+     Standard Login (Email/Password) and Google Sign-In talk directly to Firebase servers.
+     PIN Login: Custom logic in auth-context.js validates a PIN against the users collection.
+
+   2. Database (Cloud Firestore)
+   File: lib/firestore-service.js
+   Integration:
+     NoSQL document structure (users, conversations).
+     Real-time: Uses onSnapshot listeners for live updates.
+     CRUD Operations: Components call functions like sendMessage() to execute writes.
+
+   3. File Storage (Firebase Storage)
+   File: lib/firebase.js
+   Integration:
+     Used for Profile Pictures and Chat Image attachments.
+     Images are uploaded as Blobs. The resulting Download URL is stored in Firestore.
+
+4. DATA FLOW EXAMPLES
+
+   Scenario A: User Sends a PQXDH (v6) Message
+   1. Frontend: User types text and hits Send.
+   2. Encryption: `encryption.ts` calls `ratchet.ts` to rotate keys.
+   3. Hardening: `encryption-core.ts` locks the payload using AES-256-GCM-SIV.
+   4. Backend: `firestore-service.js` writes the encrypted ciphertext to the cloud.
+   5. Consumption: The recipient's app receives the update via onSnapshot and decrypts using its local ratchets.
+
+   Scenario B: User Creates an Account (Sign Up)
+   1. Frontend: User enters Email/Password in signup.js.
+   2. Action: signup.js calls signUp() from auth-context.js.
+   3. Auth: Firebase Auth server verifies and creates a unique uid.
+   4. Profile Creation: auth-context calls createUserProfile() from firestore-service.js.
+   5. Result: A new document is written to the users collection with metadata.
+
+5. FUTURE INFRASTRUCTURE (R&D)
+
+- oracle-server-backend/: Future Node.js/Python signaling layer for Level 8 deployments.
+- Media Vault (Phase 7): AEGIS-256 implementation for ultra-high-speed 4K encrypted video.
+- Key Sharding (v7): Splitting master keys into 3 physical shards.
+
+6. SECURITY AUDIT GUIDELINES
+
+- KDF Invariance: Never modify the Key Derivation Function of existing levels.
+- Cascading Recovery: Any new decryption logic must follow the v6 -> v5.5 -> v5 -> v3.5 chain.
+- Hardware Binding: Verify that all keys are bound to physical hardware via `device-storage-service.ts`.

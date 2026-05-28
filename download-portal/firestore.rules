@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Application Metadata (Authenticated Read, Admin Write)
+    // Used by the cross-platform update system and secure portal
+    match /app/version {
+      // Only allow reading the version/download link after logging into the portal
+      allow read: if request.auth != null;
+      allow write: if false; // Managed via Firebase Admin SDK
+    }
+
+    // Portal Metadata (Maintains compatibility with legacy hash checks if needed)
+    match /portal_passwords/{hash} { 
+      allow get: if true; 
+    }
+
+    // Logging (Only allow authenticated portal users to create access logs)
+    match /portal_access_logs/{logId} { 
+      allow create: if request.auth != null; 
+    }
+    
+    // Default deny for all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
