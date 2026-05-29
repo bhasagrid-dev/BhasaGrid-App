@@ -2137,14 +2137,14 @@ def main():
                     set_terminal_mode(False)
 
             elif current_cat == "ADV":
-                print(f"  {C.GRAY}{C.BOLD}ADVANCED TOOLS & DECOY CALCX{C.RST}")
+                print(f"  {C.GRAY}{C.BOLD}ADVANCED TOOLS & CALCX{C.RST}")
                 print(f"  1. Launch GUI Project Console")
                 print(f"  2. Launch Setup Wizard")
                 print(f"  3. Cleanup Release Folder")
                 print(f"  4. Reset Terminal Choice")
                 print(f"  5. Register Manager Globally  {C.GRAY}(command: orbit){C.RST}")
                 print(f"  6. Upgrade Manager Version / Self-Config")
-                print(f"  7. {C.YEL}Start Decoy CalcX Expo Server{C.RST}   {C.GRAY}(Standalone Master Calculator){C.RST}")
+                print(f"  7. {C.YEL}Start CalcX Expo Server{C.RST}        {C.GRAY}(Standalone Master Calculator){C.RST}")
                 print(f"  8. {C.CYAN}Switch Project Environment (Dev/Prod){C.RST}")
                 print(f"\n  [B] Back to Hub")
                 
@@ -2158,7 +2158,7 @@ def main():
                 elif c == '5': register_globally()
                 elif c == '6': self_upgrade_version()
                 elif c == '7':
-                    print("\n--- [START DECOY CALCX EXPO SERVER] ---")
+                    print("\n--- [START CALCX EXPO SERVER] ---")
                     calc_dir = os.path.join(PROJECT_ROOT, "CalcX -- A Master Calculator")
                     choice = ask_server_terminal("CalcX Master Calculator")
                     if choice == '1':
@@ -2168,7 +2168,7 @@ def main():
                         print("Launching in a new window...")
                         cmd = f'start cmd /k "cd /d \"{calc_dir}\" && npm start"'
                         os.system(cmd)
-                        print(f"\n[SUCCESS] Decoy CalcX Expo server launched in new window.")
+                        print(f"\n[SUCCESS] CalcX Expo server launched in new window.")
                 elif c == '8':
                     print("\n--- [SWITCH ENVIRONMENT] ---")
                     env_path = os.path.join(UNIVERSAL_DIR, ".env")
