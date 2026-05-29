@@ -4,9 +4,33 @@ This log serves as a permanent, high-fidelity ledger of all engineering operatio
 
 ---
 
+## 🔄 Global Transition & Account Mappings (The "Shift")
+
+Today we completed a major global infrastructure transition, moving all repositories, credentials, database configurations, and communication pipelines from the old legacy platform (`InnerOrbit` / `GupShup`) to the newly branded, secure **BhasaGrid** ecosystem.
+
+### 1. Email ID & Communication Shift
+* **Legacy Email**: `innerorbit.dev@gmail.com` (Fully deprecated)
+* **New Active Email**: `bhasagrid.dev@gmail.com` (Main console operations, Git commit authorship, project communication, and database alerts)
+
+### 2. GitHub Account & Credentials Transition
+* **Legacy Profile**: `innerorbit-dev` (Account deleted, credentials wiped to prevent identity leaks)
+* **New Active Profile**: `bhasagrid-dev` (Owner of the standalone BhasaGrid repositories)
+* **SSH Keys Swapped**:
+  * Deleted legacy `id_ed25519_work` keys associated with the old email.
+  * Configured dynamic hostname mappings in `C:\Users\sreya\.ssh\config` to isolate BhasaGrid pushes from your personal `Ksreyan0725` pushes.
+  * Verified personal keys (`id_ed25519_personal`) remain 100% untouched.
+
+### 3. Firebase Project Migration & Environments Shift
+* **Legacy Web App Project**: `innerorbit-bc8ce` (To be migrated)
+* **Legacy Portal Project**: `innerorbit-portal` (Active portal hosting)
+* **New Reserved Target Project**: `bhasagrid` (Successfully cleaned, reset, and locked as the blank template for receiving future web app transfers).
+* **Environment Separation**: Localized portal `.env` configurations to [download-portal/.env](file:///C:/BhasaGrid-Application-Project/download-portal/.env) so portal authentication queries successfully reach the portal project instead of colliding with the main application project.
+
+---
+
 ## 🛠️ Summary of Operations Done Today
 
-### 1. Root & Sub-project Git Rebranding (Kumar Sreyan Pattanayak / BhasaGrid)
+### 1. Root & Sub-project Git Rebranding (BhasaGrid)
 * **Objective**: Remove all personal/outdated branding ("InnerOrbit" / "GupShup") and set correct Git identities.
 * **Git Local Author Name Updated**: Changed from `Kumar Sreyan Pattanayak` to `BhasaGrid` for branding.
 * **Git Local Author Email**: `bhasagrid.dev@gmail.com`
@@ -40,6 +64,7 @@ This log serves as a permanent, high-fidelity ledger of all engineering operatio
     2. Download Portal (`download-portal`)
     3. Both Targets
 * **Added Position Parsing**: Expanded `argparse` configuration in `manager.py` to parse an optional second parameter `target` without throwing unrecognized argument errors.
+* **Decoy Terminology Wiped**: Completely removed "decoy" references, re-labeling CalcX cleanly as a **Standalone Master Calculator** for complete Google Play Store compliance.
 
 ### 5. Dedicated Portal `.env` & Config Sync Resolution
 * **Objective**: Fix the authentication failure (`auth/invalid-credential` / Bad Request 400) on the secure download portal.
@@ -59,6 +84,8 @@ The following table represents the sequential history of commits pushed to the r
 
 | Commit Hash | Exact Date & Timestamp | Author | Commit Message |
 | :--- | :--- | :--- | :--- |
+| **`7c9af63625f385c9f52f36bc6bc8c6c06a382c75`** | May 29, 2026, 19:03:29 (+0530) | `BhasaGrid` <bhasagrid.dev@gmail.com> | `chore: Remove decoy terminology for CalcX to ensure standalone Play Store compliance` |
+| **`580dc925cd56eff92d631cc201841d96250371a5`** | May 29, 2026, 18:58:49 (+0530) | `BhasaGrid` <bhasagrid.dev@gmail.com> | `docs: Add task work log and make firebase deployment flexible` |
 | **`80921fed45233bd699d2e708ed06203d886092ef`** | May 29, 2026, 18:43:11 (+0530) | `BhasaGrid` <bhasagrid.dev@gmail.com> | `fix: Correct portal Firebase credentials to use innerorbit-portal project` |
 | **`56547a86ea30f13130a4c03bea20d3f58c8d3d51`** | May 29, 2026, 17:13:33 (+0530) | `Ksreyan0725` <161938633+Ksreyan0725@users.noreply.github.com> | `chore: Update Firebase target project configurations` |
 | **`2556a1b320e83f04696241ec51d55674f07d6f9a`** | May 29, 2026, 16:06:53 (+0530) | `Ksreyan0725` <161938633+Ksreyan0725@users.noreply.github.com> | `chore: Rebrand InnerOrbit and GupShup to BhasaGrid globally` |
