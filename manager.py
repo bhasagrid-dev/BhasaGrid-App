@@ -115,11 +115,18 @@ def log_event(category, action, status, message):
     color = C.GRN if status == "SUCCESS" else (C.YEL if status == "WARN" else C.RED)
     print(f"[MANAGER][{category}][{action}] {color}{status}{C.RST}: {message}")
 
-def verify_firebase_project():
+def verify_firebase_project(directory=None):
     """Verify that the currently active Firebase CLI project matches the .env config."""
-    env_path = os.path.join(UNIVERSAL_DIR, ".env")
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    if directory is None:
+        directory = os.path.join(project_root, "BhasaGrid-universal")
+        
+    env_path = os.path.join(directory, ".env")
     if not os.path.exists(env_path):
-        log_event("firebase", "selectProject", "WARN", ".env file not found. Skipping verification.")
+        env_path = os.path.join(project_root, ".env")
+        
+    if not os.path.exists(env_path):
+        log_event("firebase", "selectProject", "WARN", f".env file not found. Skipping verification.")
         return True
         
     env_project_id = None
@@ -139,7 +146,7 @@ def verify_firebase_project():
 
     try:
         # Check active firebase project
-        res = subprocess.run(["firebase", "use"], cwd=UNIVERSAL_DIR, capture_output=True, text=True, shell=True)
+        res = subprocess.run(["firebase", "use"], cwd=directory, capture_output=True, text=True, shell=True)
         active_output = res.stdout.strip()
         
         # Matches: "Active project: <id>"
@@ -577,8 +584,10 @@ def update_browser_config(new_data):
 
 def sync_env_to_portal():
     """Syncs .env variables to the Download Portal's JS config file."""
-    env_path = os.path.join(PROJECT_ROOT, ".env")
-    config_path = os.path.join(DOWNLOAD_PORTAL_DIR, "src", "js", "firebase-config.js")
+    # Prioritize download-portal/.env, fall back to project root/.env
+    env_path = os.path.join(DOWNLOAD_PORTAL_DIR, ".env")
+    if not os.path.exists(env_path):
+        env_path = os.path.join(PROJECT_ROOT, ".env")
     
     if not os.path.exists(env_path):
         print(f"  {C.RED}! .env file not found at {env_path}{C.RST}")
@@ -598,29 +607,46 @@ def sync_env_to_portal():
         print(f"  {C.RED}! Failed to read .env for Virtual Sync: {e}{C.RST}")
         return False
 
-    # Generate Virtual Config Middleware for BrowserSync
-    # This allows us to serve the config "into the air" without a physical file in src/
-    js_content = f"""
+    # Extract keys with fallback (supports both portal-specific and general keys)
+    api_key = env_data.get('PORTAL_FIREBASE_API_KEY') or env_data.get('FIREBASE_API_KEY', '')
+    auth_domain = env_data.get('PORTAL_FIREBASE_AUTH_DOMAIN') or env_data.get('FIREBASE_AUTH_DOMAIN', '')
+    project_id = env_data.get('PORTAL_FIREBASE_PROJECT_ID') or env_data.get('FIREBASE_PROJECT_ID', '')
+    storage_bucket = env_data.get('PORTAL_FIREBASE_STORAGE_BUCKET') or env_data.get('FIREBASE_STORAGE_BUCKET', '')
+    messaging_sender_id = env_data.get('PORTAL_FIREBASE_MESSAGING_SENDER_ID') or env_data.get('FIREBASE_MESSAGING_SENDER_ID', '')
+    app_id = env_data.get('PORTAL_FIREBASE_APP_ID') or env_data.get('FIREBASE_APP_ID', '')
+    measurement_id = env_data.get('PORTAL_FIREBASE_MEASUREMENT_ID') or env_data.get('FIREBASE_MEASUREMENT_ID', '')
+
+    js_content = f"""/**
+ * BhasaGrid Firebase Configuration (Automatically Sync'd)
+ */
 window.BhasaGrid_FIREBASE_CONFIG = {{
-    apiKey: "{env_data.get('FIREBASE_API_KEY', '')}",
-    authDomain: "{env_data.get('FIREBASE_AUTH_DOMAIN', '')}",
-    projectId: "{env_data.get('FIREBASE_PROJECT_ID', '')}",
-    storageBucket: "{env_data.get('FIREBASE_STORAGE_BUCKET', '')}",
-    messagingSenderId: "{env_data.get('FIREBASE_MESSAGING_SENDER_ID', '')}",
-    appId: "{env_data.get('FIREBASE_APP_ID', '')}",
-    measurementId: "{env_data.get('FIREBASE_MEASUREMENT_ID', '')}"
+    apiKey: "{api_key}",
+    authDomain: "{auth_domain}",
+    projectId: "{project_id}",
+    storageBucket: "{storage_bucket}",
+    messagingSenderId: "{messaging_sender_id}",
+    appId: "{app_id}",
+    measurementId: "{measurement_id}"
 }};
 
 // Auto-Init
 (function() {{
-    if (typeof firebase !== 'undefined' && !firebase.apps.length) {{
-        firebase.initializeApp(window.BhasaGrid_FIREBASE_CONFIG);
-        window.db = firebase.firestore();
+    try {{
+        if (typeof firebase !== 'undefined') {{
+            if (!firebase.apps || !firebase.apps.length) {{
+                firebase.initializeApp(window.BhasaGrid_FIREBASE_CONFIG);
+                console.log("[Firebase] App initialized successfully");
+            }}
+            if (typeof firebase.auth === 'function') window.auth = firebase.auth();
+            if (typeof firebase.firestore === 'function') window.db = firebase.firestore();
+        }}
+    }} catch (error) {{
+        console.error("[Firebase] Init error:", error);
     }}
 }})();
 """
-    
-    # Escape for JS string
+
+    # Escape for BrowserSync JSON config
     js_content_escaped = js_content.replace('"', '\\"').replace('\n', '\\n')
     
     bs_config = f"""
@@ -643,18 +669,21 @@ module.exports = {{
 }};
 """
     try:
+        # 1. Write BrowserSync config
         bs_config_path = os.path.join(DOWNLOAD_PORTAL_DIR, "bs-config.js")
         with open(bs_config_path, 'w') as f:
             f.write(bs_config)
         
-        # Also ensure the physical file is GONE from src to avoid confusion
+        # 2. Write physical config to src/js/firebase-config.js to ensure deployment contains it
         physical_file = os.path.join(DOWNLOAD_PORTAL_DIR, "src", "js", "firebase-config.js")
-        if os.path.exists(physical_file):
-            os.remove(physical_file)
+        os.makedirs(os.path.dirname(physical_file), exist_ok=True)
+        with open(physical_file, 'w', encoding='utf-8') as f:
+            f.write(js_content)
             
+        print(f"  {C.GRN}✔ Synced .env config to both local middleware and physical config file!{C.RST}")
         return True
     except Exception as e:
-        print(f"  {C.RED}! Failed to generate Virtual Sync Config: {e}{C.RST}")
+        print(f"  {C.RED}! Failed to generate Sync Config: {e}{C.RST}")
         return False
 
 def detect_browsers():
@@ -1191,17 +1220,58 @@ def launch_electron_dev():
     print(f"\n  {C.GRN}✔ Electron window launched (dev mode → http://localhost:8081){C.RST}")
     return True
 
-def deploy_firebase():
+def deploy_firebase(target=None):
     print("\n--- [FIREBASE DEPLOY] ---")
-    if not verify_firebase_project():
-        log_event("firebase", "deploy", "FAILED", "Deployment aborted due to project mismatch.")
+    
+    if not target:
+        print(f"  {C.YEL}{C.BOLD}Select Firebase Deployment Target:{C.RST}")
+        print(f"  {C.WHT} 1.{C.RST} {C.CYAN}Main Application{C.RST}   {C.GRAY}(bhasagrid-universal){C.RST}")
+        print(f"  {C.WHT} 2.{C.RST} {C.PURP}Download Portal{C.RST}    {C.GRAY}(download-portal){C.RST}")
+        print(f"  {C.WHT} 3.{C.RST} {C.BLUE}Both Targets{C.RST}")
+        print(f"  {C.WHT} C.{C.RST} {C.GRAY}Cancel{C.RST}")
+        print(f"\n  Select option (1-3) [Default 1] > ", end="", flush=True)
+        set_terminal_mode(True)
+        opt = input().strip().lower()
+        set_terminal_mode(False)
+        
+        if opt == '2':
+            target = "portal"
+        elif opt == '3':
+            target = "both"
+        elif opt == 'c':
+            print("  Deployment cancelled.")
+            return False
+        else:
+            target = "app"
+            
+    targets_to_deploy = []
+    if target in ["app", "main", "application"]:
+        targets_to_deploy.append(("Main Application", UNIVERSAL_DIR))
+    elif target in ["portal", "landing"]:
+        targets_to_deploy.append(("Download Portal", DOWNLOAD_PORTAL_DIR))
+    elif target == "both":
+        targets_to_deploy.append(("Main Application", UNIVERSAL_DIR))
+        targets_to_deploy.append(("Download Portal", DOWNLOAD_PORTAL_DIR))
+    else:
+        print(f"  Unknown target: '{target}'. Use 'app', 'portal', or 'both'.")
         return False
-    rc, _ = run_command(["firebase", "deploy"], UNIVERSAL_DIR, "Deploying to Firebase")
-    if rc != 0:
-        log_event("firebase", "deploy", "FAILED", "Firebase deploy command execution failed.")
-        return False
-    log_event("firebase", "deploy", "SUCCESS", "Firebase Deployment Complete.")
-    return True
+        
+    success = True
+    for name, directory in targets_to_deploy:
+        print(f"\n>>> Deploying {name} from {directory}...")
+        if not verify_firebase_project(directory):
+            log_event("firebase", "deploy", "FAILED", f"Deployment aborted for {name} due to project mismatch.")
+            success = False
+            continue
+            
+        rc, _ = run_command(["firebase", "deploy"], directory, f"Deploying {name} to Firebase")
+        if rc != 0:
+            log_event("firebase", "deploy", "FAILED", f"{name} deploy command execution failed.")
+            success = False
+        else:
+            log_event("firebase", "deploy", "SUCCESS", f"{name} Deployment Complete.")
+            
+    return success
 
 def deploy_firestore_rules():
     print("\n--- [FIREBASE RULES-ONLY DEPLOY] ---")
@@ -1837,6 +1907,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="BhasaGrid Project Manager")
     parser.add_argument("task", nargs="?", help="Task to run")
+    parser.add_argument("target", nargs="?", help="Target for the task (e.g. app, portal, both)")
     parser.add_argument("--restarted", action="store_true", help="Skip animations on restart")
     args = parser.parse_args()
 
@@ -1866,7 +1937,7 @@ def main():
         elif task == "desktop": build_desktop()
         elif task == "web": build_web()
         elif task == "electron": launch_electron_dev()
-        elif task == "firebase": deploy_firebase()
+        elif task == "firebase": deploy_firebase(args.target)
         elif task == "rules": deploy_firestore_rules()
         elif task == "git": git_ops_menu()
         elif task == "health": check_project_health()
