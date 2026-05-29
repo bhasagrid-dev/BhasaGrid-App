@@ -15,7 +15,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.innerorbit.calcx_decoy",
+      "package": "com.bhasagrid.calcx_decoy",
       "versionCode": 3
     }
   }

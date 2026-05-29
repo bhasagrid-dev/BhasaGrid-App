@@ -4,12 +4,12 @@ const crypto = require('crypto');
 const readline = require('readline');
 const { exec } = require('child_process');
 
-// Firebase Configuration (Targeting innerorbit-portal)
+// Firebase Configuration (Targeting bhasagrid-portal)
 const firebaseConfig = {
     apiKey: "AIzaSyBZIRJuQ4Ltn_c8ciqykG5KUvHXSFzTy_w",
-    authDomain: "innerorbit-portal.firebaseapp.com",
-    projectId: "innerorbit-portal",
-    storageBucket: "innerorbit-portal.firebasestorage.app",
+    authDomain: "bhasagrid-portal.firebaseapp.com",
+    projectId: "bhasagrid-portal",
+    storageBucket: "bhasagrid-portal.firebasestorage.app",
     messagingSenderId: "616184841875",
     appId: "1:616184841875:web:133ebb0b367f983e2d6f66",
     measurementId: "G-FRBP7HBBGD"
@@ -37,7 +37,7 @@ const colors = {
 };
 
 console.log(`\n${colors.bright}${colors.cyan}╔════════════════════════════════════════╗${colors.reset}`);
-console.log(`${colors.bright}${colors.cyan}║   InnerOrbit Password Update Tool     ║${colors.reset}`);
+console.log(`${colors.bright}${colors.cyan}║   BhasaGrid Password Update Tool     ║${colors.reset}`);
 console.log(`${colors.bright}${colors.cyan}╚════════════════════════════════════════╝${colors.reset}\n`);
 console.log(`${colors.blue}Mode: Firestore Secure Update${colors.reset}\n`);
 
@@ -90,7 +90,7 @@ rl.question(`${colors.yellow}Enter your new password: ${colors.reset}`, async (n
         // Show next steps
         console.log(`${colors.bright}${colors.cyan}Next Steps:${colors.reset}`);
         console.log(`${colors.yellow}1.${colors.reset} Test your new password at:`);
-        console.log(`   ${colors.bright}https://InnerOrbit-c938b.web.app${colors.reset}`);
+        console.log(`   ${colors.bright}https://BhasaGrid-c938b.web.app${colors.reset}`);
         console.log(`\n${colors.green}✓ Password: ${colors.bright}${newPassword}${colors.reset}\n`);
 
         // Note: Deployment is not strictly necessary for Firestore data changes, 

@@ -1,2 +1,2 @@
 @echo off
-python "C:\InnerOrbit-Mobile-Web-App\manager.py" %*
+python "C:\BhasaGrid-Mobile-Web-App\manager.py" %*

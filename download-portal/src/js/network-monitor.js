@@ -1,5 +1,5 @@
 // network-monitor.js
-// Standalone Network Monitoring Module for InnerOrbit Portal
+// Standalone Network Monitoring Module for BhasaGrid Portal
 
 (function () {
     let notificationTimeout;

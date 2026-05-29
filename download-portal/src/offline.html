@@ -3,18 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Internet Connection | InnerOrbit</title>
+    <title>No Internet Connection | BhasaGrid</title>
     
     <!-- Favicons -->
     <link rel="icon" type="image/webp" href="assets/favicons/error-favicon.svg">
-    <link rel="alternate icon" type="image/png" href="assets/logos/innerorbit-logo.png">
+    <link rel="alternate icon" type="image/png" href="assets/logos/bhasagrid-logo.png">
+    
+    <!-- Theme Initialization -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('bhasagrid-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
     
     <style>
+        :root {
+            /* Dark Mode (Default) - Deep Space Cyber Security Aesthetic */
+            --bg-primary: #020617; /* Slate 950 */
+            --bg-hero-color: #020617;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8; /* Slate 400 */
+            --accent-alert: #ef4444; /* Red 500 */
+            --accent-glow: rgba(239, 68, 68, 0.5);
+            --btn-bg: rgba(255, 255, 255, 0.05);
+            --btn-border: rgba(255, 255, 255, 0.1);
+            --btn-hover-bg: rgba(255, 255, 255, 0.1);
+            --btn-hover-border: rgba(255, 255, 255, 0.3);
+            --btn-color: #ffffff;
+            --mesh-opacity: 0.1;
+            --status-color: #64748b;
+            --accent-purple: #a855f7;
+            --accent-orange: #ea580c;
+            
+            --hero-bg-svg: url("data:image/svg+xml,%3Csvg width='1920' height='1080' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='purpleGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23a855f7;stop-opacity:0.6'/%3E%3Cstop offset='100%25' style='stop-color:%23ec4899;stop-opacity:0.4'/%3E%3C/linearGradient%3E%3ClinearGradient id='orangeGrad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23f59e0b;stop-opacity:0.5'/%3E%3Cstop offset='100%25' style='stop-color:%23ea580c;stop-opacity:0.6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,800 Q400,600 800,700 T1600,650 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.3'/%3E%3Cpath d='M0,900 Q300,750 600,850 T1200,800 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.2'/%3E%3Cpath d='M1920,300 Q1500,200 1100,280 T300,250 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.25'/%3E%3Cpath d='M1920,200 Q1600,100 1200,180 T400,150 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.15'/%3E%3C/svg%3E");
+            --bg-svg-opacity: 0.8;
+            --bg-mesh-linear: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+
+        [data-theme='light'] {
+            /* Light Mode - Premium Lavender Purple Aesthetic */
+            --bg-primary: #cbcae6;
+            --bg-hero-color: #8a5cf5;
+            --text-primary: #090d16;
+            --text-secondary: #1e293b;
+            --accent-alert: #dc2626; /* Deeper crimson for contrast on lavender backdrop */
+            --accent-glow: rgba(220, 38, 38, 0.3);
+            --btn-bg: rgba(9, 13, 22, 0.06);
+            --btn-border: rgba(9, 13, 22, 0.15);
+            --btn-hover-bg: rgba(9, 13, 22, 0.12);
+            --btn-hover-border: rgba(9, 13, 22, 0.35);
+            --btn-color: #090d16;
+            --mesh-opacity: 0.25;
+            --status-color: #1e293b;
+            --accent-purple: #6d28d9;
+            --accent-orange: #ea580c;
+            
+            --hero-bg-svg: url("data:image/svg+xml,%3Csvg width='1920' height='1080' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='purpleGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23a855f7;stop-opacity:0.9'/%3E%3Cstop offset='100%25' style='stop-color:%23ec4899;stop-opacity:0.7'/%3E%3C/linearGradient%3E%3ClinearGradient id='orangeGrad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23fbbf24;stop-opacity:0.8'/%3E%3Cstop offset='100%25' style='stop-color:%23f97316;stop-opacity:0.9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,800 Q400,600 800,700 T1600,650 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.75'/%3E%3Cpath d='M0,900 Q300,750 600,850 T1200,800 L1920,1080 L0,1080 Z' fill='url(%23purpleGrad)' opacity='0.65'/%3E%3Cpath d='M1920,300 Q1500,200 1100,280 T300,250 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.7'/%3E%3Cpath d='M1920,200 Q1600,100 1200,180 T400,150 L0,0 L1920,0 Z' fill='url(%23orangeGrad)' opacity='0.6'/%3E%3C/svg%3E");
+            --bg-svg-opacity: 0.98;
+            --bg-mesh-linear: linear-gradient(rgba(109, 40, 217, 0.06) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(109, 40, 217, 0.06) 1px, transparent 1px);
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background-color: #020617; /* Slate 950 */
-            color: #f8fafc;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             font-family: 'Inter', sans-serif;
             display: flex;
             align-items: center;
@@ -22,6 +78,32 @@
             height: 100vh;
             overflow: hidden;
             text-align: center;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Responsive Backdrop Portals */
+        .portal-background {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(234, 88, 12, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, var(--bg-hero-color) 0%, var(--bg-primary) 100%);
+            z-index: -1;
+            pointer-events: none;
+            transition: background 0.4s ease;
+        }
+
+        .portal-background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--hero-bg-svg);
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            opacity: var(--bg-svg-opacity);
         }
 
         .container {
@@ -36,15 +118,17 @@
             font-size: 3rem;
             font-weight: 800;
             margin-bottom: 1rem;
-            color: #ef4444; /* Red 500 */
-            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            color: var(--accent-alert); 
+            text-shadow: 0 0 10px var(--accent-glow);
+            transition: color 0.4s ease, text-shadow 0.4s ease;
         }
 
         p {
             font-size: 1.1rem;
-            color: #94a3b8; /* Slate 400 */
+            color: var(--text-secondary); 
             margin-bottom: 2rem;
             line-height: 1.6;
+            transition: color 0.4s ease;
         }
 
         /* Animated Signal SVG */
@@ -56,20 +140,22 @@
         
         .signal-dish {
             fill: none;
-            stroke: #ef4444;
+            stroke: var(--accent-alert);
             stroke-width: 4;
             stroke-linecap: round;
             stroke-linejoin: round;
+            transition: stroke 0.4s ease;
         }
 
         .signal-wave {
             fill: none;
-            stroke: #ef4444;
+            stroke: var(--accent-alert);
             stroke-width: 4;
             stroke-linecap: round;
             opacity: 0;
             transform-origin: center;
             animation: ripple 2s infinite linear;
+            transition: stroke 0.4s ease;
         }
 
         .signal-wave:nth-child(2) { animation-delay: 0.5s; }
@@ -87,22 +173,22 @@
         }
 
         .btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            color: var(--btn-color);
             padding: 12px 32px;
             font-size: 1rem;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             display: inline-block;
             font-weight: 600;
         }
 
         .btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: var(--btn-hover-bg);
+            border-color: var(--btn-hover-border);
             transform: translateY(-2px);
         }
 
@@ -114,11 +200,11 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.1;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            opacity: var(--mesh-opacity);
+            background-image: var(--bg-mesh-linear);
             background-size: 50px 50px;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
         }
     </style>
 </head>
@@ -149,7 +235,7 @@
         </p>
         
         <button id="retryBtn" class="btn">Retry Connection</button>
-        <div id="status" style="margin-top: 20px; font-size: 0.9rem; color: #64748b; min-height: 20px;"></div>
+        <div id="status" style="margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary); min-height: 20px;"></div>
     </div>
 
     <script>
@@ -176,7 +262,7 @@
                     checkConnection(true); // true = isAuto
                 } else {
                     statusDiv.textContent = `Auto-retrying in ${remaining}s...`;
-                    statusDiv.style.color = "#64748b";
+                    statusDiv.style.color = "var(--text-secondary)";
                 }
             }, 1000);
         }
@@ -191,7 +277,7 @@
             const btn = document.getElementById('retryBtn');
             
             statusDiv.textContent = "Pinging server...";
-            statusDiv.style.color = "#fbbf24";
+            statusDiv.style.color = "var(--accent-orange)";
             
             // Visual feedback on button
             const originalBtnText = btn.textContent;
@@ -206,7 +292,7 @@
                 .then(response => {
                     if (response.ok) {
                         statusDiv.textContent = "Connection restored! Redirecting...";
-                        statusDiv.style.color = "#4ade80";
+                        statusDiv.style.color = "#10b981"; // Vibrant high-contrast green
                         setTimeout(() => {
                             window.location.href = returnUrl;
                         }, 500);
@@ -216,7 +302,7 @@
                 })
                 .catch(() => {
                     const time = new Date().toLocaleTimeString();
-                    statusDiv.style.color = "#ef4444";
+                    statusDiv.style.color = "var(--accent-alert)";
                     
                     // Reset button
                     btn.textContent = "Try Again Now";

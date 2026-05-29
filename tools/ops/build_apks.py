@@ -36,7 +36,7 @@ def main():
     base_dir = os.path.dirname(os.path.dirname(script_dir))
     
     # Try to find 'android' directory
-    android_dir = os.path.join(base_dir, "innerorbit-universal", "android")
+    android_dir = os.path.join(base_dir, "BhasaGrid-universal", "android")
     if not os.path.exists(android_dir):
         # Fallback for different structures
         android_dir = os.path.join(base_dir, "android")

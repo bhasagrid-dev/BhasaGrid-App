@@ -12,9 +12,9 @@ coverage/
 # Legacy / Large non-essential folders
 archive/
 oracle-server-backend/scripts/
-innerorbit-universal/coverage/
-innerorbit-universal/android/
-innerorbit-universal/ios/
+BhasaGrid-universal/coverage/
+BhasaGrid-universal/android/
+BhasaGrid-universal/ios/
 download-portal/src/js/vendor/
 download-portal-react/node_modules/
 **/lcov-report/

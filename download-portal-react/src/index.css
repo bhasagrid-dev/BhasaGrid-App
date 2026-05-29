@@ -347,7 +347,7 @@ body {
 /* Logo Styles */
 .nav-logo-container {
      display: block; width: 44px; height: 44px;
-     background-image: url('./assets/logos/innerorbit-logo.png'); /* Adjusted path for Vite */
+     background-image: url('./assets/logos/BhasaGrid-logo.png'); /* Adjusted path for Vite */
      background-size: contain; background-repeat: no-repeat; background-position: center;
      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)) drop-shadow(0 0 10px rgba(255,255,255,0.2));
      transform: perspective(500px) translateZ(0);

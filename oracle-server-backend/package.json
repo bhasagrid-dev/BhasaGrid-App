@@ -1,7 +1,7 @@
 {
-    "name": "innerorbit-oracle-backend",
+    "name": "BhasaGrid-oracle-backend",
     "version": "1.0.0",
-    "description": "Oracle Cloud backend for InnerOrbit download portal",
+    "description": "Oracle Cloud backend for BhasaGrid download portal",
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
@@ -16,7 +16,7 @@
         "api",
         "download-portal"
     ],
-    "author": "InnerOrbit",
+    "author": "BhasaGrid",
     "license": "MIT",
     "dependencies": {
         "express": "^4.18.2",

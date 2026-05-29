@@ -21,7 +21,7 @@ import {
     CheckCircle
 } from 'lucide-react';
 import './Docs.css';
-import logoImg from '../assets/logos/innerorbit-logo.png';
+import logoImg from '../assets/logos/BhasaGrid-logo.png';
 
 const Docs = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -87,12 +87,12 @@ const Docs = () => {
             <header className={`docs-header ${scrolled ? 'scrolled' : ''}`}>
                 <div className="header-container">
                     <Link to="/" className="docs-logo">
-                        <img src={logoImg} alt="InnerOrbit" className="logo-img" />
+                        <img src={logoImg} alt="BhasaGrid" className="logo-img" />
                         <span>Docs</span>
                     </Link>
                     <div className="header-actions">
                         <Link to="/" className="btn-secondary">Back to Portal</Link>
-                        <a href="https://github.com/innerorbit" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                        <a href="https://github.com/BhasaGrid" target="_blank" rel="noopener noreferrer" className="btn-primary">
                             <Github size={16} style={{ marginRight: '8px' }} />
                             GitHub
                         </a>
@@ -201,11 +201,11 @@ const Docs = () => {
 
                         {/* Overview */}
                         <section id="overview" className="doc-section hero-section">
-                            <h1 className="page-title">Welcome to InnerOrbit</h1>
+                            <h1 className="page-title">Welcome to BhasaGrid</h1>
                             <p className="lead-text">Chat safely. Chat privately. No one will know.</p>
 
                             <div className="intro-description" style={{ marginBottom: '2rem', maxWidth: '700px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                                InnerOrbit is a chat app that looks like a calculator or a game. It keeps your messages safe so only you and your friend can read them.
+                                BhasaGrid is a chat app that looks like a calculator or a game. It keeps your messages safe so only you and your friend can read them.
                             </div>
 
                             <div className="quick-links-grid">
@@ -237,7 +237,7 @@ const Docs = () => {
 
                         {/* Features */}
                         <section id="features" className="doc-section">
-                            <h2>Why Use InnerOrbit?</h2>
+                            <h2>Why Use BhasaGrid?</h2>
                             <p>We built this app to keep your secrets safe.</p>
 
                             <div className="features-grid">
@@ -280,7 +280,7 @@ const Docs = () => {
                         {/* Installation */}
                         <section id="installation" className="doc-section">
                             <h2>Installation</h2>
-                            <p>Select your platform to get started with InnerOrbit.</p>
+                            <p>Select your platform to get started with BhasaGrid.</p>
 
                             <div className="tabs-container">
                                 <div className="tabs-header">
@@ -295,7 +295,7 @@ const Docs = () => {
                                             <span className="step-number">01</span>
                                             <div className="step-details">
                                                 <h4>Download the App</h4>
-                                                <p>Visit the Google Play Store or Apple App Store and search for "InnerOrbit".</p>
+                                                <p>Visit the Google Play Store or Apple App Store and search for "BhasaGrid".</p>
                                             </div>
                                         </div>
                                         <div className="step-item">
@@ -320,24 +320,24 @@ const Docs = () => {
                                         <div className="code-header">
                                             <span>Browser Access</span>
                                         </div>
-                                        <pre><code>https://app.innerorbit.io</code></pre>
+                                        <pre><code>https://app.BhasaGrid.io</code></pre>
                                     </div>
-                                    <p style={{ marginTop: '1.5rem' }}>Simply navigate to the URL above. InnerOrbit Web supports all modern browsers including Chrome, Firefox, Safari, and Edge.</p>
+                                    <p style={{ marginTop: '1.5rem' }}>Simply navigate to the URL above. BhasaGrid Web supports all modern browsers including Chrome, Firefox, Safari, and Edge.</p>
                                 </div>
 
                                 <div className={`tab-content ${activeTab === 'desktop' ? 'active' : ''}`}>
                                     <h3>Windows Installation</h3>
                                     <ol className="install-steps" style={{ listStyle: 'decimal', paddingLeft: '1.5rem', color: 'var(--text-secondary)' }}>
-                                        <li style={{ marginBottom: '0.5rem' }}><strong>Download Installer</strong> - Download InnerOrbit.exe from the portal</li>
+                                        <li style={{ marginBottom: '0.5rem' }}><strong>Download Installer</strong> - Download BhasaGrid.exe from the portal</li>
                                         <li style={{ marginBottom: '0.5rem' }}><strong>Run as Administrator</strong> - Right-click the file and select "Run as Administrator"</li>
                                         <li style={{ marginBottom: '0.5rem' }}><strong>Follow Installation Wizard</strong> - Choose installation directory and complete setup</li>
                                     </ol>
 
                                     <h3 style={{ marginTop: '2rem' }}>macOS Installation</h3>
                                     <ol className="install-steps" style={{ listStyle: 'decimal', paddingLeft: '1.5rem', color: 'var(--text-secondary)' }}>
-                                        <li style={{ marginBottom: '0.5rem' }}><strong>Download App</strong> - Get InnerOrbit.dmg from the portal</li>
+                                        <li style={{ marginBottom: '0.5rem' }}><strong>Download App</strong> - Get BhasaGrid.dmg from the portal</li>
                                         <li style={{ marginBottom: '0.5rem' }}><strong>Open DMG File</strong> - Double-click to mount the disk image</li>
-                                        <li style={{ marginBottom: '0.5rem' }}><strong>Drag to Applications</strong> - Drag InnerOrbit to your Applications folder</li>
+                                        <li style={{ marginBottom: '0.5rem' }}><strong>Drag to Applications</strong> - Drag BhasaGrid to your Applications folder</li>
                                     </ol>
 
                                     <div style={{ background: 'rgba(234, 179, 8, 0.1)', border: '1px solid rgba(234, 179, 8, 0.2)', padding: '1rem', borderRadius: '8px', marginTop: '2rem', color: '#fef08a' }}>
@@ -355,10 +355,10 @@ const Docs = () => {
                             <p>The mobile experience is designed for maximum privacy and camouflage.</p>
 
                             <h3>The Calculator Disguise</h3>
-                            <p>When you open InnerOrbit on mobile, it appears as a fully functional scientific calculator ("CalcX"). This decoy interface protects your privacy from prying eyes.</p>
+                            <p>When you open BhasaGrid on mobile, it appears as a fully functional scientific calculator ("CalcX"). This decoy interface protects your privacy from prying eyes.</p>
 
                             <h3 style={{ marginTop: '1.5rem' }}>Multiple Decoy Interfaces</h3>
-                            <p>InnerOrbit provides multiple game-based decoys to suit your preference.</p>
+                            <p>BhasaGrid provides multiple game-based decoys to suit your preference.</p>
                             <ul style={{ listStyle: 'disc', paddingLeft: '1.5rem', color: 'var(--text-secondary)' }}>
                                 <li style={{ marginBottom: '0.5rem' }}><strong>Calculator:</strong> The default scientific calculator interface.</li>
                                 <li style={{ marginBottom: '0.5rem' }}><strong>Tic-Tac-Toe:</strong> A fully playable Tic-Tac-Toe game against AI.</li>
@@ -376,7 +376,7 @@ const Docs = () => {
                         {/* Security */}
                         <section id="security" className="doc-section">
                             <h2>Security & Privacy by Design</h2>
-                            <p>InnerOrbit is built on three core pillars of security.</p>
+                            <p>BhasaGrid is built on three core pillars of security.</p>
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', marginTop: '2rem' }}>
                                 <div style={{ background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)', padding: '2rem', borderRadius: '16px' }}>
@@ -432,21 +432,21 @@ const Docs = () => {
                                 <details className="faq-item">
                                     <summary>I didn't receive a notification for a new message.</summary>
                                     <div className="faq-content">
-                                        <p>Since InnerOrbit uses stealth mode, notifications are often disguised or delayed by some battery optimization settings. Ensure you have "Allow background activity" enabled for the app in your phone settings.</p>
+                                        <p>Since BhasaGrid uses stealth mode, notifications are often disguised or delayed by some battery optimization settings. Ensure you have "Allow background activity" enabled for the app in your phone settings.</p>
                                     </div>
                                 </details>
 
                                 <details className="faq-item">
                                     <summary>How do I backup my chats?</summary>
                                     <div className="faq-content">
-                                        <p>InnerOrbit does not support cloud backups to third-party services like Google Drive or iCloud to maintain maximum privacy. You can export your chat history manually from Settings &rarr; Privacy &rarr; Export Data.</p>
+                                        <p>BhasaGrid does not support cloud backups to third-party services like Google Drive or iCloud to maintain maximum privacy. You can export your chat history manually from Settings &rarr; Privacy &rarr; Export Data.</p>
                                     </div>
                                 </details>
                             </div>
                         </section>
 
                         <footer className="docs-footer">
-                            <p>© 2026 InnerOrbit Inc. All rights reserved. Built for absolute privacy.</p>
+                            <p>© 2026 BhasaGrid Inc. All rights reserved. Built for absolute privacy.</p>
                         </footer>
                     </div>
 

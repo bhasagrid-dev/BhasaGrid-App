@@ -114,19 +114,19 @@ const TermsOfService = () => {
                     <section style={{ marginBottom: '5rem' }}>
                         <div style={{ background: 'rgba(255,255,255,0.02)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--border-color)', marginBottom: '2rem' }}>
                             <p style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>Agreement to Terms:</p>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>By accessing or using InnerOrbit ("the App," "Service," "we," "our," or "us"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the App.</p>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>By accessing or using BhasaGrid ("the App," "Service," "we," "our," or "us"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the App.</p>
                         </div>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem' }}>InnerOrbit is operated as an individual developer project.</p>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem' }}>BhasaGrid is operated as an individual developer project.</p>
                     </section>
 
                     <section id="acceptance" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>1. Acceptance of Terms</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>1.1 Binding Agreement</h3>
-                            <p style={{ marginBottom: '1.5rem' }}>These Terms constitute a legally binding agreement between you ("User," "you," or "your") and InnerOrbit (Individual Developer). By creating an account, accessing the App, or using any features or services, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.</p>
+                            <p style={{ marginBottom: '1.5rem' }}>These Terms constitute a legally binding agreement between you ("User," "you," or "your") and BhasaGrid (Individual Developer). By creating an account, accessing the App, or using any features or services, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.</p>
 
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>1.2 Age Requirements</h3>
-                            <p style={{ marginBottom: '1rem' }}><strong>You must be at least 13 years old</strong> (or 16 in the European Economic Area) to use InnerOrbit.</p>
+                            <p style={{ marginBottom: '1rem' }}><strong>You must be at least 13 years old</strong> (or 16 in the European Economic Area) to use BhasaGrid.</p>
                             <p style={{ marginBottom: '1rem' }}>By using the App, you represent and warrant that:</p>
                             <ul style={{ paddingLeft: '2rem', marginBottom: '1.5rem', listStyleType: 'square' }}>
                                 <li style={{ marginBottom: '0.5rem' }}>You are at least 13 years old (or 16 in the EEA)</li>
@@ -145,7 +145,7 @@ const TermsOfService = () => {
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>2. Account Registration and Security</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>2.1 Account Creation</h3>
-                            <p style={{ marginBottom: '2.5rem' }}>To use InnerOrbit, you must create an account by providing a valid email address and secure password. You will receive a 4-digit User ID (for PIN login) and a 6-digit Recovery PIN (encrypted).</p>
+                            <p style={{ marginBottom: '2.5rem' }}>To use BhasaGrid, you must create an account by providing a valid email address and secure password. You will receive a 4-digit User ID (for PIN login) and a 6-digit Recovery PIN (encrypted).</p>
 
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>2.2 Account Security</h3>
                             <p style={{ marginBottom: '1rem' }}>You are responsible for maintaining the confidentiality of your password and PIN, all activities that occur under your account, and notifying us immediately of any unauthorized access.</p>
@@ -164,10 +164,10 @@ const TermsOfService = () => {
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>3. Acceptable Use Policy</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>3.1 Permitted Uses</h3>
-                            <p style={{ marginBottom: '2.5rem' }}>InnerOrbit is designed for private, secure messaging, sharing photos and media with contacts, using stealth features (calculator mode, games), and personal communication.</p>
+                            <p style={{ marginBottom: '2.5rem' }}>BhasaGrid is designed for private, secure messaging, sharing photos and media with contacts, using stealth features (calculator mode, games), and personal communication.</p>
 
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>3.2 Prohibited Activities</h3>
-                            <p style={{ marginBottom: '1rem' }}>You may NOT use InnerOrbit to:</p>
+                            <p style={{ marginBottom: '1rem' }}>You may NOT use BhasaGrid to:</p>
                             <ul style={{ paddingLeft: '2rem', marginBottom: '2.5rem', listStyleType: 'square' }}>
                                 <li style={{ marginBottom: '0.8rem' }}><strong>Illegal Activities:</strong> Violate laws, engage in illegal acts, distribute illegal content, or facilitate fraud.</li>
                                 <li style={{ marginBottom: '0.8rem' }}><strong>Harmful Content:</strong> Harass, threaten, hate speech, explicit content involving minors, or distribute malware.</li>
@@ -188,7 +188,7 @@ const TermsOfService = () => {
                             <p style={{ marginBottom: '2.5rem' }}>"User Content" means any messages, photos, media, or information you submit. <strong>You retain ownership</strong> of your User Content.</p>
 
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>4.2 License to Us</h3>
-                            <p style={{ marginBottom: '2.5rem' }}>By posting User Content, you grant InnerOrbit a non-exclusive, worldwide, royalty-free license to store, transmit, and display your content <strong>solely for the purpose of providing the Service</strong>. We do NOT claim ownership, use content for ads, or share with third parties (except as required).</p>
+                            <p style={{ marginBottom: '2.5rem' }}>By posting User Content, you grant BhasaGrid a non-exclusive, worldwide, royalty-free license to store, transmit, and display your content <strong>solely for the purpose of providing the Service</strong>. We do NOT claim ownership, use content for ads, or share with third parties (except as required).</p>
 
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1.1rem' }}>4.3 Content Responsibility</h3>
                             <p style={{ marginBottom: '2.5rem' }}>You are solely responsible for your User Content. You warrant that you own rights to content and it violates no laws or rights. <strong>We are not responsible for User Content.</strong></p>
@@ -202,7 +202,7 @@ const TermsOfService = () => {
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>5. Intellectual Property Rights</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>5.1 Our Rights & Limited License</h3>
-                            <p style={{ marginBottom: '2.5rem' }}>InnerOrbit and related materials are owned by InnerOrbit Team. We grant you a limited, non-exclusive, revocable license to use the App for personal, non-commercial purposes. You may NOT copy, modify, reverse engineer, or use our trademarks without permission.</p>
+                            <p style={{ marginBottom: '2.5rem' }}>BhasaGrid and related materials are owned by BhasaGrid Team. We grant you a limited, non-exclusive, revocable license to use the App for personal, non-commercial purposes. You may NOT copy, modify, reverse engineer, or use our trademarks without permission.</p>
 
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>5.2 Feedback</h3>
                             <p>If you provide feedback, we may use it without obligation to you.</p>
@@ -212,11 +212,11 @@ const TermsOfService = () => {
                     <section id="privacy" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>6. Privacy and Data Protection</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
-                            <p style={{ marginBottom: '1.5rem' }}>Your use of InnerOrbit is governed by our <a href="/privacy-policy" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>Privacy Policy</a>.</p>
+                            <p style={{ marginBottom: '1.5rem' }}>Your use of BhasaGrid is governed by our <a href="/privacy-policy" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>Privacy Policy</a>.</p>
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.2rem', marginBottom: '1rem' }}>Key Privacy Features:</h3>
                             <ul style={{ paddingLeft: '2rem', marginBottom: '2rem' }}>
                                 <li style={{ marginBottom: '0.5rem' }}>End-to-end encryption for all messages</li>
-                                <li style={{ marginBottom: '0.5rem' }}>No message content access by InnerOrbit</li>
+                                <li style={{ marginBottom: '0.5rem' }}>No message content access by BhasaGrid</li>
                                 <li style={{ marginBottom: '0.5rem' }}>Minimal data collection & User control over data</li>
                             </ul>
                             <p style={{ marginBottom: '1.5rem' }}><strong>Data Security:</strong> We implement industry-standard measures, but no system is 100% secure. You use the App at your own risk.</p>
@@ -227,7 +227,7 @@ const TermsOfService = () => {
                     <section id="encryption" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>7. End-to-End Encryption</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
-                            <p style={{ marginBottom: '1.5rem' }}><strong>Encryption Notice:</strong> Only you and your recipient can read messages. InnerOrbit cannot access message content. Messages are encrypted on your device.</p>
+                            <p style={{ marginBottom: '1.5rem' }}><strong>Encryption Notice:</strong> Only you and your recipient can read messages. BhasaGrid cannot access message content. Messages are encrypted on your device.</p>
                             <p style={{ marginBottom: '1.5rem' }}><strong>Limitations:</strong> We cannot recover lost messages, provide content to law enforcement (we don't have access), or decrypt messages if credentials are lost.</p>
                             <p><strong>Backup:</strong> Encrypted messages are stored on Firebase servers. No backup to third-party services supported.</p>
                         </div>
@@ -244,20 +244,20 @@ const TermsOfService = () => {
 
                     <section id="payments" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>9. Payments and Subscriptions</h2>
-                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>InnerOrbit is currently <strong>free</strong>. We reserve the right to introduce paid features with 30 days' notice.</p>
+                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>BhasaGrid is currently <strong>free</strong>. We reserve the right to introduce paid features with 30 days' notice.</p>
                     </section>
 
                     <section id="disclaimers" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>10. Disclaimers and Limitations</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
                             <p style={{ marginBottom: '1.5rem' }}>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES. We do not guarantee absolute security.</p>
-                            <p><strong>Limitation of Liability:</strong> To the maximum extent permitted by law, InnerOrbit is not liable for indirect damages or data loss. Total liability is limited to $100 USD.</p>
+                            <p><strong>Limitation of Liability:</strong> To the maximum extent permitted by law, BhasaGrid is not liable for indirect damages or data loss. Total liability is limited to $100 USD.</p>
                         </div>
                     </section>
 
                     <section id="indemnification" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>11. Indemnification</h2>
-                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>You agree to indemnify and hold harmless InnerOrbit from claims arising from your use of the App, User Content, or violation of these Terms.</p>
+                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>You agree to indemnify and hold harmless BhasaGrid from claims arising from your use of the App, User Content, or violation of these Terms.</p>
                     </section>
 
                     <section id="export" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
@@ -272,28 +272,28 @@ const TermsOfService = () => {
 
                     <section id="dmca" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>14. DMCA Copyright Policy</h2>
-                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>Send copyright infringement notices to <a href="mailto:dmca@InnerOrbit.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>dmca@InnerOrbit.app</a>.</p>
+                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>Send copyright infringement notices to <a href="mailto:dmca@BhasaGrid.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>dmca@BhasaGrid.app</a>.</p>
                     </section>
 
                     <section id="disputes" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>16. Dispute Resolution (U.S. Users)</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
                             <p style={{ marginBottom: '1.5rem' }}><strong>Arbitration:</strong> U.S. users agree to resolve disputes through binding arbitration (AAA), not in court. You waive your right to class actions.</p>
-                            <p><strong>Opt-Out:</strong> Email <a href="mailto:arbitration-opt-out@InnerOrbit.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>arbitration-opt-out@InnerOrbit.app</a> within 30 days to opt-out.</p>
+                            <p><strong>Opt-Out:</strong> Email <a href="mailto:arbitration-opt-out@BhasaGrid.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>arbitration-opt-out@BhasaGrid.app</a> within 30 days to opt-out.</p>
                         </div>
                     </section>
 
                     <section id="contact" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>18. Contact Information</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
-                            <p style={{ marginBottom: '0.5rem' }}><strong>Email:</strong> <a href="mailto:legal@InnerOrbit.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>legal@InnerOrbit.app</a></p>
-                            <p><strong>Support:</strong> <a href="mailto:support@InnerOrbit.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>support@InnerOrbit.app</a></p>
+                            <p style={{ marginBottom: '0.5rem' }}><strong>Email:</strong> <a href="mailto:legal@BhasaGrid.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>legal@BhasaGrid.app</a></p>
+                            <p><strong>Support:</strong> <a href="mailto:support@BhasaGrid.app" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>support@BhasaGrid.app</a></p>
                         </div>
                     </section>
 
                     <div style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.2)', padding: '2.5rem', borderRadius: '24px', marginTop: '6rem', textAlign: 'center' }}>
                         <h2 style={{ color: 'var(--text-primary)', fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem' }}>Acknowledgment</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>BY USING InnerOrbit, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE TERMS.</p>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>BY USING BhasaGrid, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE TERMS.</p>
                         <p style={{ fontSize: '0.85rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '2px' }}>Professional Grade Security • Since 2026</p>
                     </div>
                 </main>

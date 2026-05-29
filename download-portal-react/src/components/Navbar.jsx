@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Download, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import logoImg from '../assets/logos/innerorbit-logo.png';
+import logoImg from '../assets/logos/BhasaGrid-logo.png';
 import downloadIcon from '../assets/download-icons/download-icon -button-for-nav.webp';
 
 export default function Navbar() {
@@ -60,11 +60,11 @@ export default function Navbar() {
                         >
                             <img
                                 src={logoImg}
-                                alt="InnerOrbit"
+                                alt="BhasaGrid"
                                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                             />
                         </motion.div>
-                        <span>InnerOrbit</span>
+                        <span>BhasaGrid</span>
                     </div>
                 </Link>
 

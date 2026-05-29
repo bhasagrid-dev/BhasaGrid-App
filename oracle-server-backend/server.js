@@ -90,7 +90,7 @@ app.use('/api/upload', uploadRoutes);
 // Root endpoint
 app.get('/', (req, res) => {
     res.json({
-        name: 'InnerOrbit Portal API',
+        name: 'BhasaGrid Portal API',
         version: '1.0.0',
         status: 'Running',
         websocket: {
@@ -168,7 +168,7 @@ async function startServer() {
         server.listen(PORT, () => {
             console.log('');
             console.log('╔════════════════════════════════════════╗');
-            console.log('║   InnerOrbit Portal API Server         ║');
+            console.log('║   BhasaGrid Portal API Server         ║');
             console.log('╚════════════════════════════════════════╝');
             console.log('');
             console.log(`✅ Server running on port ${PORT}`);

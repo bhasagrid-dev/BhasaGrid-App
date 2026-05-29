@@ -1,7 +1,7 @@
 // Last Updated: 2026-03-17
 // Description: Development utility: verify-suggestions.js
 // Project Role: Development and testing utility for unread highlights.
-const { getSuggestions } = require('../innerorbit-universal/lib/suggestion-service');
+const { getSuggestions } = require('../bhasagrid-universal/lib/suggestion-service');
 
 /**
  * Verification script for Suggestion Service

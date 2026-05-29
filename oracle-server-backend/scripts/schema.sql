@@ -1,5 +1,5 @@
 -- =====================================================
--- InnerOrbit Complete Database Schema for Oracle
+-- BhasaGrid Complete Database Schema for Oracle
 -- =====================================================
 -- This schema supports full app migration from Firebase
 -- Includes: Users, Conversations, Messages, Reactions, etc.
@@ -229,7 +229,7 @@ END;
 
 -- Insert test user (optional - remove in production)
 -- INSERT INTO users (uid, email, user_id, pin, bio)
--- VALUES ('test-uid-001', 'test@innerorbit.com', 1001, 123456, 'Test user for development');
+-- VALUES ('test-uid-001', 'test@BhasaGrid.com', 1001, 123456, 'Test user for development');
 
 COMMIT;
 

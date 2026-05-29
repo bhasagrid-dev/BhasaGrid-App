@@ -1,4 +1,4 @@
-# InnerOrbit Download Portal - Admin Guide
+# BhasaGrid Download Portal - Admin Guide
 
 ## 🎯 What This Is
 
@@ -40,7 +40,7 @@ For more detailed guides and technical information, see the [docs/](docs/) folde
 
 1. **Go to Firebase Console:**
    - https://console.firebase.google.com/
-   - Use your existing InnerOrbit project
+   - Use your existing BhasaGrid project
 
 2. **Enable Email/Password Authentication:**
    - Go to Authentication → Sign-in method
@@ -87,7 +87,7 @@ vercel deploy
 
 **Option A: Firebase Storage**
 1. Go to Firebase Console → Storage
-2. Upload `InnerOrbit.apk` and `InnerOrbit.exe`
+2. Upload `BhasaGrid.apk` and `BhasaGrid.exe`
 3. Get download URLs
 4. Update URLs in `downloads.html` (line 140)
 
@@ -239,7 +239,7 @@ service cloud.firestore {
 
 4. **Install:**
    - Follows installation instructions
-   - Installs InnerOrbit app
+   - Installs BhasaGrid app
    - Creates account and starts using!
 
 ---
@@ -255,7 +255,7 @@ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 ### Change Logo
 Replace the emoji in the header:
 ```html
-<h1>🔐 InnerOrbit</h1>
+<h1>🔐 BhasaGrid</h1>
 ```
 
 ### Add More Platforms
@@ -274,7 +274,7 @@ Add new cards in `downloads.html`:
 ## 📝 Example User Credentials
 
 ### Admin (You):
-- Email: admin@InnerOrbit.com
+- Email: admin@BhasaGrid.com
 - Password: YourStrongPassword123!
 - Access: Full admin rights
 

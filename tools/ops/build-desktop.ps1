@@ -1,17 +1,17 @@
 # Last Updated: 2026-03-17
 # Description: Automated script for build-desktop.ps1
 # Project Role: DevOps / Infrastructure automation.
-# InnerOrbit Desktop - Build Script
+# BhasaGrid Desktop - Build Script
 # Builds Windows .exe from React Native app
 
-Write-Host "🚀 InnerOrbit Desktop Builder" -ForegroundColor Cyan
+Write-Host "🚀 BhasaGrid Desktop Builder" -ForegroundColor Cyan
 Write-Host "================================`n" -ForegroundColor Cyan
 
 # Navigate to app directory
-$APP_DIR = "$PSScriptRoot\..\innerorbit-universal"
+$APP_DIR = "$PSScriptRoot\..\BhasaGrid-universal"
 
 if (-not (Test-Path $APP_DIR)) {
-    Write-Host "❌ Error: innerorbit-universal directory not found!" -ForegroundColor Red
+    Write-Host "❌ Error: BhasaGrid-universal directory not found!" -ForegroundColor Red
     Write-Host "Expected location: $APP_DIR" -ForegroundColor Yellow
     exit 1
 }

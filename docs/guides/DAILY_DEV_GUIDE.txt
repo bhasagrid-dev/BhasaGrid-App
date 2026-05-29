@@ -1,17 +1,17 @@
-# INNERORBIT DAILY DEVELOPMENT & TESTING GUIDE
+# BHASAGRID DAILY DEVELOPMENT & TESTING GUIDE
 # Last Updated: 2026-03-17
 # Created by: Antigravity AI
 
-This guide contains instructions on how to run and test the core components of the InnerOrbit ecosystem.
+This guide contains instructions on how to run and test the core components of the BhasaGrid ecosystem.
 
 ================================================================================
-1. CORE PLATFORM: INNERORBIT UNIVERSAL (React Native + Expo)
+1. CORE PLATFORM: BHASAGRID UNIVERSAL (React Native + Expo)
 ================================================================================
-Location: /innerorbit-universal/
+Location: /bhasagrid-universal/
 Target: Android, iOS, Web, and Desktop.
 
 1. INSTALLATION
-   cd innerorbit-universal
+   cd bhasagrid-universal
    npm install
 
 2. RUNNING THE APP
@@ -71,5 +71,5 @@ Use the Python Manager for unified project actions:
 Supported actions: Build Android, Build Desktop, Cleanup, Version Bump, etc.
 
 ################################################################################
-INNERORBIT - SECURE COMMUNICATION HUB
+BHASAGRID - SECURE COMMUNICATION HUB
 ################################################################################

@@ -1,10 +1,10 @@
 {
   "users": [
     {
-      "localId": "portal-user-innerorbit-001",
-      "email": "portal@innerorbit.app",
+      "localId": "portal-user-bhasagrid-001",
+      "email": "portal@bhasagrid.app",
       "emailVerified": true,
-      "displayName": "InnerOrbit Portal",
+      "displayName": "BhasaGrid Portal",
       "passwordHash": "2026-io",
       "disabled": false
     }

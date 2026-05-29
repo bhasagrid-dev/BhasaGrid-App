@@ -1,23 +1,23 @@
-# InnerOrbit — Quantum-Safe Stealth Messenger
+# BhasaGrid — Quantum-Safe Stealth Messenger
 
 [![React Native](https://img.shields.io/badge/React_Native-0.81.5-61DAFB?style=flat-square&logo=react)](https://reactnative.dev/)
 [![Expo SDK](https://img.shields.io/badge/Expo-54.0.33-000020?style=flat-square&logo=expo)](https://expo.dev/)
 [![Firebase](https://img.shields.io/badge/Firebase-v12.8.0-FFCA28?style=flat-square&logo=firebase)](https://firebase.google.com/)
-[![Tests](https://img.shields.io/badge/Tests-168%2F168%20passing-brightgreen?style=flat-square&logo=jest)](./innerorbit-universal/lib/__tests__)
-[![Security Level](https://img.shields.io/badge/Security-Level_7_PQXDH-6d28d9?style=flat-square)](./INNERORBIT_KNOWLEDGE_BASE.md)
+[![Tests](https://img.shields.io/badge/Tests-168%2F168%20passing-brightgreen?style=flat-square&logo=jest)](./bhasagrid-universal/lib/__tests__)
+[![Security Level](https://img.shields.io/badge/Security-Level_7_PQXDH-6d28d9?style=flat-square)](./BHASAGRID_KNOWLEDGE_BASE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
 
-InnerOrbit is a privacy-first messaging app with **quantum-safe encryption**. It looks like a calculator (CalcX) on the outside — type a secret code to reveal the real app. Think of it as **Signal's security + WhatsApp's experience**, built for the post-quantum era.
+BhasaGrid is a privacy-first messaging app with **quantum-safe encryption**. It looks like a calculator (CalcX) on the outside — type a secret code to reveal the real app. Think of it as **Signal's security + WhatsApp's experience**, built for the post-quantum era.
 
 ---
 
 ## 📥 Download
 
-- **Windows (Desktop)**: [Download InnerOrbit Setup (.zip)](https://innerorbit-portal.web.app/downloads/InnerOrbit_Setup.zip)
-- **Web App**: [Launch Web Version](https://innerorbit-portal.web.app/)
+- **Windows (Desktop)**: [Download BhasaGrid Setup (.zip)](https://bhasagrid-portal.web.app/downloads/BhasaGrid_Setup.zip)
+- **Web App**: [Launch Web Version](https://bhasagrid-portal.web.app/)
 - **Android / iOS**: Check the download portal for the latest mobile releases.
 
-> **Note**: For all releases including past versions, check our [GitHub Releases](https://github.com/innerorbit-dev/InnerOrbit-Project/releases) page.
+> **Note**: For all releases including past versions, check our [GitHub Releases](https://github.com/bhasagrid-dev/BhasaGrid-Project/releases) page.
 
 ---
 
@@ -99,8 +99,8 @@ When you log in, the app automatically checks and fixes any old-format data (one
 ## Project Structure
 
 ```text
-InnerOrbit-Mobile-Web-App/
-├── innerorbit-universal/          # The main app (shared across all platforms)
+BhasaGrid-Mobile-Web-App/
+├── bhasagrid-universal/          # The main app (shared across all platforms)
 │   ├── app/                       # Screens and routes
 │   ├── components/                # UI pieces (Calculator, Chat, Settings)
 │   ├── context/                   # Shared state (Auth, Theme, Security)
@@ -118,7 +118,7 @@ InnerOrbit-Mobile-Web-App/
 ├── download-portal/               # Website for downloading the app
 ├── oracle-server-backend/         # Future backend (planned)
 ├── graphify-out/                  # Knowledge graph (2,775 nodes)
-├── INNERORBIT_KNOWLEDGE_BASE.md   # Full technical reference
+├── BHASAGRID_KNOWLEDGE_BASE.md   # Full technical reference
 ├── SECURITY_TEST_STEPS.md         # How to test security features
 ├── encryption_details.md          # Deep dive into each encryption version
 └── TO-DO-LIST.md                  # What's being worked on
@@ -138,15 +138,15 @@ InnerOrbit-Mobile-Web-App/
 
 ```bash
 # 1. Clone the project
-git clone https://github.com/your-username/InnerOrbit-Mobile-Web-App.git
-cd InnerOrbit-Mobile-Web-App/innerorbit-universal
+git clone https://github.com/your-username/BhasaGrid-Mobile-Web-App.git
+cd BhasaGrid-Mobile-Web-App/bhasagrid-universal
 
 # 2. Install everything
 npm install
 
 # 3. Set up your Firebase credentials
 #    Copy the example file and fill in your project details
-#    (See INNERORBIT_KNOWLEDGE_BASE.md for the full list)
+#    (See BHASAGRID_KNOWLEDGE_BASE.md for the full list)
 cp .env.example .env
 
 # 4. Start the app
@@ -167,7 +167,7 @@ npx expo start
 ## Running Tests
 
 ```bash
-cd innerorbit-universal
+cd bhasagrid-universal
 
 # Run all 168 tests
 npm test
@@ -187,7 +187,7 @@ All tests must pass before merging. Current status: **168/168 ✅**
 
 | Document | What's inside |
 | --- | --- |
-| [Knowledge Base](./INNERORBIT_KNOWLEDGE_BASE.md) | Full architecture and how everything connects |
+| [Knowledge Base](./BHASAGRID_KNOWLEDGE_BASE.md) | Full architecture and how everything connects |
 | [Security Tests](./SECURITY_TEST_STEPS.md) | Step-by-step security testing guide |
 | [Encryption Details](./encryption_details.md) | How each encryption version works (v1–v7) |
 | [TO-DO List](./TO-DO-LIST.md) | Current and planned work |
@@ -201,4 +201,4 @@ All tests must pass before merging. Current status: **168/168 ✅**
 
 ---
 
-*Built and maintained by the InnerOrbit team.*
+*Built and maintained by the BhasaGrid team.*

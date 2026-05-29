@@ -1,7 +1,7 @@
 {
-    "name": "innerorbit-portal-functions",
+    "name": "bhasagrid-portal-functions",
     "version": "1.0.0",
-    "description": "Secure backend for innerorbit download portal",
+    "description": "Secure backend for bhasagrid download portal",
     "main": "index.js",
     "dependencies": {
         "firebase-admin": "^12.0.0",

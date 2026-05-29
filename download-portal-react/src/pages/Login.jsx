@@ -5,7 +5,7 @@ import { Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { sha256, MOCK_HASH } from '../lib/utils';
 import { useAuth } from '../context/AuthContext';
 
-import logoImg from '../assets/logos/innerorbit-logo.png';
+import logoImg from '../assets/logos/BhasaGrid-logo.png';
 
 export default function Login() {
     const [password, setPassword] = useState('');
@@ -71,7 +71,7 @@ export default function Login() {
                         transition={{ duration: 0.5 }}
                     >
                         <div className="login-header">
-                            <h1>InnerOrbit Portal</h1>
+                            <h1>BhasaGrid Portal</h1>
                             <p>Access your secure download portal. Enter your credentials to continue.</p>
                         </div>
 
@@ -179,7 +179,7 @@ export default function Login() {
             </AnimatePresence>
 
             <div className="page-footer">
-                &copy; 2026 InnerOrbit. All rights reserved.<br />
+                &copy; 2026 BhasaGrid. All rights reserved.<br />
                 <a href="#">Privacy Policy</a> |
                 <a href="#">Terms of Service</a>
             </div>

@@ -105,7 +105,7 @@ def main():
     project_root = script_dir.parent.parent
     
     # Default to the Portal project from .env or fallback to hardcoded
-    default_bucket = os.getenv('PORTAL_FIREBASE_STORAGE_BUCKET', 'innerorbit-portal.firebasestorage.app')
+    default_bucket = os.getenv('PORTAL_FIREBASE_STORAGE_BUCKET', 'BhasaGrid-portal.firebasestorage.app')
     default_sa = os.getenv('FIREBASE_SERVICE_ACCOUNT_PATH', str(project_root / 'download-portal' / 'service-account.json'))
 
     parser.add_argument('--service-account', default=default_sa)
@@ -114,7 +114,7 @@ def main():
     parser.add_argument('--dry-run', action='store_true')
     args = parser.parse_args()
 
-    app_dir = project_root / 'innerorbit-universal'
+    app_dir = project_root / 'BhasaGrid-universal'
     dist_dir = app_dir / 'dist'
     release_dir = app_dir / 'release'
     pkg_path = app_dir / 'package.json'

@@ -5,9 +5,9 @@ const crypto = require('crypto');
 // Firebase Configuration (Same as your project)
 const firebaseConfig = { 
     apiKey: "AIzaSyBVx0nM88cwGAc84TZd4osHBFOYs1AnZG0", 
-    authDomain: "innerorbit-bc8ce.firebaseapp.com", 
-    projectId: "innerorbit-bc8ce", 
-    storageBucket: "innerorbit-bc8ce.firebasestorage.app", 
+    authDomain: "bhasagrid-bc8ce.firebaseapp.com", 
+    projectId: "bhasagrid-bc8ce", 
+    storageBucket: "bhasagrid-bc8ce.firebasestorage.app", 
     messagingSenderId: "585637111095", 
     appId: "1:585637111095:web:97baabc9aa04ff81dd26b2", 
     measurementId: "G-Y5VSJKN8J7" 

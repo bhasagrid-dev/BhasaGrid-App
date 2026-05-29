@@ -26,7 +26,7 @@ try {
 // Initialize the app with default credentials (will load from process.env.GOOGLE_APPLICATION_CREDENTIALS)
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  projectId: "innerorbit-bc8ce"
+  projectId: "bhasagrid-bc8ce"
 });
 
 const db = admin.firestore();

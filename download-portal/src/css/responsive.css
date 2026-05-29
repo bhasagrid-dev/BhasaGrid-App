@@ -1,5 +1,5 @@
 /* 
-   InnerOrbit Download Portal - Responsive Styles
+   BhasaGrid Download Portal - Responsive Styles
    Extracted from style.css for better modularity.
    This file handles all viewport-specific overrides.
 */
@@ -18,8 +18,8 @@
         max-width: 95%;
     }
 
-    h1 {
-        font-size: 3.5rem !important;
+    body.authenticated h1 {
+        font-size: 4.8rem !important;
     }
 
     /* Adjust Hero Grid for Tablet */
@@ -58,7 +58,10 @@
         display: none !important;
     }
 
-    /* Navbar Responsive Switching - Starts at Tablet */
+}
+
+@media (max-width: 768px) {
+    /* Navbar Responsive Switching - Active only on mobile widths */
     .desktop-nav {
         display: none !important;
     }
@@ -66,9 +69,6 @@
     .mobile-menu-btn {
         display: block !important;
     }
-}
-
-@media (max-width: 768px) {
 
     body,
     html {
@@ -88,8 +88,8 @@
         overflow: hidden;
     }
 
-    h1 {
-        font-size: 2.8rem !important;
+    body.authenticated h1 {
+        font-size: 3.8rem !important;
         line-height: 1.2 !important;
     }
 
@@ -290,8 +290,8 @@
         width: 100% !important;
     }
 
-    h1 {
-        font-size: 2.2rem !important;
+    body.authenticated h1 {
+        font-size: 2.8rem !important;
         margin-bottom: 1rem !important;
     }
 
@@ -414,8 +414,8 @@
 
 /* --- ULTRA-NARROW (Cover Displays of Z Flip/Fold) --- */
 @media (max-width: 360px) {
-    h1 {
-        font-size: 1.8rem !important;
+    body.authenticated h1 {
+        font-size: 2.2rem !important;
     }
 
     .container {

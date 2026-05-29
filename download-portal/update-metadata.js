@@ -21,7 +21,7 @@ const serviceAccount = require('./service-account.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: "innerorbit-20736.firebasestorage.app"
+    storageBucket: "bhasagrid-20736.firebasestorage.app"
 });
 
 const db = admin.firestore();

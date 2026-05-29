@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<!-- InnerOrbit Portal v1.0.1 -->
+<!-- BhasaGrid Portal v1.0.1 -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InnerOrbit - Secure Access Portal</title>
+    <title>BhasaGrid - Secure Access Portal</title>
     <meta name="description"
 
-        content="Secure access portal for InnerOrbit application downloads. Authorized personnel only.">
-    <meta name="keywords" content="InnerOrbit, CalcX, Secure Download, Android App, APK, Encrypted Chat, Portal">
+        content="Secure access portal for BhasaGrid application downloads. Authorized personnel only.">
+    <meta name="keywords" content="BhasaGrid, CalcX, Secure Download, Android App, APK, Encrypted Chat, Portal">
 
     <!-- ADDED: Noindex for Security/Privacy -->
     <meta name="robots" content="noindex, nofollow">
@@ -19,7 +19,7 @@
     <!-- Favicons -->
     <link rel="icon" type="image/webp" href="assets/favicons/access-portal-favicon.webp">
     <link rel="shortcut icon" type="image/webp" href="assets/favicons/access-portal-favicon.webp">
-    <link rel="alternate icon" type="image/png" href="assets/logos/innerorbit-logo.png">
+    <link rel="alternate icon" type="image/png" href="assets/logos/bhasagrid-logo.png">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
 
@@ -44,10 +44,10 @@
     <script src="js/vendor/firebase-auth-compat.js"></script>
 
     <!-- Firebase Configuration (Exposes window.auth) -->
-    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-config.js?v=1.0.6"></script>
 
     <!-- Authentication Logic (Uses window.auth) -->
-    <script src="js/authentication.js"></script>
+    <script src="js/authentication.js?v=1.0.6"></script>
 
     <!-- Angular Docs Logic -->
     <script src="js/docs.js"></script>
@@ -81,7 +81,7 @@
             
             function updateTheme(theme) {
                 document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('innerorbit-theme', theme);
+                localStorage.setItem('bhasagrid-theme', theme);
                 toggleBtn.setAttribute('data-tooltip', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
                 
                 if (theme === 'dark') {
@@ -96,11 +96,11 @@
             }
             
             // Hide login theme toggle if user is already authenticated
-            if (localStorage.getItem('innerorbit-theme-auth') === 'true' || window.ALREADY_AUTHENTICATED) {
+            if (localStorage.getItem('bhasagrid-theme-auth') === 'true' || window.ALREADY_AUTHENTICATED) {
                 toggleBtn.style.display = 'none';
             }
             
-            let currentTheme = localStorage.getItem('innerorbit-theme') || 'dark';
+            let currentTheme = localStorage.getItem('bhasagrid-theme') || 'dark';
             updateTheme(currentTheme);
             
             toggleBtn.addEventListener('click', () => {
@@ -127,7 +127,7 @@
     <div id="login-view">
         <div class="login-container">
             <div class="header">
-                <h1>InnerOrbit Portal</h1>
+                <h1>BhasaGrid Portal</h1>
                 <p>Access your secure download portal. Enter your credentials to continue.</p>
             </div>
 
@@ -145,8 +145,8 @@
                             aria-label="Toggle password visibility">
                             <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
                             </svg>
                         </button>
                     </div>
@@ -165,7 +165,7 @@
         </div>
 
         <div class="page-footer">
-            &copy; 2026 InnerOrbit. All rights reserved.<br>
+            &copy; 2026 BhasaGrid. All rights reserved.<br>
             <a href="privacy-policy.html">Privacy Policy</a> |
             <a href="terms-of-service.html">Terms of Service</a>
         </div>
@@ -200,7 +200,7 @@
 
     <!-- Hidden Portal Icon Container for Transition -->
     <div class="portal-icon-container" id="portalIconContainer">
-        <img src="assets/InnerOrbit-Logo.webp" alt="Access Granted" class="portal-icon" id="animatedLogo">
+        <img src="assets/BhasaGrid-Logo.webp" alt="BhasaGrid - Access Granted" class="portal-icon" id="animatedLogo">
         <div class="portal-text">Access Granted</div>
     </div>
 

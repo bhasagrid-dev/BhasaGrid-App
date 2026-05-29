@@ -1,5 +1,5 @@
 """
-InnerOrbit Image Processing Service
+BhasaGrid Image Processing Service
 Compresses and optimizes images for chat application
 """
 
@@ -206,7 +206,7 @@ def main():
     Example usage and testing
     """
     print("╔════════════════════════════════════════╗")
-    print("║   InnerOrbit Image Processor          ║")
+    print("║   BhasaGrid Image Processor          ║")
     print("╚════════════════════════════════════════╝")
     print()
     

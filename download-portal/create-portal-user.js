@@ -1,5 +1,5 @@
 /**
- * One-time setup: Creates the portal@innerorbit.app user in Firebase Auth.
+ * One-time setup: Creates the portal@bhasagrid.app user in Firebase Auth.
  * Run: node create-portal-user.js
  */
 
@@ -11,13 +11,13 @@ const admin = require('firebase-admin');
 
 admin.initializeApp({
     credential: admin.credential.applicationDefault(),
-    projectId: 'innerorbit-bc8ce'
+    projectId: 'bhasagrid-bc8ce'
 });
 
 const auth = getAuth();
 
 async function createPortalUser() {
-    const email = 'portal@innerorbit.app';
+    const email = 'portal@bhasagrid.app';
     const password = '2026-io'; // matches login-transition.js finalPassword logic for "2026"
 
     try {
@@ -34,7 +34,7 @@ async function createPortalUser() {
                 email,
                 password,
                 emailVerified: true,
-                displayName: 'InnerOrbit Portal'
+                displayName: 'BhasaGrid Portal'
             });
             console.log('Portal user created! UID:', user.uid);
         } else {

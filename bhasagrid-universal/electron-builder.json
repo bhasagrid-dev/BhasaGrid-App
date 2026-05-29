@@ -1,0 +1,43 @@
+{
+    "appId": "com.bhasagrid.desktop",
+    "productName": "BhasaGrid",
+    "compression": "maximum",
+    "asar": true,
+    "publish": {
+        "provider": "generic",
+        "url": "https://firebasestorage.googleapis.com/v0/b/bhasagrid-bc8ce.firebasestorage.app/o/updates%2F",
+        "channel": "latest"
+    },
+    "extraMetadata": {
+        "main": "desktop/main.js",
+        "name": "bhasagrid-desktop",
+        "description": "BhasaGrid Desktop Application"
+    },
+    "files": [
+        "dist/**/*",
+        "lib/**/*",
+        "desktop/main.js",
+        "desktop/preload.js",
+        "assets/icon.png",
+        "assets/favicon.png",
+        "package.json"
+    ],
+    "directories": {
+        "buildResources": "assets",
+        "output": "release"
+    },
+    "win": {
+        "target": [
+            "nsis"
+        ],
+        "icon": "assets/icon.png",
+        "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+        "oneClick": true,
+        "allowToChangeInstallationDirectory": false,
+        "uninstallDisplayName": "BhasaGrid (Remove Only)",
+        "include": "build/installer.nsh",
+        "deleteAppDataOnUninstall": true
+    }
+}

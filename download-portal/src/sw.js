@@ -1,9 +1,9 @@
-const CACHE_NAME = 'innerorbit-portal-v2';
+const CACHE_NAME = 'bhasagrid-portal-v2';
 const OFFLINE_URL = '/offline.html';
 const ASSETS_TO_CACHE = [
     OFFLINE_URL,
     '/assets/favicons/error-favicon.svg',
-    '/assets/logos/innerorbit-logo.png'
+    '/assets/logos/bhasagrid-logo.png'
 ];
 
 // Install Event: Cache offline assets

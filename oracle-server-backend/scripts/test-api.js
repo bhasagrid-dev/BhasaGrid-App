@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * InnerOrbit Oracle Backend - API Testing Script
+ * BhasaGrid Oracle Backend - API Testing Script
  * Tests all endpoints to verify backend is ready for app migration
  */
 
@@ -68,7 +68,7 @@ async function testHealthCheck() {
 async function testSignup() {
     log('\n👤 Testing User Signup...', 'blue');
     const { status, data } = await request('POST', '/api/auth/signup', {
-        email: `test${Date.now()}@innerorbit.com`,
+        email: `test${Date.now()}@BhasaGrid.com`,
         password: 'Test123456'
     });
 
@@ -164,7 +164,7 @@ async function testCreateConversation() {
 
     // Create second user for conversation
     const { data: user2Data } = await request('POST', '/api/auth/signup', {
-        email: `test2${Date.now()}@innerorbit.com`,
+        email: `test2${Date.now()}@BhasaGrid.com`,
         password: 'Test123456'
     });
 
@@ -244,7 +244,7 @@ async function testLogout() {
 
 async function runAllTests() {
     log('\n╔════════════════════════════════════════╗', 'yellow');
-    log('║  InnerOrbit Backend API Test Suite   ║', 'yellow');
+    log('║  BhasaGrid Backend API Test Suite   ║', 'yellow');
     log('╚════════════════════════════════════════╝', 'yellow');
     log(`\n🌐 Testing API at: ${BASE_URL}\n`, 'blue');
 

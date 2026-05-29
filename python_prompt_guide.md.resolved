@@ -8,11 +8,11 @@ see the "Select Interpreter" warning or if your terminal is not using the `.venv
 **Prompt to send to Antigravity:**
 
 > "I need to fix my Python environment in this workspace. Please apply these
-> 'Nuclear Option' fixes to my [.vscode/settings.json](file:///c:/InnerOrbit-Mobile-Web-App/.vscode/settings.json)
+> 'Nuclear Option' fixes to my [.vscode/settings.json](file:///c:/BhasaGrid-Mobile-Web-App/.vscode/settings.json)
 > to ensure the terminal uses my `.venv` and stops showing warnings:
 >
 > 1. Set `python.defaultInterpreterPath` to the absolute path of my project's
->    [.venv\Scripts\python.exe](file:///c:/InnerOrbit-Mobile-Web-App/.venv/Scripts/python.exe)
+>    [.venv\Scripts\python.exe](file:///c:/BhasaGrid-Mobile-Web-App/.venv/Scripts/python.exe)
 >    (use forward slashes `/`).
 > 2. Enable `python.terminal.activateEnvironment` and
 >    `python.terminal.activateEnvInCurrentTerminal`.

@@ -1,5 +1,5 @@
 # Last Updated: 2026-03-17
-# Description: GUI Project Console for InnerOrbit. Provides a visual interface for running management tasks.
+# Description: GUI Project Console for BhasaGrid. Provides a visual interface for running management tasks.
 # Project Role: User-friendly alternative to the CLI manager for routine operations.
 
 import tkinter as tk
@@ -104,7 +104,7 @@ if sys.platform == "win32":
 class GuiManager:
     def __init__(self, root):
         self.root = root
-        self.root.title("InnerOrbit | Project Console")
+        self.root.title("BhasaGrid | Project Console")
         self.root.geometry("1100x750") # Slightly taller
         
         self.current_theme_name = "dark"
@@ -136,7 +136,7 @@ class GuiManager:
         # Sidebar Header (Logo)
         self.logo_frame = tk.Frame(self.sidebar_container)
         self.logo_frame.pack(fill="x")
-        self.logo_label = tk.Label(self.logo_frame, text="INNERORBIT", font=("Segoe UI", 16, "bold"), pady=30)
+        self.logo_label = tk.Label(self.logo_frame, text="BhasaGrid", font=("Segoe UI", 16, "bold"), pady=30)
         self.logo_label.pack()
 
         # Sidebar Canvas (for scrolling)

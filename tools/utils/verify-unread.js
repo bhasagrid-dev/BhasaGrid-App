@@ -1,8 +1,8 @@
 // Last Updated: 2026-03-17
 // Description: Development utility: verify-unread.js
 // Project Role: Development and testing utility for unread highlights.
-const { sendMessage, resetUnreadCount, getConversationBetweenUsers, createConversation } = require('../innerorbit-universal/lib/firestore-service');
-const { auth, db } = require('../innerorbit-universal/lib/firebase');
+const { sendMessage, resetUnreadCount, getConversationBetweenUsers, createConversation } = require('../bhasagrid-universal/lib/firestore-service');
+const { auth, db } = require('../bhasagrid-universal/lib/firebase');
 const { doc, getDoc, deleteDoc } = require('firebase/firestore');
 
 // Mock Auth

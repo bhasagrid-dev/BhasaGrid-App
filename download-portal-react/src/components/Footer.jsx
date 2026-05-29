@@ -11,7 +11,7 @@ export default function Footer() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '4rem', marginBottom: '4rem' }}>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem', color: 'var(--text-primary)', fontWeight: 700, fontSize: '1.5rem' }}>
-                            InnerOrbit
+                            BhasaGrid
                         </div>
                         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '2rem' }}>
                             Redefining privacy in the digital age.
@@ -102,7 +102,7 @@ export default function Footer() {
                     color: 'var(--text-secondary)',
                     fontSize: '0.9rem'
                 }}>
-                    © 2026 InnerOrbit Inc. All rights reserved.
+                    © 2026 BhasaGrid Inc. All rights reserved.
                 </div>
             </div>
         </footer>

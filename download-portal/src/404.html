@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Status - InnerOrbit</title>
+    <title>System Status - BhasaGrid</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicons/error-favicon.svg">
     <link rel="stylesheet" href="css/style.css">
 
@@ -11,7 +11,7 @@
     <script src="js/vendor/firebase-app-compat.js"></script>
     <script src="js/vendor/firebase-firestore-compat.js"></script>
     <!-- Firebase Configuration (Exposes window.db) -->
-    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-config.js?v=1.0.6"></script>
 
     <style>
         :root {
@@ -136,7 +136,7 @@
     <!-- Modern Dynamic Background -->
     <div class="portal-background"></div>
     
-    <h1 id="pageTitle">InnerOrbit Portal</h1>
+    <h1 id="pageTitle">BhasaGrid Portal</h1>
     
     <div class="error-container">
         <div class="error-message" id="mainMessage">ERROR 404</div>
@@ -181,7 +181,7 @@
 
         function init() {
             // Load and apply theme synchronization instantly
-            const currentTheme = localStorage.getItem('innerorbit-theme') || 'dark';
+            const currentTheme = localStorage.getItem('bhasagrid-theme') || 'dark';
             document.documentElement.setAttribute('data-theme', currentTheme);
             document.body.style.visibility = 'visible';
 
@@ -290,7 +290,7 @@
 
         function activateServerDownMode() {
             document.body.classList.remove('locked-mode');
-            scrambleText(document.getElementById('pageTitle'), "InnerOrbit PORTAL");
+            scrambleText(document.getElementById('pageTitle'), "BhasaGrid PORTAL");
             scrambleText(document.getElementById('mainMessage'), "MAINTENANCE ACTIVE");
             
             const statusMsg = document.getElementById('statusMessage');
@@ -309,7 +309,7 @@
 
         function activate404Mode() {
             document.body.classList.remove('locked-mode');
-            scrambleText(document.getElementById('pageTitle'), "InnerOrbit PORTAL");
+            scrambleText(document.getElementById('pageTitle'), "BhasaGrid PORTAL");
             scrambleText(document.getElementById('mainMessage'), "ERROR 404: PAGE NOT FOUND");
             document.getElementById('statusMessage').style.display = 'none'; 
             document.getElementById('countdown').style.display = 'none';

@@ -12,9 +12,9 @@ html {
     /* Increased from 36px */
 
     /* Primary: WebP (for modern browsers) */
-    background-image: -webkit-image-set(url('../assets/InnerOrbit-Logo.webp') 1x);
-    background-image: image-set(url('../assets/InnerOrbit-Logo.webp') 1x);
-    background-image: url('../assets/InnerOrbit-Logo.webp');
+    background-image: -webkit-image-set(url('../assets/BhasaGrid-Logo.webp') 1x);
+    background-image: image-set(url('../assets/BhasaGrid-Logo.webp') 1x);
+    background-image: url('../assets/BhasaGrid-Logo.webp');
     /* Fallback */
 
     background-size: contain;
@@ -70,8 +70,8 @@ html {
 
 [data-theme='light'] {
     /* Deeper, solid high-contrast carbon black and dark charcoal colors for perfect accessibility and readability in light mode */
-    --bg-primary: #e2e8f0; 
-    --bg-hero-color: #cbd5e1;
+    --bg-primary: #cbcae6; 
+    --bg-hero-color: #8a5cf5;
     --accent-cyan: #7c3aed;
     --accent-purple: #6d28d9;
     --accent-orange: #ea580c;
@@ -84,15 +84,15 @@ html {
     --bg-svg-opacity: 0.98;
 
     /* Crystal Glassmorphism - Light Mode Optimized (Warm, soft, ultra-translucent white instead of dark/blackish) */
-    --glass-bg: rgba(255, 255, 255, 0.45);
-    --glass-bg-hover: rgba(255, 255, 255, 0.65);
-    --glass-border: rgba(255, 255, 255, 0.6);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 0 40px rgba(124, 58, 237, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.2);
+    --glass-bg-hover: rgba(255, 255, 255, 0.35);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 0 40px rgba(124, 58, 237, 0.08);
     --card-border: rgba(124, 58, 237, 0.08);
 
     /* Navbar/Sticky Variables - Translucent, clean, modern glass styling for Light Mode */
-    --nav-bg: rgba(255, 255, 255, 0.4);
-    --nav-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06), 0 1px 0 0 rgba(255, 255, 255, 0.6);
+    --nav-bg: rgba(255, 255, 255, 0.2);
+    --nav-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06), 0 1px 0 0 rgba(255, 255, 255, 0.35);
 }
 
 /* THEME TRANSITION */
@@ -277,7 +277,7 @@ body.authenticated #portal-view {
 
 /* Responsive Headings (Authenticated Portal) */
 body.authenticated h1 {
-    font-size: clamp(3.2rem, 12vw, 7.8rem) !important;
+    font-size: clamp(4.2rem, 14vw, 8.8rem) !important;
     line-height: 1.05 !important;
     letter-spacing: -0.035em !important;
     font-weight: 900 !important;

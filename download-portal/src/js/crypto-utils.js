@@ -1,6 +1,6 @@
 /**
  * Crypto Utilities Module
- * Provides cryptographic functions for the InnerOrbit Portal.
+ * Provides cryptographic functions for the BhasaGrid Portal.
  */
 
 window.CryptoUtils = (function () {

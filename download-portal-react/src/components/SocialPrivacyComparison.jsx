@@ -57,7 +57,7 @@ export default function SocialPrivacyComparison() {
                         </ul>
                     </motion.div>
 
-                    {/* InnerOrbit Card */}
+                    {/* BhasaGrid Card */}
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ export default function SocialPrivacyComparison() {
                     >
                         <div style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '2rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <Calculator size={24} color="#f59e0b" />
-                            InnerOrbit
+                            BhasaGrid
                         </div>
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', color: 'var(--text-primary)', padding: 0, listStyle: 'none' }}>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

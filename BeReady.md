@@ -1,8 +1,8 @@
-# University of InnerOrbit: Ecosystem Syllabus
+# University of BhasaGrid: Ecosystem Syllabus
 
 ## Course Overview
 
-This syllabus provides a structured curriculum for mastering the InnerOrbit ecosystem. It is designed to take a developer from basic React Native fundamentals to advanced stealth mode architecture and secure communications.
+This syllabus provides a structured curriculum for mastering the BhasaGrid ecosystem. It is designed to take a developer from basic React Native fundamentals to advanced stealth mode architecture and secure communications.
 
 > **Last Updated:** May 2026 — Reflects security hardening, local AI workflows,
 > and independent development roadmap.
@@ -16,24 +16,24 @@ This syllabus provides a structured curriculum for mastering the InnerOrbit ecos
 - **Topics**: Arrow functions, Template literals, Destructuring, Promises, and Module system (import/export).
 - **Concepts**: Scope, Closures, Hoisting, and the Event Loop in Node.js vs. Browser.
 - **Related Implementation Examples**:
-  - [encryption.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/encryption.ts) (Complex Async/Await and Promises)
-  - [auth-service.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/auth-service.js) (Modular function exports)
+  - [encryption.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/encryption.ts) (Complex Async/Await and Promises)
+  - [auth-service.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/auth-service.js) (Modular function exports)
 
 ### Subject 0.2: React & React Native Essentials
 
 - **Topics**: Virtual DOM, Component Lifecycle, Props vs State, and Reconciliation.
 - **Subtopics**: Fundamental Hooks (`useState`, `useEffect`, `useContext`, `useRef`).
 - **Related Implementation Examples**:
-  - [auth-context.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/context/auth-context.js) (Context & provider pattern)
-  - [login.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/app/login.js) (State management & Hooks in action)
+  - [auth-context.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/context/auth-context.js) (Context & provider pattern)
+  - [login.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/app/login.js) (State management & Hooks in action)
 
 ### Subject 0.3: CSS, Flexbox & Theming Architecture
 
 - **Topics**: Flexbox (Align, Justify, Direction), Absolute vs Relative positioning, and Z-index management.
 - **Subtopics**: Design Tokens, Theme-aware styles, and Responsive Scaling.
 - **Related Implementation Examples**:
-  - [auth.styles.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/styles/auth.styles.js) (Externalized style sheets)
-  - [login.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/app/login.js) (Inline responsive styling & platform overrides)
+  - [auth.styles.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/styles/auth.styles.js) (Externalized style sheets)
+  - [login.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/app/login.js) (Inline responsive styling & platform overrides)
 
 ---
 
@@ -44,15 +44,15 @@ This syllabus provides a structured curriculum for mastering the InnerOrbit ecos
 - **Topics**: ES6+ Syntax, Hooks Mastery (`useMemo`, `useCallback`), and Functional Programming.
 - **Subtopics**: Closures for Theme management, Async/Await for Firebase/Storage.
 - **Related Files**:
-  - [utils.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/utils.ts)
-  - [auth-context.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/context/auth-context.js) (Provider Logic)
+  - [utils.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/utils.ts)
+  - [auth-context.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/context/auth-context.js) (Provider Logic)
 
 ### Subject 1.2: Global State & Context API
 
 - **Topics**: Provider patterns, Context consumers, and Performance optimization.
 - **Subtopics**: Avoiding re-render loops in high-frequency data streams.
 - **Related Files**:
-  - [auth-context.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/context/auth-context.js)
+  - [auth-context.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/context/auth-context.js)
 
 ---
 
@@ -63,16 +63,16 @@ This syllabus provides a structured curriculum for mastering the InnerOrbit ecos
 - **Topics**: Mode Switching, Navigation Hijacking, and Conditional Rendering.
 - **Subtopics**: Mathematical evaluation logic vs. Navigation sequences.
 - **Related Files**:
-  - [Calculator.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/components/Calculator.js)
-  - [_layout.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/app/_layout.js) (Root Router)
+  - [Calculator.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/components/Calculator.js)
+  - [_layout.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/app/_layout.js) (Root Router)
 
 ### Subject 2.2: Leak Prevention & Security Masking
 
 - **Topics**: Notification Suppression, App Preview masking, and Stealth updates.
 - **Subtopics**: Background sync isolation in decoy mode.
 - **Related Files**:
-  - [notification-service.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/notification-service.js)
-  - [background-tasks.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/background-tasks.js)
+  - [notification-service.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/notification-service.js)
+  - [background-tasks.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/background-tasks.js)
 
 ---
 
@@ -83,8 +83,8 @@ This syllabus provides a structured curriculum for mastering the InnerOrbit ecos
 - **Topics**: Platform Secure Storage (KeyStore/KeyChain), Sync vs Async caching.
 - **What changed**: Migrated `deviceKey`, `deviceSalt`, `userPassphrase` from `AsyncStorage` to `expo-secure-store` (hardware-backed). Includes auto-migration for existing users and legacy `@`-prefixed key cleanup.
 - **Related Files**:
-  - [secure-storage-service.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/secure-storage-service.ts)
-  - [encryption.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/encryption.ts) (`getSecureItem` / `setSecureItem` helpers)
+  - [secure-storage-service.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/secure-storage-service.ts)
+  - [encryption.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/encryption.ts) (`getSecureItem` / `setSecureItem` helpers)
 
 ### Subject 3.2: The 5-Level Encryption Stack
 
@@ -99,9 +99,9 @@ The app uses a tiered encryption system — each message is encrypted at the **h
 | **legacy** | AES-CBC | CryptoJS AES-CBC | Backward-compatible fallback |
 
 - **Related Files**:
-  - [encryption.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/encryption.ts)
-  - [ratchet.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/ratchet.ts)
-  - [crypto-wrapper.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/crypto-wrapper.ts)
+  - [encryption.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/encryption.ts)
+  - [ratchet.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/ratchet.ts)
+  - [crypto-wrapper.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/crypto-wrapper.ts)
 
 ### Subject 3.3: Post-Quantum Cryptography (ML-KEM-768 / Kyber768)
 
@@ -112,8 +112,8 @@ The app uses a tiered encryption system — each message is encrypted at the **h
   - `sharedSecret` is combined with classical ECDH output via SHA-256 → hybrid key
 - **Why hybrid**: If quantum computers break Kyber, classical ECDH still protects; if ECDH is broken, Kyber still protects.
 - **Related Files**:
-  - [crypto-wrapper.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/crypto-wrapper.ts) (`ml_kem768` export)
-  - [encryption.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/encryption.ts) (`getPQCKeypair`, `encrypt` v4 path)
+  - [crypto-wrapper.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/crypto-wrapper.ts) (`ml_kem768` export)
+  - [encryption.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/encryption.ts) (`getPQCKeypair`, `encrypt` v4 path)
 
 ### Subject 3.4: Double Ratchet Protocol (v5)
 
@@ -127,7 +127,7 @@ The app uses a tiered encryption system — each message is encrypted at the **h
 - **Out-of-order handling**: Skipped message keys are stored in `skippedMessageKeys` (max 1000) to handle delivery gaps.
 - **PQ Extension**: On each DH ratchet step, a new ML-KEM-768 ciphertext (`pqcCt`) is included in the header, keeping Quantum Resistance active throughout the conversation.
 - **Related Files**:
-  - [ratchet.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/ratchet.ts) (`initializeRatchet`, `ratchetEncrypt`, `ratchetDecrypt`, `dhRatchet`)
+  - [ratchet.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/ratchet.ts) (`initializeRatchet`, `ratchetEncrypt`, `ratchetDecrypt`, `dhRatchet`)
 
 ### Subject 3.5: Key Derivation Functions (KDF)
 
@@ -137,7 +137,7 @@ The app uses a tiered encryption system — each message is encrypted at the **h
 - **SHA-256 as HKDF**: `createHash('sha256').update(pqcSecret).update(classicalKey).digest()` — combines PQC and classical secrets into one hybrid key.
 - **Device Keys**: 32-byte random `deviceKey` + 16-byte `deviceSalt` generated once, stored in Secure Enclave.
 - **Related Files**:
-  - [encryption.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/encryption.ts) (`getDeviceKeys`, `setUserPassphrase`)
+  - [encryption.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/encryption.ts) (`getDeviceKeys`, `setUserPassphrase`)
 
 ### Subject 3.6: Encryption Version Negotiation & Telemetry
 
@@ -145,7 +145,7 @@ The app uses a tiered encryption system — each message is encrypted at the **h
 - **How it works**: Each peer advertises `EncryptionCapabilities` (`v5: bool`, `minReadable`, `maxWritable`). `resolveSendVersion()` picks the highest mutually supported version.
 - **Telemetry**: `sendVersion`, `fallbackReasons`, and `decryptFailures` counters tracked in-memory via `getEncryptionTelemetrySnapshot()` for debugging.
 - **Related Files**:
-  - [encryption.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/encryption.ts) (`resolveSendVersion`, `normalizeCapabilities`, `DEFAULT_ENCRYPTION_CAPABILITIES`)
+  - [encryption.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/encryption.ts) (`resolveSendVersion`, `normalizeCapabilities`, `DEFAULT_ENCRYPTION_CAPABILITIES`)
 
 ### Subject 3.7: Multi-Strategy Decryption & Platform Fallbacks
 
@@ -159,23 +159,23 @@ The app uses a tiered encryption system — each message is encrypted at the **h
   5. `SubtleCrypto` (browser-native async, for web only)
 - **Web fallback format**: Ciphertext prefixed with `web:` uses CryptoJS AES-CBC with random IV + HMAC-SHA256 integrity tag.
 - **Related Files**:
-  - [encryption.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/encryption.ts) (`decrypt`, `decryptAsync`)
-  - [ratchet.ts](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/ratchet.ts) (`decryptWithKey`)
+  - [encryption.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/encryption.ts) (`decrypt`, `decryptAsync`)
+  - [ratchet.ts](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/ratchet.ts) (`decryptWithKey`)
 
 ### Subject 3.8: Firestore Security Rules ✅ Hardened
 
 - **Topics**: Granular access control, Document ownership validation.
 - **What changed**: Removed all `|| true` clauses. Conversations now require `request.auth.uid in resource.data.participantIds`. Connection requests scoped to sender/receiver only.
 - **Related Files**:
-  - [firestore.rules](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/firestore.rules)
+  - [firestore.rules](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/firestore.rules)
 
 ### Subject 3.9: Credential Hygiene & Git History
 
 - **Topics**: Removing secrets from version control, orphan branch technique.
 - **What changed**: Hardcoded Firebase keys removed from `firebase-config.js`. `google-services.json` added to `.gitignore`. Entire git history replaced with a single clean commit via `git checkout --orphan`.
 - **Related Files**:
-  - [firebase-config.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/scripts/firebase-config.js)
-  - [.gitignore](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/.gitignore)
+  - [firebase-config.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/scripts/firebase-config.js)
+  - [.gitignore](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/.gitignore)
 
 ---
 
@@ -186,8 +186,8 @@ The app uses a tiered encryption system — each message is encrypted at the **h
 - **Topics**: NoSQL Schema design, High-frequency listeners, and Pagination.
 - **Subtopics**: Optimistic UI updates for instant messaging feedback.
 - **Related Files**:
-  - [firebase.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/firebase.js)
-  - [firestore-service.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/firestore-service.js)
+  - [firebase.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/firebase.js)
+  - [firestore-service.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/firestore-service.js)
 
 ---
 
@@ -198,15 +198,15 @@ The app uses a tiered encryption system — each message is encrypted at the **h
 - **Topics**: Dark/Light mode tokens, Adaptive typography, Haptic feedback.
 - **Subtopics**: Glassmorphism and micro-animations in an OLED Black theme.
 - **Related Files**:
-  - [split-auth-layout.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/components/split-auth-layout.js)
-  - [logo-base64.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/logo-base64.js)
+  - [split-auth-layout.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/components/split-auth-layout.js)
+  - [logo-base64.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/logo-base64.js)
 
 ### Subject 5.2: Error Boundaries & Debugging
 
 - **Topics**: Global Error Catching, RedBox suppression, Production logging.
 - **Related Files**:
-  - [suppress-redbox.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/suppress-redbox.js)
-  - [logger.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/logger.js)
+  - [suppress-redbox.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/suppress-redbox.js)
+  - [logger.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/logger.js)
 
 ---
 
@@ -219,15 +219,15 @@ The app uses a tiered encryption system — each message is encrypted at the **h
   - `download-portal-react/` — Vite/React portal on **port 5173**
   - `download-portal/` — Legacy static Browsersync portal on **port 5679**
 - **Related Directories**:
-  - [download-portal-react/](file:///c:/InnerOrbit-Mobile-Web-App/download-portal-react/)
-  - [download-portal/](file:///c:/InnerOrbit-Mobile-Web-App/download-portal/)
+  - [download-portal-react/](file:///c:/BhasaGrid-Mobile-Web-App/download-portal-react/)
+  - [download-portal/](file:///c:/BhasaGrid-Mobile-Web-App/download-portal/)
 
 ### Subject 6.2: Node.js Backend & Updates
 
 - **Topics**: Administrative functions, APK distribution, updates.json management.
 - **Related Directories**:
-  - [oracle-server-backend/](file:///c:/InnerOrbit-Mobile-Web-App/oracle-server-backend/)
-  - [update-manager.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/update-manager.js)
+  - [oracle-server-backend/](file:///c:/BhasaGrid-Mobile-Web-App/oracle-server-backend/)
+  - [update-manager.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/update-manager.js)
 
 ---
 
@@ -243,7 +243,7 @@ The app uses a tiered encryption system — each message is encrypted at the **h
   - Added `compat`, `gui`, `portal` CLI args
   - Option 18 now correctly launches Vite React portal (was wrongly calling Expo)
 - **Related File**:
-  - [manager.py](file:///c:/InnerOrbit-Mobile-Web-App/manager.py)
+  - [manager.py](file:///c:/BhasaGrid-Mobile-Web-App/manager.py)
 
 ### Subject 7.2: GUI Project Console
 
@@ -255,20 +255,20 @@ The app uses a tiered encryption system — each message is encrypted at the **h
   - Added missing sidebar sections: Development, full System options
   - Responsive sidebar width binding on resize
 - **Related File**:
-  - [gui_manager.py](file:///c:/InnerOrbit-Mobile-Web-App/tools/gui/gui_manager.py)
+  - [gui_manager.py](file:///c:/BhasaGrid-Mobile-Web-App/tools/gui/gui_manager.py)
 
 ### Subject 7.3: Expo & React Native Infrastructure
 
 - **Topics**: Managed vs Bare workflow, `app.config.js` dynamic configuration, OTA updates.
 - **Related Files**:
-  - [app.config.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/app.config.js)
-  - [package.json](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/package.json)
+  - [app.config.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/app.config.js)
+  - [package.json](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/package.json)
 
 ### Subject 7.4: Electron Desktop Framework
 
 - **Topics**: Main Process, Renderer Process, Preload scripts, IPC.
 - **Related Files**:
-  - [main.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/desktop/main.js)
+  - [main.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/desktop/main.js)
 
 ---
 
@@ -279,14 +279,14 @@ The app uses a tiered encryption system — each message is encrypted at the **h
 - **Topics**: Test suites, Expectations, Mocking libraries, and Code Coverage.
 - **What changed**: Fixed open handle issue in `network-resilience.js` (timeout IDs now cleared). Added mocks for `expo-secure-store` and `react-native` Platform. All **63 tests pass** across 7 suites.
 - **Related Implementation**:
-  - [lib/\_\_tests\_\_/](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/__tests__/)
-  - [\_\_tests\_\_/integration/](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/__tests__/integration/)
+  - [lib/\_\_tests\_\_/](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/__tests__/)
+  - [\_\_tests\_\_/integration/](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/__tests__/integration/)
 
 ### Subject 8.2: Firebase Integration Testing
 
 - **Topics**: Testing Security Rules, Cloud Function triggers.
 - **Related Rules**:
-  - [firestore.rules](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/firestore.rules)
+  - [firestore.rules](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/firestore.rules)
 
 ---
 
@@ -326,7 +326,7 @@ Before accepting AI code, run through this mental checklist:
 
 ## Chapter 10: Safe AI Collaboration (The Privacy Shield) 🛡️
 
-Coding a privacy-focused app like InnerOrbit requires a **Zero Trust** mindset
+Coding a privacy-focused app like BhasaGrid requires a **Zero Trust** mindset
 toward AI tools. You must ensure your unique ideas and user data are never
 "leaked" to AI developers.
 
@@ -388,7 +388,7 @@ export const encryptMessage = (plaintext, key) => {
 
 ## Chapter 11: The Chat Application Blueprint 🏗️
 
-This chapter provides the architectural roadmap for building InnerOrbit.
+This chapter provides the architectural roadmap for building BhasaGrid.
 
 ### Subject 11.1: The 4-Pillar Architecture
 
@@ -414,7 +414,7 @@ To ensure a "Live" feel:
 
 ### Subject 11.4: Identity Management (Secure Login Logic)
 
-To balance convenience with high security, InnerOrbit implements 4 distinct persistence modes stored via `expo-secure-store`:
+To balance convenience with high security, BhasaGrid implements 4 distinct persistence modes stored via `expo-secure-store`:
 
 1. **Remember Email (Identity)**:
    - **Logic**: Saves only the `last_email`.
@@ -436,18 +436,18 @@ To balance convenience with high security, InnerOrbit implements 4 distinct pers
 - **Stealth Obfuscation**:
   - Change the **App Icon** to a calculator icon in `app.json`.
   - Set the **Display Name** to "Calculator" or "System Utils" to hide it from the app drawer.
-  - Package Name: Use generic names like `com.android.calculator.ext` instead of `com.innerorbit.app`.
+  - Package Name: Use generic names like `com.android.calculator.ext` instead of `com.bhasagrid.app`.
 
 ---
 
 ## Practical Labs & Graduation Tasks
 
-1. **Lab 1**: Create a new secret gesture in [Calculator.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/components/Calculator.js)
+1. **Lab 1**: Create a new secret gesture in [Calculator.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/components/Calculator.js)
    to trigger Stealth mode login without a PIN.
-2. **Lab 2**: Implement a "Panic" function in [auth-context.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/context/auth-context.js)
-   that wipes [SecureStorage](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/secure-storage-service.ts)
+2. **Lab 2**: Implement a "Panic" function in [auth-context.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/context/auth-context.js)
+   that wipes [SecureStorage](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/secure-storage-service.ts)
    and triggers a hard reset.
-3. **Lab 3**: Optimize [firestore-service.js](file:///c:/InnerOrbit-Mobile-Web-App/innerorbit-universal/lib/firestore-service.js)
+3. **Lab 3**: Optimize [firestore-service.js](file:///c:/BhasaGrid-Mobile-Web-App/bhasagrid-universal/lib/firestore-service.js)
    to load messages in groups of 20 with smooth auto-scroll.
 4. **Lab 4**: Add a local **Ollama** model and use it via **Continue.dev** to
    refactor a non-sensitive utility function.

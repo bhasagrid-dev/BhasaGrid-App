@@ -123,7 +123,7 @@ const NotFound = () => {
                 paddingBottom: '10px',
                 display: 'inline-block'
             }}>
-                {isLockedMode ? 'SECURITY ALERT' : 'InnerOrbit Portal'}
+                {isLockedMode ? 'SECURITY ALERT' : 'BhasaGrid Portal'}
             </h1>
 
             <div style={{ width: '100%', margin: '40px 0' }}>

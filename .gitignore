@@ -61,11 +61,11 @@ ops-scripts/
 # Project Documentation (ignore all .md except whitelisted)
 
 !README.md
-!INNERORBIT_KNOWLEDGE_BASE.md
+!BhasaGrid_KNOWLEDGE_BASE.md
 !BeReady.md
-!innerorbit-universal/docs/*.md
+!BhasaGrid-universal/docs/*.md
 !tools/ops/README.md
-innerorbit-universal/docs/*.pdf
+BhasaGrid-universal/docs/*.pdf
 
 # Resolved files (agent-generated)
 *.resolved
@@ -85,7 +85,7 @@ innerorbit-universal/docs/*.pdf
 
 # Release builds
 release/
-innerorbit-universal/release/
+BhasaGrid-universal/release/
 
 # Java JDK
 java-17/
@@ -97,7 +97,7 @@ __pycache__/
 
 # Temporary / Scratch
 dist_v2/
-innerorbit-universal/test_output.txt
+BhasaGrid-universal/test_output.txt
 scratch/
 query_result.txt
 temporary-prompts-or-messages.txt

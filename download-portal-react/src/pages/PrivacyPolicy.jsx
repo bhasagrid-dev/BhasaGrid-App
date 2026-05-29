@@ -113,14 +113,14 @@ const PrivacyPolicy = () => {
                             1. Introduction
                         </h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
-                            <p style={{ marginBottom: '1.5rem' }}>Welcome to InnerOrbit ("we," "our," or "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and services.</p>
+                            <p style={{ marginBottom: '1.5rem' }}>Welcome to BhasaGrid ("we," "our," or "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and services.</p>
                             <div style={{ background: 'var(--card-bg)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--border-color)', marginTop: '2rem' }}>
                                 <p style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>Data Controller Details:</p>
-                                <p style={{ marginBottom: '0.5rem' }}><strong>Entity:</strong> InnerOrbit (Individual Developer)</p>
-                                <p style={{ marginBottom: '0.5rem' }}><strong>Email:</strong> <a href="mailto:innerorbit.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>innerorbit.dev@gmail.com</a></p>
-                                <p><strong>Support:</strong> <a href="mailto:innerorbit.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>innerorbit.dev@gmail.com</a></p>
+                                <p style={{ marginBottom: '0.5rem' }}><strong>Entity:</strong> BhasaGrid (Individual Developer)</p>
+                                <p style={{ marginBottom: '0.5rem' }}><strong>Email:</strong> <a href="mailto:BhasaGrid.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>BhasaGrid.dev@gmail.com</a></p>
+                                <p><strong>Support:</strong> <a href="mailto:BhasaGrid.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>BhasaGrid.dev@gmail.com</a></p>
                             </div>
-                            <p style={{ marginTop: '2rem' }}>By using InnerOrbit, you agree to the collection and use of information in accordance with this policy.</p>
+                            <p style={{ marginTop: '2rem' }}>By using BhasaGrid, you agree to the collection and use of information in accordance with this policy.</p>
                         </div>
                     </section>
 
@@ -307,14 +307,14 @@ const PrivacyPolicy = () => {
                             <div style={{ background: 'var(--card-bg)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
                                 <p style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>How to Exercise Your Rights</p>
                                 <p style={{ marginBottom: '0.5rem' }}><strong>In-App:</strong> Settings → Account → Privacy/Export/Delete.</p>
-                                <p><strong>Email:</strong> <a href="mailto:innerorbit.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>innerorbit.dev@gmail.com</a> (include User ID).</p>
+                                <p><strong>Email:</strong> <a href="mailto:BhasaGrid.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>BhasaGrid.dev@gmail.com</a> (include User ID).</p>
                             </div>
                         </div>
                     </section>
 
                     <section id="children" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>9. Children's Privacy</h2>
-                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>InnerOrbit is <strong>NOT intended for children under 13</strong> (or 16 in the EEA). We do not knowingly collect data from children. <strong>Parental Notice:</strong> Contact <a href="mailto:innerorbit.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>innerorbit.dev@gmail.com</a> to remove child data immediately.</p>
+                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>BhasaGrid is <strong>NOT intended for children under 13</strong> (or 16 in the EEA). We do not knowingly collect data from children. <strong>Parental Notice:</strong> Contact <a href="mailto:BhasaGrid.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>BhasaGrid.dev@gmail.com</a> to remove child data immediately.</p>
                     </section>
 
                     <section id="international" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
@@ -344,7 +344,7 @@ const PrivacyPolicy = () => {
 
                     <section id="design" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>14. Privacy by Design</h2>
-                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>InnerOrbit is built on: End-to-end encryption, Local-first storage, Minimal data collection, User control, Transparency, Security audits, and No ads/tracking.</p>
+                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>BhasaGrid is built on: End-to-end encryption, Local-first storage, Minimal data collection, User control, Transparency, Security audits, and No ads/tracking.</p>
                     </section>
 
                     <section id="changes" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
@@ -355,8 +355,8 @@ const PrivacyPolicy = () => {
                     <section id="contact" style={{ marginBottom: '5rem', scrollMarginTop: '120px' }}>
                         <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '2rem' }}>16. Contact Us</h2>
                         <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.05rem' }}>
-                            <p style={{ marginBottom: '0.5rem' }}><strong>Email:</strong> <a href="mailto:innerorbit.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>innerorbit.dev@gmail.com</a></p>
-                            <p><strong>Legal:</strong> <a href="mailto:legal@innerorbit.in" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>legal@innerorbit.in</a></p>
+                            <p style={{ marginBottom: '0.5rem' }}><strong>Email:</strong> <a href="mailto:BhasaGrid.dev@gmail.com" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>BhasaGrid.dev@gmail.com</a></p>
+                            <p><strong>Legal:</strong> <a href="mailto:legal@BhasaGrid.in" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>legal@BhasaGrid.in</a></p>
                         </div>
                     </section>
 
@@ -371,7 +371,7 @@ const PrivacyPolicy = () => {
                             <p style={{ marginBottom: '2.5rem' }}>We do not sell personal information.</p>
                             
                             <h3 style={{ color: 'var(--text-primary)', fontSize: '1.4rem', marginBottom: '1rem' }}>17.3 EEA/UK Residents (GDPR)</h3>
-                            <p>Controller: InnerOrbit. Basis: Consent, Contract, Legitimate Interests.</p>
+                            <p>Controller: BhasaGrid. Basis: Consent, Contract, Legitimate Interests.</p>
                         </div>
                     </section>
 
@@ -391,7 +391,7 @@ const PrivacyPolicy = () => {
 
                     <div style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.2)', padding: '2.5rem', borderRadius: '24px', marginTop: '6rem', textAlign: 'center' }}>
                         <p style={{ color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: 600, marginBottom: '0.5rem' }}>Safety & Privacy Guaranteed</p>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>By using InnerOrbit, you acknowledge that you have read and understood this Privacy Policy.</p>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>By using BhasaGrid, you acknowledge that you have read and understood this Privacy Policy.</p>
                         <p style={{ fontSize: '0.85rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Version 1.0 • Jan 2026</p>
                     </div>
                 </main>

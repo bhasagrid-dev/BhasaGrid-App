@@ -1,5 +1,5 @@
 /**
- * InnerOrbit Authentication Module
+ * BhasaGrid Authentication Module
  * Handles session verification and security checks.
  */
 
@@ -61,6 +61,7 @@
                 // SUCCESS - Authenticated
                 console.log("Portal Session: Secure [" + user.email + "]");
                 window.ALREADY_AUTHENTICATED = true;
+                localStorage.setItem('bhasagrid-portal-auth', 'true');
                 
                 // Unlock UI components
                 unlockPortal();
@@ -68,6 +69,7 @@
             } else {
                 // Not authenticated
                 window.ALREADY_AUTHENTICATED = false;
+                localStorage.removeItem('bhasagrid-portal-auth');
                 
                 if (!isLoginPage) {
                     console.warn("Access denied: Redirecting to login.");
@@ -86,10 +88,11 @@
         window.logout = function () {
             console.log("Initiating logout sequence...");
             window.auth.signOut().then(() => {
-                // Note: No localStorage needed. Firebase Auth triggers onAuthStateChanged in ALL tabs.
+                localStorage.removeItem('bhasagrid-portal-auth');
                 window.location.href = AUTH_CONFIG.LOGIN_PAGE;
             }).catch(err => {
                 console.error("Logout error:", err);
+                localStorage.removeItem('bhasagrid-portal-auth');
                 window.location.href = AUTH_CONFIG.LOGIN_PAGE;
             });
         };
@@ -139,26 +142,35 @@
         }
     }
 
-    // Start initialization
-    checkAuthentication();
+    function init() {
+        checkAuthentication();
 
-    /**
-     * Failsafe: If authentication logic hangs for > 3.5s (due to Firebase free plan tier halts / quota blockages),
-     * redirect immediately to the user-friendly maintenance status screen.
-     * We bypass this failsafe during local development (localhost / 127.0.0.1) so developers don't get stuck.
-     */
-    setTimeout(() => {
-        const isLocalHost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-        if (isLocalHost) {
-            console.log("Local development environment detected: Bypassing server down failsafe.");
-            document.body.style.visibility = 'visible';
-            return;
-        }
+        /**
+         * Failsafe: If authentication logic hangs for > 3.5s (due to Firebase free plan tier halts / quota blockages),
+         * redirect immediately to the user-friendly maintenance status screen.
+         * We bypass this failsafe during local development (localhost / 127.0.0.1) so developers don't get stuck.
+         */
+        setTimeout(() => {
+            if (!document.body) return;
+            const isLocalHost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            if (isLocalHost) {
+                console.log("Local development environment detected: Bypassing server down failsafe.");
+                document.body.style.visibility = 'visible';
+                return;
+            }
 
-        if (!document.body.classList.contains('authenticated') && !window.ALREADY_AUTHENTICATED) {
-             console.warn("Authentication failsafe triggered. Redirecting to server status check.");
-             window.location.replace('404.html?error=server_down');
-        }
-    }, 3500);
+            if (!document.body.classList.contains('authenticated') && typeof window.ALREADY_AUTHENTICATED === 'undefined') {
+                 console.warn("Authentication failsafe triggered. Redirecting to server status check.");
+                 window.location.replace('404.html?error=server_down');
+            }
+        }, 3500);
+    }
+
+    // Start initialization when the DOM is fully parsed to ensure document.body exists
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
 })();

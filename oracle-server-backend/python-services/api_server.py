@@ -1,6 +1,6 @@
 """
 Flask API Server for Image Processing
-Provides REST API for InnerOrbit chat image compression
+Provides REST API for BhasaGrid chat image compression
 """
 
 from flask import Flask, request, jsonify, send_file
@@ -28,7 +28,7 @@ processor = ImageProcessor(
 def home():
     """API information endpoint"""
     return jsonify({
-        'name': 'InnerOrbit Image Processor API',
+        'name': 'BhasaGrid Image Processor API',
         'version': '1.0.0',
         'endpoints': {
             'process': 'POST /api/process - Compress and process image',
@@ -148,7 +148,7 @@ def create_thumbnail():
 
 if __name__ == '__main__':
     print('╔════════════════════════════════════════╗')
-    print('║   InnerOrbit Image Processor API      ║')
+    print('║   BhasaGrid Image Processor API      ║')
     print('╚════════════════════════════════════════╝')
     print()
     print('✅ Server starting...')

@@ -1,5 +1,5 @@
 # Last Updated: 2026-03-17
-# Description: Premium Setup Wizard for InnerOrbit. Handles application installation, shortcut creation, and registration.
+# Description: Premium Setup Wizard for BhasaGrid. Handles application installation, shortcut creation, and registration.
 # Project Role: User-facing installer for the Windows desktop application.
 
 import tkinter as tk
@@ -18,8 +18,8 @@ ACCENT_COLOR = "#007AFF"    # Apple Blue
 TEXT_COLOR = "#E0E0E0"      # Off-white
 SUCCESS_COLOR = "#28A745"
 
-APP_NAME = "InnerOrbit"
-APP_ID = "com.innerorbit.app"
+APP_NAME = "BhasaGrid"
+APP_ID = "com.BhasaGrid.app"
 VERSION = "1.0.3"
 
 # Default Install Path
@@ -38,8 +38,8 @@ class SetupWizard:
         self.install_dir = tk.StringVar(value=DEFAULT_INSTALL_DIR)
         self.create_desktop_shortcut = tk.BooleanVar(value=True)
         
-        # Source directory (expecting win-unpacked in innerorbit-universal/release/win-unpacked)
-        self.source_dir = os.path.join(PROJECT_ROOT, "innerorbit-universal", "release", "win-unpacked")
+        # Source directory (expecting win-unpacked in BhasaGrid-universal/release/win-unpacked)
+        self.source_dir = os.path.join(PROJECT_ROOT, "BhasaGrid-universal", "release", "win-unpacked")
 
         self.setup_styles()
         self.container = tk.Frame(self.root, bg=BG_COLOR)
@@ -82,11 +82,11 @@ class SetupWizard:
         content = tk.Frame(self.container, bg=BG_COLOR, pady=40)
         content.pack(fill="both", expand=True)
 
-        tk.Label(content, text="Welcome to the InnerOrbit Setup Wizard", bg=BG_COLOR, fg="white", 
+        tk.Label(content, text="Welcome to the BhasaGrid Setup Wizard", bg=BG_COLOR, fg="white", 
                  font=("Segoe UI", 14, "bold")).pack(pady=10)
         
-        msg = ("This wizard will guide you through the installation of InnerOrbit on your computer.\n\n"
-               "InnerOrbit is a secure messaging platform disguised as a calculator, "
+        msg = ("This wizard will guide you through the installation of BhasaGrid on your computer.\n\n"
+               "BhasaGrid is a secure messaging platform disguised as a calculator, "
                "providing privacy and stealth for your communications.")
         
         tk.Label(content, text=msg, bg=BG_COLOR, fg=TEXT_COLOR, font=("Segoe UI", 10), 
@@ -102,7 +102,7 @@ class SetupWizard:
     def page_directory(self):
         tk.Label(self.container, text="Installation Folder", bg=BG_COLOR, fg="white", font=("Segoe UI", 14, "bold"), pady=20).pack()
         
-        tk.Label(self.container, text="Select the directory where you want to install InnerOrbit:", 
+        tk.Label(self.container, text="Select the directory where you want to install BhasaGrid:", 
                  bg=BG_COLOR, fg=TEXT_COLOR, font=("Segoe UI", 10)).pack(pady=10)
         
         dir_frame = tk.Frame(self.container, bg=BG_COLOR)
@@ -132,7 +132,7 @@ class SetupWizard:
             self.install_dir.set(os.path.join(path, APP_NAME))
 
     def page_installing(self):
-        tk.Label(self.container, text="Installing InnerOrbit...", bg=BG_COLOR, fg="white", font=("Segoe UI", 14, "bold"), pady=40).pack()
+        tk.Label(self.container, text="Installing BhasaGrid...", bg=BG_COLOR, fg="white", font=("Segoe UI", 14, "bold"), pady=40).pack()
         
         self.progress = ttk.Progressbar(self.container, orient="horizontal", length=400, mode="determinate")
         self.progress.pack(pady=10)
@@ -160,7 +160,7 @@ class SetupWizard:
             self.update_status("Deploying application files...", 30)
             if not os.path.exists(self.source_dir):
                 # Look for it in common locations if not found relative
-                self.source_dir = os.path.join(PROJECT_ROOT, "innerorbit-universal", "release", "win-unpacked")
+                self.source_dir = os.path.join(PROJECT_ROOT, "BhasaGrid-universal", "release", "win-unpacked")
             
             if not os.path.exists(self.source_dir):
                  raise Exception(f"Source files not found! Please build the app first. Checked: {self.source_dir}")
@@ -182,13 +182,13 @@ class SetupWizard:
 
             # 3. Create Shortcuts
             self.update_status("Creating shortcuts...", 85)
-            exe_path = os.path.join(dest, "InnerOrbit.exe")
+            exe_path = os.path.join(dest, "BhasaGrid.exe")
             if self.create_desktop_shortcut.get():
-                self.create_shortcut(exe_path, os.path.join(os.environ["USERPROFILE"], "Desktop", "InnerOrbit.lnk"))
+                self.create_shortcut(exe_path, os.path.join(os.environ["USERPROFILE"], "Desktop", "BhasaGrid.lnk"))
             
             # Start Menu
             start_menu = os.path.join(os.environ["APPDATA"], "Microsoft", "Windows", "Start Menu", "Programs")
-            self.create_shortcut(exe_path, os.path.join(start_menu, "InnerOrbit.lnk"))
+            self.create_shortcut(exe_path, os.path.join(start_menu, "BhasaGrid.lnk"))
 
             # 4. Registry Entries (Uninstaller)
             self.update_status("Registering application...", 95)
@@ -208,30 +208,30 @@ class SetupWizard:
 
     def register_uninstaller(self, install_dir):
         # Register in Windows Add/Remove Programs
-        reg_path = r"Software\Microsoft\Windows\CurrentVersion\Uninstall\InnerOrbit"
+        reg_path = r"Software\Microsoft\Windows\CurrentVersion\Uninstall\BhasaGrid"
         try:
             key = winreg.CreateKey(winreg.HKEY_CURRENT_USER, reg_path)
-            winreg.SetValueEx(key, "DisplayName", 0, winreg.REG_SZ, "InnerOrbit")
+            winreg.SetValueEx(key, "DisplayName", 0, winreg.REG_SZ, "BhasaGrid")
             winreg.SetValueEx(key, "UninstallString", 0, winreg.REG_SZ, f'"{sys.executable}" "{os.path.join(install_dir, "uninstall.py")}"')
-            winreg.SetValueEx(key, "DisplayIcon", 0, winreg.REG_SZ, os.path.join(install_dir, "InnerOrbit.exe"))
+            winreg.SetValueEx(key, "DisplayIcon", 0, winreg.REG_SZ, os.path.join(install_dir, "BhasaGrid.exe"))
             winreg.SetValueEx(key, "DisplayVersion", 0, winreg.REG_SZ, VERSION)
-            winreg.SetValueEx(key, "Publisher", 0, winreg.REG_SZ, "InnerOrbit")
+            winreg.SetValueEx(key, "Publisher", 0, winreg.REG_SZ, "BhasaGrid")
             winreg.CloseKey(key)
             
             # Create a simple uninstall.py in the destination
             with open(os.path.join(install_dir, "uninstall.py"), "w") as f:
                 f.write(f'''
 import os, shutil, winreg, sys, subprocess
-print("Uninstalling InnerOrbit...")
-reg_path = r"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\InnerOrbit"
+print("Uninstalling BhasaGrid...")
+reg_path = r"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\BhasaGrid"
 try:
     winreg.DeleteKey(winreg.HKEY_CURRENT_USER, reg_path)
 except: pass
 
 # Delete shortcuts (simple approach)
-try: os.remove(os.path.join(os.environ["USERPROFILE"], "Desktop", "InnerOrbit.lnk"))
+try: os.remove(os.path.join(os.environ["USERPROFILE"], "Desktop", "BhasaGrid.lnk"))
 except: pass
-try: os.remove(os.path.join(os.environ["APPDATA"], r"Microsoft\\Windows\\Start Menu\\Programs", "InnerOrbit.lnk"))
+try: os.remove(os.path.join(os.environ["APPDATA"], r"Microsoft\\Windows\\Start Menu\\Programs", "BhasaGrid.lnk"))
 except: pass
 
 print("Removal complete. Please delete the installation folder manually if any files remain.")
@@ -242,7 +242,7 @@ print("Removal complete. Please delete the installation folder manually if any f
     def page_finish(self):
         tk.Label(self.container, text="Installation Successful!", bg=BG_COLOR, fg=SUCCESS_COLOR, font=("Segoe UI", 18, "bold"), pady=40).pack()
         
-        tk.Label(self.container, text="InnerOrbit has been correctly installed on your computer.", 
+        tk.Label(self.container, text="BhasaGrid has been correctly installed on your computer.", 
                  bg=BG_COLOR, fg=TEXT_COLOR, font=("Segoe UI", 11)).pack(pady=10)
         
         tk.Label(self.container, text=f"Location: {self.install_dir.get()}", bg=BG_COLOR, fg="#888888", font=("Segoe UI", 9)).pack()
@@ -255,7 +255,7 @@ print("Removal complete. Please delete the installation folder manually if any f
         
         # Checkbox to launch app
         self.launch_var = tk.BooleanVar(value=True)
-        tk.Checkbutton(self.container, text="Launch InnerOrbit now", variable=self.launch_var, 
+        tk.Checkbutton(self.container, text="Launch BhasaGrid now", variable=self.launch_var, 
                        bg=BG_COLOR, fg=TEXT_COLOR, selectcolor=BG_COLOR, activebackground=BG_COLOR,
                        activeforeground=ACCENT_COLOR, font=("Segoe UI", 10)).pack(pady=20)
 
