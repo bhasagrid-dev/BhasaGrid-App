@@ -7,13 +7,13 @@
 (function () {
     // Firebase Configuration
     const FIREBASE_CONFIG = {
-        apiKey: "AIzaSyCiwrFuaTfqoeQ3hEdhtbDwapE7Mr6gl4U",
-        authDomain: "bhasagrid-bc8ce.firebaseapp.com",
-        projectId: "bhasagrid-bc8ce",
-        storageBucket: "bhasagrid-bc8ce.firebasestorage.app",
-        messagingSenderId: "323992704792",
-        appId: "1:323992704792:web:6a1924069a6679c3c5306d",
-        measurementId: "G-8PKWV7QE0V"
+        apiKey: "AIzaSyBZIRJuQ4Ltn_c8ciqykG5KUvHXSFzTy_w",
+        authDomain: "innerorbit-portal.firebaseapp.com",
+        projectId: "innerorbit-portal",
+        storageBucket: "innerorbit-portal.firebasestorage.app",
+        messagingSenderId: "616184841875",
+        appId: "1:616184841875:web:133ebb0b367f983e2d6f66",
+        measurementId: "G-FRBP7HBBGD"
     };
 
     // Initialize Firebase (if not already initialized)
