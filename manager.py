@@ -67,7 +67,8 @@ AUTOMATION SYSTEM:
 """
 
 
-VERSION = "8.0"
+VERSION = "10.1"
+LAST_UPDATED = "2026-05-30"
 
 import os
 import shutil
@@ -78,6 +79,7 @@ import time
 import socket
 import json
 import io
+import atexit
 from datetime import datetime
 import re
 
@@ -101,6 +103,10 @@ class C:
     RST  = "\033[0m"
     BOLD = "\033[1m"
     DIM  = "\033[2m"
+    ITALIC = "\033[3m"
+    UNDERLINE = "\033[4m"
+    
+    # Primary theme colors
     BLUE = "\033[38;5;69m"
     PURP = "\033[38;5;135m"
     CYAN = "\033[38;5;51m"
@@ -109,6 +115,102 @@ class C:
     RED  = "\033[38;5;196m"
     GRAY = "\033[38;5;240m"
     WHT  = "\033[38;5;255m"
+
+    # Futuristic premium colors
+    NEON_BLUE = "\033[38;5;75m"
+    NEON_CYAN = "\033[38;5;86m"
+    NEON_PURP = "\033[38;5;177m"
+    NEON_PINK = "\033[38;5;201m"
+    NEON_GREEN = "\033[38;5;120m"
+    NEON_YELLOW = "\033[38;5;227m"
+    
+    VIOLET = "\033[38;5;141m"
+    LAVENDER = "\033[38;5;147m"
+    MINT = "\033[38;5;121m"
+    GOLD = "\033[38;5;215m"
+    ROSE = "\033[38;5;211m"
+    
+    DARK_GRAY = "\033[38;5;236m"
+    MID_GRAY = "\033[38;5;243m"
+    LIGHT_GRAY = "\033[38;5;249m"
+
+def force_delete_readonly(func, path, excinfo):
+    """Fallback error handler to force delete locked or read-only files on Windows."""
+    import stat
+    try:
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+    except Exception:
+        pass
+
+ACTIVE_SERVICES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools", ".active_services.json")
+
+def register_active_service(name, pid):
+    """Registers an active background service PID to prevent port and socket leaks."""
+    services = {}
+    if os.path.exists(ACTIVE_SERVICES_FILE):
+        try:
+            with open(ACTIVE_SERVICES_FILE, 'r') as f:
+                services = json.load(f)
+        except:
+            pass
+    services[name] = pid
+    try:
+        with open(ACTIVE_SERVICES_FILE, 'w') as f:
+            json.dump(services, f, indent=4)
+    except:
+        pass
+
+def unregister_active_service(name):
+    """Unregisters a service by name."""
+    if os.path.exists(ACTIVE_SERVICES_FILE):
+        try:
+            with open(ACTIVE_SERVICES_FILE, 'r') as f:
+                services = json.load(f)
+            if name in services:
+                del services[name]
+            with open(ACTIVE_SERVICES_FILE, 'w') as f:
+                json.dump(services, f, indent=4)
+        except:
+            pass
+
+def terminate_all_active_services():
+    """Kills all registered background processes on exit to prevent lingering port/thread leaks."""
+    if not os.path.exists(ACTIVE_SERVICES_FILE):
+        return
+    try:
+        with open(ACTIVE_SERVICES_FILE, 'r') as f:
+            services = json.load(f)
+    except:
+        return
+
+    if not services:
+        return
+
+    print(f"\n  {C.YEL}[*] Shutting down active background services...{C.RST}")
+    for name, pid in list(services.items()):
+        if os.name == 'nt':
+            try:
+                # Direct check if process exists before killing
+                res = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True)
+                if str(pid) in res.stdout:
+                    print(f"  Stopping {C.CYAN}{name}{C.RST} (PID {pid})...")
+                    subprocess.run(["taskkill", "/PID", str(pid), "/F", "/T"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except Exception as e:
+                pass
+        else:
+            try:
+                os.kill(int(pid), 9)
+            except OSError:
+                pass
+
+    try:
+        os.remove(ACTIVE_SERVICES_FILE)
+    except:
+        pass
+
+# Automatically run service teardowns on any exit
+atexit.register(terminate_all_active_services)
 
 def log_event(category, action, status, message):
     """Unified logger in the requested format."""
@@ -304,37 +406,94 @@ def get_key():
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch.lower()
 
+def _loading_bar(label, total=30, width=36, color=None, fill_char='█', empty_char='░'):
+    """Renders a smooth animated loading bar in-place."""
+    bar_color = color or C.PURP
+    for i in range(total + 1):
+        filled = int(width * i / total)
+        bar = fill_char * filled + empty_char * (width - filled)
+        pct = int(100 * i / total)
+        sys.stdout.write(f"\r  {bar_color}{bar}{C.RST}  {C.GRAY}{pct:3d}%{C.RST}  {C.DIM}{label}{C.RST}")
+        sys.stdout.flush()
+        time.sleep(0.03)
+    print()
+
 def show_splash(restarted=False):
     os.system('cls' if os.name == 'nt' else 'clear')
-    
+
     logo_fast = os.environ.get("ORBIT_FAST_MODE") == "1" or restarted
-    
+
     if restarted:
         print(f"{C.CYAN}{'=' * 62}{C.RST}")
         print(f"  {C.BOLD}BhasaGrid PROJECT HUB{C.RST} {C.GRAY}│ v{VERSION}{C.RST} {C.GRN}(QUICK RELOAD){C.RST}")
         print(f"{C.CYAN}{'=' * 62}{C.RST}\n")
         return
 
-    logo = [
-        f"{C.BLUE}{C.BOLD}  ██╗███╗  ██╗███╗  ██╗███████╗██████╗  {C.PURP} ██████╗ ██████╗ ██████╗ ██╗████████╗{C.RST}",
-        f"{C.BLUE}{C.BOLD}  ██║████╗ ██║████╗ ██║██╔════╝██╔══██╗ {C.PURP}██╔═══██╗██╔══██╗██╔══██╗██║╚══██╔══╝{C.RST}",
-        f"{C.CYAN}{C.BOLD}  ██║██╔██╗██║██╔██╗██║█████╗  ██████╔╝ {C.PURP}██║   ██║██████╔╝██████╔╝██║   ██║{C.RST}",
-        f"{C.CYAN}{C.BOLD}  ██║██║╚████║██║╚████║██╔══╝  ██╔══██╗ {C.PURP}██║   ██║██╔══██╗██╔══██╗██║   ██║{C.RST}",
-        f"{C.PURP}{C.BOLD}  ██║██║ ╚███║██║ ╚███║███████╗██║  ██║ {C.PURP}╚██████╔╝██║  ██║██████╔╝██║   ██║{C.RST}",
-        f"{C.PURP}{C.BOLD}  ╚═╝╚═╝  ╚══╝╚═╝  ╚══╝╚══════╝╚═╝  ╚═╝  {C.PURP}╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝   ╚═╝{C.RST}",
+    # ── Cinematic first-boot sequence ──────────────────────────────
+    # Phase 1: Boot messages fade in
+    boot_msgs = [
+        (C.GRAY,  "  Initializing BhasaGrid runtime..."),
+        (C.GRAY,  "  Loading project manifests..."),
+        (C.GRAY,  "  Resolving module graph..."),
+        (C.CYAN,  "  Activating virtual environment..."),
+        (C.PURP,  "  Warming up automation hub..."),
     ]
-    for line in logo:
-        print(line)
-        if not logo_fast:
-            time.sleep(0.01) # Faster scanning effect
+    for color, msg in boot_msgs:
+        _type(f"{color}{msg}{C.RST}", delay=0.012)
+        time.sleep(0.06)
 
     print()
-    _type(f"  {C.GRAY}Project Console  ·  v{VERSION}  ·  BhasaGrid Dev Tools{C.RST}", delay=0 if logo_fast else 0.005)
+    # Phase 2: Loading bar
+    _loading_bar("Bootstrapping core modules", total=35, color=C.PURP)
+    time.sleep(0.15)
+
+    # Phase 3: Clear and reveal logo
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    term_width = shutil.get_terminal_size((80, 20)).columns
+
+    if term_width >= 82:
+        logo = [
+            f"{C.BLUE}{C.BOLD}  ╔═════════════════════════════════════════════════════════════════════════╗{C.RST}",
+            f"{C.BLUE}{C.BOLD}  ║   ██████╗ ██╗  ██╗ █████╗ ███████╗ █████╗  ██████╗ ██████╗ ██╗██████╗   ║{C.RST}",
+            f"{C.CYAN}{C.BOLD}  ║   ██╔══██╗██║  ██║██╔══██╗██╔════╝██╔══██╗██╔════╝ ██╔══██╗██║██╔══██╗   ║{C.RST}",
+            f"{C.PURP}{C.BOLD}  ║   ██████╦╝███████║███████║███████╗███████║██║  ███╗██████╔╝██║██║  ██║   ║{C.RST}",
+            f"{C.PURP}{C.BOLD}  ║   ██╔══██╗██╔══██║██╔══██║╚════██║██╔══██║██║   ██║██╔══██╗██║██║  ██║   ║{C.RST}",
+            f"{C.BLUE}{C.BOLD}  ║   ██████╦╝██║  ██║██║  ██║███████║██║  ██║╚██████╔╝██║  ██║██║██████╔╝   ║{C.RST}",
+            f"{C.BLUE}{C.BOLD}  ║   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝   ║{C.RST}",
+            f"{C.BLUE}{C.BOLD}  ╚═════════════════════════════════════════════════════════════════════════╝{C.RST}",
+        ]
+    else:
+        # Responsive fallback for narrow terminal windows
+        box_width = max(34, term_width - 8)
+        padding = (box_width - 23) // 2
+        pad_str = " " * padding
+        pad_str_right = " " * (box_width - 23 - padding)
+        logo = [
+            f"{C.BLUE}{C.BOLD}  ╔{'═' * box_width}╗{C.RST}",
+            f"{C.CYAN}{C.BOLD}  ║{pad_str}B H A S A G R I D   H U B{pad_str_right}║{C.RST}",
+            f"{C.BLUE}{C.BOLD}  ╚{'═' * box_width}╝{C.RST}",
+        ]
+    for line in logo:
+        print(line)
+        time.sleep(0.07)  # Smooth scan-line reveal
+
+    print()
+    _type(f"  {C.GRAY}Project Console  ·  v{VERSION}  ·  BhasaGrid Dev Tools{C.RST}", delay=0.018)
     print(f"  {C.GRAY}{'─' * 62}{C.RST}")
-    if not logo_fast:
-        time.sleep(0.1) # Fast transition delay
-    _type(f"  {C.GRN}●{C.RST}  Environment ready", delay=0 if logo_fast else 0.005)
-    _type(f"  {C.BLUE}●{C.RST}  All modules loaded", delay=0 if logo_fast else 0.005)
+    time.sleep(0.2)
+
+    # Phase 4: Status indicators
+    status_items = [
+        (C.GRN,  "●", "Environment ready"),
+        (C.BLUE, "●", "All modules loaded"),
+        (C.PURP, "●", "Automation hub online"),
+    ]
+    for color, dot, label in status_items:
+        _type(f"  {color}{dot}{C.RST}  {label}", delay=0.01)
+        time.sleep(0.1)
+
+    time.sleep(0.3)
     print()
 
 def self_upgrade_version():
@@ -367,6 +526,9 @@ def self_upgrade_version():
             for line in lines:
                 if line.startswith('VERSION ='):
                     f.write(f'VERSION = "{new_v}"\n')
+                elif line.startswith('LAST_UPDATED ='):
+                    today = datetime.now().strftime('%Y-%m-%d')
+                    f.write(f'LAST_UPDATED = "{today}"\n')
                 else:
                     f.write(line)
         
@@ -520,6 +682,7 @@ def ask_terminal():
 
 # Configuration
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+os.chdir(PROJECT_ROOT)  # Force active working directory synchronization to fix Windows UAC System32 resets
 DOWNLOAD_PORTAL_DIR = os.path.join(PROJECT_ROOT, "download-portal")  # legacy static portal
 REACT_PORTAL_DIR = os.path.join(PROJECT_ROOT, "download-portal-react")  # new Vite/React portal
 UNIVERSAL_DIR = os.path.join(PROJECT_ROOT, "BhasaGrid-universal")
@@ -531,8 +694,56 @@ TERMINAL_CHOICE_FILE = os.path.join(TOOLS_DIR, ".terminal_choice")
 
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
-
     return False
+
+def draw_card(title, items, footer="", color_theme=C.PURP, width=78):
+    """Draws a beautiful accented terminal panel with perfect closed borders on all sides."""
+    import unicodedata
+    T = color_theme + C.BOLD
+    R = C.RST
+    
+    def visible_len(text):
+        clean_text = re.sub(r'\033\[[0-9;]*m', '', text)
+        length = 0
+        for char in clean_text:
+            if unicodedata.east_asian_width(char) in ('W', 'F'):
+                length += 2
+            else:
+                length += 1
+        return length
+    
+    # Dynamically expand width to fit long items if needed
+    max_item_len = max(visible_len(item) for item in items) if items else 0
+    width = max(width, max_item_len + 6)
+    
+    title_clean = re.sub(r'\033\[[0-9;]*m', '', title)
+    title_len = len(title_clean)
+    
+    dash_count = max(2, width - title_len - 10)
+    border_top = f"  {color_theme}╭═══ {T}[ {title} ]{color_theme}{'═' * dash_count}╮{R}"
+    print(border_top)
+    
+    for item in items:
+        item_len = visible_len(item)
+        padding = max(0, width - item_len - 6)
+        print(f"  {color_theme}║{R}  {item}{' ' * padding}  {color_theme}║{R}")
+        
+    if footer:
+        footer_clean = re.sub(r'\033\[[0-9;]*m', '', footer)
+        visible_foot_len = len(footer_clean)
+        foot_dash_count = max(2, width - visible_foot_len - 6)
+        border_bot = f"  {color_theme}╚═══ {C.BOLD}{footer}{C.RST}{color_theme}{'═' * foot_dash_count}╝{R}"
+    else: 
+        border_bot = f"  {color_theme}╚{'═' * (width - 2)}╝{R}"
+    print(border_bot)
+def print_hub_header(active_tab=""):
+    clear_terminal()
+    registered = f"{C.NEON_GREEN}ACTIVE{C.RST}" if shutil.which("orbit") else f"{C.GRAY}NOT INSTALLED{C.RST}"
+    admin_status = f"  {C.NEON_RED}{C.BOLD}[ADMIN MODE]{C.RST}" if is_admin() else ""
+    
+    print(f"\n  {C.NEON_BLUE}{C.BOLD}BHASAGRID AUTOMATION HUB{C.RST} {C.GRAY}│ v{VERSION}{admin_status}{C.RST}")
+    print(f"  {C.GRAY}CLI PATH: {registered}  ·  DATE: {LAST_UPDATED}  ·  TAB: {active_tab}{C.RST}")
+    print(f"  {C.GRAY}{'─' * 78}{C.RST}\n")
 
 def ask_server_terminal(label):
     """Asks user whether to run a long-running server in current or new window."""
@@ -863,57 +1074,94 @@ def auto_heal_android_sdk():
         return False, "Could not locate Android SDK path."
 
 def check_project_health():
-    """Runs a series of checks to ensure the project is ready for development."""
-    print(f"\n{C.BOLD}--- [PROJECT HEALTH CHECK] ---{C.RST}")
+    """Runs a deep series of security, network, and environmental checks."""
+    print(f"\n{C.BOLD}--- [DEEP PROJECT DIAGNOSTIC HUB] ---{C.RST}")
     
     issues = []
+    warnings = []
     
     # 1. Check for .env file (Required for Firebase security)
     env_path = os.path.join(UNIVERSAL_DIR, ".env")
     if not os.path.exists(env_path):
-        issues.append(f"{C.RED}[FAIL]{C.RST} .env file missing in {UNIVERSAL_DIR}. Firebase will not work.")
+        issues.append(f"config: .env file missing in {UNIVERSAL_DIR}. Firebase will not work.")
     else:
-        print(f"  {C.GRN}✔{C.RST} .env file found.")
+        print(f"  {C.GRN}✔{C.RST} Environment: .env file found.")
 
     # 2. Check for google-services.json (Ignored by git but needed for build)
     gs_path = os.path.join(ANDROID_DIR, "app", "google-services.json")
     if not os.path.exists(gs_path):
-        issues.append(f"{C.YEL}[WARN]{C.RST} google-services.json missing in {os.path.dirname(gs_path)}. Android builds may fail.")
+        warnings.append(f"build: google-services.json missing in {os.path.dirname(gs_path)}. Android builds may fail.")
     else:
-        print(f"  {C.GRN}✔{C.RST} google-services.json found.")
+        print(f"  {C.GRN}✔{C.RST} Firebase Android: google-services.json found.")
 
     # 3. Check for node_modules
     for d in [UNIVERSAL_DIR, REACT_PORTAL_DIR, DOWNLOAD_PORTAL_DIR]:
         nm_path = os.path.join(d, "node_modules")
         if not os.path.exists(nm_path):
-            issues.append(f"{C.RED}[FAIL]{C.RST} node_modules missing in {os.path.basename(d)}. Run 'npm install'.")
+            issues.append(f"deps: node_modules missing in {os.path.basename(d)}. Run 'npm install'.")
         else:
-            print(f"  {C.GRN}✔{C.RST} node_modules found in {os.path.basename(d)}.")
+            print(f"  {C.GRN}✔{C.RST} Dependencies: node_modules found in {os.path.basename(d)}.")
 
     # 4. Check Dual Messenger
     compat, msg = check_dual_messenger_compatibility()
     if compat:
-        print(f"  {C.GRN}✔{C.RST} {msg}")
+        print(f"  {C.GRN}✔{C.RST} Dual Messenger: {msg}")
     else:
-        print(f"  {C.YEL}!{C.RST} {msg}")
+        print(f"  {C.YEL}!{C.RST} Dual Messenger: {msg}")
 
     # 5. Check Browser Choice
     browser = get_preferred_browser()
-    print(f"  {C.GRN}✔{C.RST} Preferred browser: {browser}")
+    print(f"  {C.GRN}✔{C.RST} Browser Sync: Preferred browser is '{browser}'.")
 
     # 6. Check & Auto-Heal Android SDK Location
     sdk_ok, sdk_msg = auto_heal_android_sdk()
     if sdk_ok:
         print(f"  {C.GRN}✔{C.RST} Android SDK: {sdk_msg}")
     else:
-        issues.append(f"{C.RED}[FAIL]{C.RST} Android SDK: {sdk_msg}")
+        issues.append(f"sdk: {sdk_msg}")
 
-    if issues:
-        print(f"\n{C.RED}{C.BOLD}Found {len(issues)} issues:{C.RST}")
-        for i in issues:
-            print(f"  - {i}")
+    # 7. Active Network Diagnostic Check
+    print(f"\n  {C.CYAN}[*] Running Active Port Scanner...{C.RST}")
+    ports_to_check = [
+        (5173, "React Portal (Vite)"),
+        (5679, "Legacy Portal (BrowserSync)"),
+        (8081, "Expo Metro Server"),
+        (5000, "Flask GUI API"),
+        (2004, "Flask GUI Console")
+    ]
+    for port, label in ports_to_check:
+        active = wait_for_port(port, timeout=0.1)
+        status_str = f"{C.GRN}ACTIVE{C.RST}" if active else f"{C.GRAY}INACTIVE{C.RST}"
+        print(f"    - Port {port:<5} | {label:<30} : {status_str}")
+
+    # 8. E2EE Security Bypass Diagnostics
+    print(f"\n  {C.CYAN}[*] Running Cryptographic Security Audit...{C.RST}")
+    auth_js_path = os.path.join(DOWNLOAD_PORTAL_DIR, "src", "js", "authentication.js")
+    if os.path.exists(auth_js_path):
+        try:
+            with open(auth_js_path, 'r', encoding='utf-8') as f:
+                auth_content = f.read()
+            if "return unlockPortal();" in auth_content:
+                warnings.append(f"security: Active dev bypass gate found in '{auth_js_path}'!")
+                print(f"    - Auth Gate State    : {C.RED}{C.BOLD}BYPASSED (INSECURE FOR PRODUCTION){C.RST}")
+            else:
+                print(f"    - Auth Gate State    : {C.GRN}SECURE (Gate Active - Login Required){C.RST}")
+        except Exception as e:
+            print(f"    - Auth Gate State    : {C.YEL}UNABLE TO AUDIT ({e}){C.RST}")
     else:
-        print(f"\n{C.GRN}{C.BOLD}All systems green!{C.RST}")
+        print(f"    - Auth Gate State    : {C.GRAY}NOT FOUND (Legacy structure){C.RST}")
+
+    if issues or warnings:
+        if issues:
+            print(f"\n{C.RED}{C.BOLD}🚨 Found {len(issues)} critical issue(s):{C.RST}")
+            for i in issues:
+                print(f"  - {C.RED}{i}{C.RST}")
+        if warnings:
+            print(f"\n{C.YEL}{C.BOLD}⚠️ Found {len(warnings)} security/build warning(s):{C.RST}")
+            for w in warnings:
+                print(f"  - {C.YEL}{w}{C.RST}")
+    else:
+        print(f"\n{C.GRN}{C.BOLD}All systems green! BhasaGrid is production ready.{C.RST}")
     
     return len(issues) == 0
 
@@ -1010,7 +1258,7 @@ def handle_android_build_failure(build_type="Debug", log_output=""):
     for d in [app_build_dir, root_build_dir]:
         if os.path.isdir(d):
             try:
-                shutil.rmtree(d, ignore_errors=True)
+                shutil.rmtree(d, onerror=force_delete_readonly)
                 print(f"    {C.GRN}✔ Removed {os.path.basename(d)}{C.RST}")
             except Exception:
                 pass
@@ -1020,10 +1268,10 @@ def handle_android_build_failure(build_type="Debug", log_output=""):
     temp_dir = os.environ.get("TEMP", os.environ.get("TMP", "C:\\temp"))
     metro_cache = os.path.join(temp_dir, "metro-cache")
     if os.path.isdir(metro_cache):
-        shutil.rmtree(metro_cache, ignore_errors=True)
+        shutil.rmtree(metro_cache, onerror=force_delete_readonly)
     expo_cache = os.path.join(UNIVERSAL_DIR, ".expo")
     if os.path.isdir(expo_cache):
-        shutil.rmtree(expo_cache, ignore_errors=True)
+        shutil.rmtree(expo_cache, onerror=force_delete_readonly)
 
     # 5. Check Port 8081 conflicts
     port_conflict = False
@@ -1096,7 +1344,7 @@ def _purge_cxx_caches():
     # App-level .cxx
     app_cxx = os.path.join(ANDROID_DIR, "app", ".cxx")
     if os.path.isdir(app_cxx):
-        shutil.rmtree(app_cxx, ignore_errors=True)
+        shutil.rmtree(app_cxx, onerror=force_delete_readonly)
         count += 1
     # node_modules native module .cxx dirs
     nm_dir = os.path.join(UNIVERSAL_DIR, "node_modules")
@@ -1105,7 +1353,7 @@ def _purge_cxx_caches():
             for d in dirs:
                 if d == ".cxx":
                     cxx_path = os.path.join(root, d)
-                    shutil.rmtree(cxx_path, ignore_errors=True)
+                    shutil.rmtree(cxx_path, onerror=force_delete_readonly)
                     count += 1
             dirs[:] = [d for d in dirs if d != ".cxx"]
     # Clear stale Gradle transform caches (ReactAndroid::jsi missing headers issue)
@@ -1123,7 +1371,7 @@ def _purge_cxx_caches():
                                 jsi_include = os.path.join(t_path, item, "prefab", "modules", "jsi", "include")
                                 if not os.path.isdir(jsi_include):
                                     print(f"  {C.YEL}Found corrupt Gradle transform: {t} (missing jsi/include){C.RST}")
-                                    shutil.rmtree(os.path.join(transforms_dir, t), ignore_errors=True)
+                                    shutil.rmtree(os.path.join(transforms_dir, t), onerror=force_delete_readonly)
                                     count += 1
     if count:
         print(f"  {C.GRAY}Purged {count} stale cache(s) (.cxx + Gradle transforms){C.RST}")
@@ -1259,18 +1507,71 @@ def deploy_firebase(target=None):
     success = True
     for name, directory in targets_to_deploy:
         print(f"\n>>> Deploying {name} from {directory}...")
+        
+        # Read the project ID directly from the directory's .env
+        env_project_id = None
+        env_path = os.path.join(directory, ".env")
+        if not os.path.exists(env_path):
+            env_path = os.path.join(PROJECT_ROOT, ".env")
+        if os.path.exists(env_path):
+            try:
+                with open(env_path, 'r') as f:
+                    for line in f:
+                        if line.strip().startswith("FIREBASE_PROJECT_ID"):
+                            env_project_id = line.split("=", 1)[1].strip().strip('"').strip("'")
+                            break
+            except:
+                pass
+                
+        if not env_project_id:
+            if name == "Download Portal":
+                env_project_id = "innerorbit-portal"
+            else:
+                env_project_id = "innerorbit-bc8ce"
+                
+        # Safety Gate: Audit for active dev auth bypasses in portal deployment
+        if "Download Portal" in name:
+            auth_js_path = os.path.join(DOWNLOAD_PORTAL_DIR, "src", "js", "authentication.js")
+            if os.path.exists(auth_js_path):
+                try:
+                    with open(auth_js_path, 'r', encoding='utf-8') as f:
+                        auth_content = f.read()
+                    if "return unlockPortal();" in auth_content:
+                        print(f"\n  {C.RED}{C.BOLD}🚨 SECURITY AUDIT ALERT: ACTIVE DEVELOPMENT BYPASS FOUND!{C.RST}")
+                        print(f"  {C.RED}The authentication security gate is currently bypassed in authentication.js!{C.RST}")
+                        print(f"  {C.YEL}Deploying with the bypass active exposes the landing/download portal to open public access.{C.RST}")
+                        set_terminal_mode(True)
+                        confirm = input(f"\n  {C.BOLD}Do you wish to abort and activate the gate first? (y/n) [Default y]: {C.RST}").strip().lower()
+                        set_terminal_mode(False)
+                        if confirm != 'n':
+                            print(f"  {C.RED}Deployment aborted. Activating gate...{C.RST}")
+                            toggle_portal_auth(enable=True)
+                            return False
+                except Exception as e:
+                    print(f"  {C.YEL}⚠️ Security bypass audit skipped due to read error: {e}{C.RST}")
+
+        print(f"  Forcing target Firebase Project: '{env_project_id}'")
+        
         if not verify_firebase_project(directory):
             log_event("firebase", "deploy", "FAILED", f"Deployment aborted for {name} due to project mismatch.")
             success = False
             continue
-            
-        rc, _ = run_command(["firebase", "deploy"], directory, f"Deploying {name} to Firebase")
+
+        rc, _ = run_command(["firebase", "deploy", "--project", env_project_id], directory, f"Deploying {name} to Firebase")
         if rc != 0:
             log_event("firebase", "deploy", "FAILED", f"{name} deploy command execution failed.")
             success = False
         else:
             log_event("firebase", "deploy", "SUCCESS", f"{name} Deployment Complete.")
             
+            print(f"\n  {C.NEON_GREEN}✔ {name} successfully deployed!{C.RST}")
+            if name == "Download Portal":
+                print(f"  {C.CYAN}🌐 Live URL (Custom Domain): {C.BOLD}https://bhasagrid.com{C.RST}")
+                print(f"  {C.GRAY}   (Firebase Default: https://{env_project_id}.web.app){C.RST}")
+            else:
+                print(f"  {C.CYAN}🌐 Live URL (Custom Domain): {C.BOLD}https://web.bhasagrid.com{C.RST}")
+                print(f"  {C.GRAY}   (Firebase Default: https://{env_project_id}.web.app){C.RST}")
+                
     return success
 
 def deploy_firestore_rules():
@@ -1285,12 +1586,123 @@ def deploy_firestore_rules():
     log_event("firebase", "deploy", "SUCCESS", "Firestore Security Rules Updated.")
     return True
 
+def toggle_portal_auth(enable=None):
+    """Toggles authentication bypass in the portal's authentication.js."""
+    print(f"\n--- [PORTAL SECURITY CONFIGURATION] ---")
+    auth_js_path = os.path.join(DOWNLOAD_PORTAL_DIR, "src", "js", "authentication.js")
+    
+    if not os.path.exists(auth_js_path):
+        print(f"  {C.RED}! File not found: {auth_js_path}{C.RST}")
+        return False
+        
+    try:
+        with open(auth_js_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            
+        bypass_string = "return unlockPortal(); // Bypass authentication completely for direct main-portal access"
+        is_bypassed = bypass_string in content
+        
+        if enable is None:
+            # Interactive toggle
+            print(f"  Current Status: " + (f"{C.RED}DEACTIVATED (Auth Bypassed - Open Access){C.RST}" if is_bypassed else f"{C.GRN}ACTIVATED (Auth Gate Active - Login Required){C.RST}"))
+            print(f"  {C.WHT} 1.{C.RST} Activate Security Auth Gate (Login Required)")
+            print(f"  {C.WHT} 2.{C.RST} Deactivate Security Auth Gate (Bypass / Open Access)")
+            print(f"  {C.WHT} C.{C.RST} Cancel")
+            print(f"\n  Select option (1-2) > ", end="", flush=True)
+            set_terminal_mode(True)
+            opt = input().strip()
+            set_terminal_mode(False)
+            
+            if opt == '1':
+                enable = True
+            elif opt == '2':
+                enable = False
+            else:
+                print("Cancelled.")
+                return False
+                
+        if enable:
+            # Activate auth gate (remove bypass)
+            if is_bypassed:
+                new_content = content.replace("        " + bypass_string + "\n", "")
+                if new_content == content:
+                    new_content = content.replace(bypass_string, "")
+                with open(auth_js_path, 'w', encoding='utf-8') as f:
+                    f.write(new_content)
+                print(f"  {C.GRN}✔ Authentication gate ACTIVATED successfully!{C.RST}")
+            else:
+                print(f"  {C.YEL}! Security auth gate is already active.{C.RST}")
+        else:
+            # Deactivate auth gate (add bypass)
+            if not is_bypassed:
+                target_str = "    function checkAuthentication() {"
+                replacement = target_str + "\n        " + bypass_string
+                new_content = content.replace(target_str, replacement)
+                with open(auth_js_path, 'w', encoding='utf-8') as f:
+                    f.write(new_content)
+                print(f"  {C.RED}✔ Authentication gate DEACTIVATED successfully! (Bypass active){C.RST}")
+            else:
+                print(f"  {C.YEL}! Authentication gate is already bypassed.{C.RST}")
+                
+        # Automatically sync env and physical files
+        sync_env_to_portal()
+        
+        # Ask to redeploy
+        print(f"\n  Would you like to deploy this security change to Firebase now? (y/n): ", end="", flush=True)
+        ans = get_key()
+        if ans == 'y':
+            deploy_firebase("portal")
+            
+        return True
+    except Exception as e:
+        print(f"  {C.RED}! Failed to update security settings: {e}{C.RST}")
+        return False
+
+def backup_project_config():
+    """Unified local backup utility delegated to the secure tools/backup_system.py subscript."""
+    subscript_path = os.path.join(TOOLS_DIR, "backup_system.py")
+    if os.path.exists(subscript_path):
+        try:
+            import subprocess
+            rc = subprocess.call([sys.executable, subscript_path])
+            return rc == 0
+        except Exception as e:
+            print(f"  {C.RED}✘ Failed to launch backup subscript: {e}{C.RST}")
+            return False
+    else:
+        print(f"  {C.RED}✘ Backup subscript not found at: {subscript_path}{C.RST}")
+        return False
+
+def install_decoy_dependencies():
+    """Installs node modules for CalcX calculator application."""
+    print("\n--- [INSTALL CALCX DECOY DEPENDENCIES] ---")
+    calc_dir = os.path.join(PROJECT_ROOT, "CalcX -- A Master Calculator")
+    rc, _ = run_command(["npm", "install"], calc_dir, "Installing CalcX Packages")
+    if rc == 0:
+        print(f"\n  {C.GRN}✔ Decoy app dependencies installed successfully!{C.RST}")
+        return True
+    return False
+
+def clean_decoy_app():
+    """Clears caches and performs fresh dependency installation for CalcX decoy."""
+    print("\n--- [CLEAN CALCX DECOY APP] ---")
+    calc_dir = os.path.join(PROJECT_ROOT, "CalcX -- A Master Calculator")
+    
+    for folder in [".expo", "node_modules"]:
+        full_p = os.path.join(calc_dir, folder)
+        if os.path.exists(full_p):
+            print(f"  Cleaning {folder}...")
+            shutil.rmtree(full_p, onerror=force_delete_readonly)
+            
+    print(f"\n  {C.GRN}✔ Decoy application clean complete!{C.RST}")
+    return install_decoy_dependencies()
+
 def cleanup_release():
     print("\n--- [CLEANUP RELEASE FILES] ---")
     release_dir = os.path.join(UNIVERSAL_DIR, "release")
     if os.path.exists(release_dir):
         try:
-            shutil.rmtree(release_dir)
+            shutil.rmtree(release_dir, onerror=force_delete_readonly)
             print(f"\n[SUCCESS] Cleaned up: {release_dir}")
             return True
         except Exception as e:
@@ -1336,14 +1748,15 @@ def launch_flask_gui():
             # Launch in background console
             if os.name == 'nt':
                 # CREATE_NO_WINDOW = 0x08000000
-                subprocess.Popen([sys.executable, flask_app_path], 
-                                 creationflags=0x08000000, 
-                                 close_fds=True)
+                p = subprocess.Popen([sys.executable, flask_app_path], 
+                                     creationflags=0x08000000, 
+                                     close_fds=True)
             else:
-                subprocess.Popen([sys.executable, flask_app_path], 
-                                 stdout=subprocess.DEVNULL, 
-                                 stderr=subprocess.DEVNULL, 
-                                 start_new_session=True)
+                p = subprocess.Popen([sys.executable, flask_app_path], 
+                                     stdout=subprocess.DEVNULL, 
+                                     stderr=subprocess.DEVNULL, 
+                                     start_new_session=True)
+            register_active_service("Flask GUI", p.pid)
             
             print(f"\n  {C.GRN}✔ Flask Manager started at http://localhost:5000{C.RST}")
             
@@ -1457,15 +1870,19 @@ def git_ops_menu():
     if c == 'b': return
     
     if c == '1': git_sync()
-    elif c == '2': subprocess.call(["git", "status"], cwd=PROJECT_ROOT, shell=True)
-    elif c == '3': subprocess.call(["git", "branch"], cwd=PROJECT_ROOT, shell=True)
+    elif c == '2': subprocess.call(["git", "status"], cwd=PROJECT_ROOT)
+    elif c == '3': subprocess.call(["git", "branch"], cwd=PROJECT_ROOT)
     elif c == '4':
         branch = input("Enter branch name: ").strip()
-        if branch: subprocess.call(["git", "checkout", branch], cwd=PROJECT_ROOT, shell=True)
-    elif c == '5': subprocess.call(["git", "pull"], cwd=PROJECT_ROOT, shell=True)
+        if branch:
+            # Enforce strictly alphanumeric, hyphens, slashes, and dots
+            sanitized_branch = re.sub(r'[^\w\-\/\.]', '', branch)
+            if sanitized_branch:
+                subprocess.call(["git", "checkout", sanitized_branch], cwd=PROJECT_ROOT)
+    elif c == '5': subprocess.call(["git", "pull"], cwd=PROJECT_ROOT)
     elif c == '6':
         confirm = input("Are you sure? This wipes uncommitted changes (y/n): ").lower()
-        if confirm == 'y': subprocess.call(["git", "reset", "--hard", "HEAD"], cwd=PROJECT_ROOT, shell=True)
+        if confirm == 'y': subprocess.call(["git", "reset", "--hard", "HEAD"], cwd=PROJECT_ROOT)
     
     input(f"\n  {C.GRAY}Press Enter to continue...{C.RST}")
 
@@ -1544,12 +1961,27 @@ def start_dev_server():
     
     if choice == '1':
         print(f"{C.CYAN}Starting in current terminal. Press Ctrl+C to stop.{C.RST}")
-        # Use subprocess.call directly to preserve TTY/Interactive terminal for Expo
-        subprocess.call(["npm", "start"], cwd=UNIVERSAL_DIR, shell=True)
+        p = subprocess.Popen(["npm", "start"], cwd=UNIVERSAL_DIR, shell=True)
+        register_active_service("Expo Server", p.pid)
+        try:
+            p.wait()
+        except KeyboardInterrupt:
+            p.terminate()
+        unregister_active_service("Expo Server")
     else:
-        print("Launching in a new window...")
-        cmd = f'start cmd /k "cd /d {UNIVERSAL_DIR} && npm start"'
-        os.system(cmd)
+        print("Launching in a new console window...")
+        if os.name == 'nt':
+            p = subprocess.Popen(
+                ["cmd.exe", "/k", "npm start"],
+                cwd=UNIVERSAL_DIR,
+                creationflags=subprocess.CREATE_NEW_CONSOLE
+            )
+        else:
+            p = subprocess.Popen(
+                ["gnome-terminal", "--", "bash", "-c", f"cd '{UNIVERSAL_DIR}' && npm start"],
+                start_new_session=True
+            )
+        register_active_service("Expo Server", p.pid)
         print(f"\n[SUCCESS] Dev server launched in new window.")
     return True
 
@@ -1581,15 +2013,19 @@ def kill_process_on_port(port):
     if os.name != 'nt':
         return False
     try:
-        output = subprocess.check_output(f'netstat -ano | findstr :{port}', shell=True, text=True)
+        output = subprocess.check_output('netstat -ano', shell=True, text=True)
     except subprocess.CalledProcessError:
         return False
 
     pids = set()
     for line in output.splitlines():
-        parts = [p for p in line.split() if p]
+        parts = line.split()
         if len(parts) >= 5:
-            pids.add(parts[-1])
+            local_addr = parts[1]
+            pid = parts[-1]
+            # Parse address like "127.0.0.1:8081" or "[::]:8081"
+            if local_addr.endswith(f":{port}"):
+                pids.add(pid)
 
     if not pids:
         return False
@@ -1598,7 +2034,7 @@ def kill_process_on_port(port):
         try:
             subprocess.check_call(f'taskkill /PID {pid} /F', shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
-            return False
+            pass
     return True
 
 
@@ -1647,11 +2083,28 @@ def _smart_launch_portal(name, port, directory, dev_cmd, url):
     choice = ask_server_terminal(f"{name} Server")
     
     if choice == '1':
-        print(f"{C.CYAN}Starting in current terminal. Portals will block this menu.{C.RST}")
-        run_command(actual_cmd.split(' '), directory, name)
+        print(f"{C.CYAN}Starting in current terminal. Portals will block this menu. Press Ctrl+C to stop.{C.RST}")
+        p = subprocess.Popen(actual_cmd, cwd=directory, shell=True)
+        register_active_service(name, p.pid)
+        try:
+            p.wait()
+        except KeyboardInterrupt:
+            p.terminate()
+        unregister_active_service(name)
     else:
-        cmd = f'start cmd /k "cd /d {directory} && {actual_cmd}"'
-        os.system(cmd)
+        print("Launching in a new console window...")
+        if os.name == 'nt':
+            p = subprocess.Popen(
+                ["cmd.exe", "/k", actual_cmd],
+                cwd=directory,
+                creationflags=subprocess.CREATE_NEW_CONSOLE
+            )
+        else:
+            p = subprocess.Popen(
+                ["gnome-terminal", "--", "bash", "-c", f"cd '{directory}' && {actual_cmd}"],
+                start_new_session=True
+            )
+        register_active_service(name, p.pid)
     
     # 3. Wait for port and open browser
     print(f"Waiting for {name} to become active...")
@@ -1783,7 +2236,7 @@ def register_globally():
     try:
         with open(bat_path, "w") as f:
             # We use %* to pass all arguments to the python script
-            f.write(f'@echo off\npython "{os.path.join(project_root, "manager.py")}" %*\n')
+            f.write('@echo off\npython "%~dp0manager.py" %*\n')
         
         print(f"  {C.GRN}✔ Created '{C.BOLD}orbit.bat{C.RST}{C.GRN}' in {project_root}{C.RST}")
         
@@ -1817,63 +2270,184 @@ def register_globally():
         print(f"  {C.RED}✘ Error during registration: {e}{C.RST}")
 
 def show_help_shortcuts():
-    """Displays all available CLI shortcuts for the 'orbit' command."""
+    """Displays all available CLI shortcuts in a friendly, grouped format."""
     clear_terminal()
-    print(f"\n  {C.BLUE}{C.BOLD}BhasaGrid CLI SHORTCUTS{C.RST}")
-    print(f"  {C.GRAY}{'─' * 45}{C.RST}")
-    print(f"  {C.CYAN}Usage:{C.RST} orbit <shortcut>")
-    print()
-    
-    shortcuts = [
-        ("debug", "Build Android Debug APK"),
-        ("release", "Build Android Release APK"),
-        ("android", "Build Both Android APKs"),
-        ("clean", "Clean Android Project"),
-        ("fresh", "Fresh Android Build (Clean + Both)"),
-        ("install", "Install Debug APK to Device"),
-        ("phys", "Physical Device Debug (Build + Install)"),
-        ("start", "Start Expo Dev Server"),
-        ("portal", "Start React Portal (Vite)"),
-        ("download", "Start Legacy Download Portal"),
-        ("both", "Start Both Portals"),
-        ("dev", "Physical Device Flow (Build + Install + Start)"),
-        ("desktop", "Build Windows EXE"),
-        ("web", "Build Web Application"),
-        ("electron", "Launch Electron (Dev Mode)"),
-        ("firebase", "Deploy to Firebase"),
-        ("rules", "Deploy Firestore Rules Only"),
-        ("git", "Git Operations Menu"),
-        ("health", "Project Health Check"),
-        ("cleanup", "Cleanup Release Folder"),
-        ("gui", "Launch Premium GUI Console"),
-        ("setup", "Launch Setup Wizard"),
-        ("browser", "Select Preferred Browser"),
-        ("reset", "Reset Terminal Choice"),
-        ("register", "Register Manager Globally (orbit command)"),
-        ("exit", "Terminate BhasaGrid Manager"),
-        ("all", "Ultimate Project Release (Full Chain)")
-    ]
-    
-    for cmd, desc in shortcuts:
-        print(f"  {C.WHT}{cmd:<12}{C.RST}  {C.GRAY}→{C.RST}  {desc}")
-    
-    print(f"\n  {C.GRAY}{'─' * 45}{C.RST}")
-    print(f"  {C.YEL}Press ENTER to restart or [Q] to Quit...{C.RST}")
-    
+
+    P = C.PURP; B = C.BOLD; R = C.RST; Y = C.YEL
+    CY = C.CYAN; GR = C.GRAY; W = C.WHT; RD = C.RED
+
+    def section(title, emoji):
+        print(f"\n  {P}{B}{'─'*52}{R}")
+        print(f"  {P}{B}  {emoji}  {title}{R}")
+        print(f"  {P}{'─'*52}{R}")
+
+    def cmd(name, desc, example=None, tip=None):
+        print(f"  {CY}{B}{name:<22}{R} {GR}{desc}{R}")
+        if example:
+            print(f"  {'':22} {GR}eg: {W}{example}{R}")
+        if tip:
+            print(f"  {'':22} {Y}>> {tip}{R}")
+
+    print(f"\n  {P}{B}{'='*52}{R}")
+    print(f"  {P}{B}      BhasaGrid Orbit Manager  —  Help{R}")
+    print(f"  {P}{B}{'='*52}{R}")
+    print(f"  {GR}  Usage:{R}  {W}orbit <command>{R}   or   {W}python manager.py <command>{R}")
+
+    # ─── FIREBASE DEPLOY ────────────────────────────────────────────────────
+    section("FIREBASE  DEPLOY", "🔥")
+    print(f"\n  {W}To deploy the Download Portal website to Firebase:{R}\n")
+    cmd("orbit firebase portal",  "Deploy ONLY the download portal site",
+        "orbit firebase portal")
+    cmd("orbit firebase app",     "Deploy ONLY the main app hosting",
+        "orbit firebase app")
+    cmd("orbit firebase both",    "Deploy portal + app hosting together",
+        "orbit firebase both")
+    cmd("orbit firebase",         "Full deploy (Hosting + Functions + Rules)",
+        "orbit firebase")
+    cmd("orbit rules",            "Deploy ONLY Firestore security rules",
+        "orbit rules")
+    print(f"\n  {Y}  Tip:{R} {GR}Run {W}firebase login{GR} first if not authenticated.{R}")
+    print(f"  {Y}  Tip:{R} {GR}Bypass checks run automatically before every deploy.{R}")
+
+    # ─── LOCAL DEV SERVERS ──────────────────────────────────────────────────
+    section("LOCAL DEV SERVERS", "🌐")
+    cmd("orbit portal",     "React download portal   (localhost:5173)",
+        "orbit portal")
+    cmd("orbit download",   "Legacy download portal  (localhost:5679)",
+        "orbit download")
+    cmd("orbit both",       "Both portals at once",
+        "orbit both")
+    cmd("orbit start",      "Expo Metro server (mobile app dev)",
+        "orbit start")
+    cmd("orbit electron",   "Electron desktop in dev mode",
+        "orbit electron")
+
+    # ─── ANDROID ────────────────────────────────────────────────────────────
+    section("ANDROID BUILDS", "📱")
+    cmd("orbit dev",        "Build + push to phone + start Expo  [most used]",
+        "orbit dev")
+    cmd("orbit debug",      "Build debug APK only",       "orbit debug")
+    cmd("orbit release",    "Build release APK (signed)", "orbit release")
+    cmd("orbit android",    "Build debug + release both", "orbit android")
+    cmd("orbit install",    "Push latest debug APK to phone via ADB",
+        "orbit install")
+    cmd("orbit clean",      "Wipe Gradle cache + build folders",
+        "orbit clean")
+    cmd("orbit fresh",      "Clean + full rebuild",       "orbit fresh")
+
+    # ─── DESKTOP / WEB ──────────────────────────────────────────────────────
+    section("DESKTOP & WEB BUILDS", "🖥")
+    cmd("orbit desktop",    "Build Windows .exe installer", "orbit desktop")
+    cmd("orbit web",        "Build production web bundle",  "orbit web")
+    cmd("orbit mac",        "Build macOS DMG",              "orbit mac")
+    cmd("orbit all",        "FULL RELEASE: Android + Desktop + Web + Firebase",
+        "orbit all", "Takes 10-20 min. Confirms before each step.")
+
+    # ─── UTILITIES ──────────────────────────────────────────────────────────
+    section("UTILITIES & TOOLS", "🔧")
+    cmd("orbit git",        "Git menu: commit, push, branch, status",
+        "orbit git")
+    cmd("orbit health",     "Audit ports, env vars, firebase config",
+        "orbit health")
+    cmd("orbit backup",     "Zip + save your .env config files",
+        "orbit backup")
+    cmd("orbit calcx",      "Manage CalcX decoy app dependencies",
+        "orbit calcx")
+    cmd("orbit calcx clean","Clean CalcX build artifacts",
+        "orbit calcx clean")
+    cmd("orbit gui",        "Open Flask web dashboard (localhost:2004)",
+        "orbit gui")
+    cmd("orbit register",   "Register 'orbit' as a global PATH command",
+        "orbit register")
+
+    # ─── QUICK RECIPES ──────────────────────────────────────────────────────
+    section("QUICK WORKFLOW RECIPES", "📋")
+    print(f"""
+  {W}Deploy portal website:{R}
+  {CY}  orbit firebase portal{R}
+
+  {W}Test portal locally, then deploy:{R}
+  {CY}  orbit portal{R}          {GR}# open localhost:5173, check everything{R}
+  {CY}  orbit firebase portal{R}  {GR}# deploy when ready{R}
+
+  {W}Code on phone:{R}
+  {CY}  orbit dev{R}
+
+  {W}Full production release:{R}
+  {CY}  orbit all{R}
+""")
+
+    print(f"  {P}{B}{'='*52}{R}")
+    print(f"  {Y}  Press ENTER to go back   |   [Q] to quit{R}\n")
+
     while True:
         choice = get_key()
         if choice == 'q':
-            print(f"\n  {C.RED}[*] Exiting BhasaGrid Manager...{C.RST}")
+            print(f"\n  {RD}[*] Exiting BhasaGrid Manager...{R}")
             time.sleep(0.2)
             sys.exit(0)
         elif choice in ['\r', '\n']:
             break
-        # Ignore other keys to prevent accidental trigger
-    
-    print(f"  {C.CYAN}[*] Rebooting BhasaGrid Hub...{C.RST}")
+
+    print(f"  {CY}[*] Rebooting BhasaGrid Hub...{R}")
     time.sleep(0.5)
-    # Pass --restarted flag to skip animations on reload
     os.execv(sys.executable, [sys.executable] + sys.argv + ["--restarted"])
+
+
+
+def show_cheat_sheet():
+    """Dead-simple top-10 command cheat card — easy to remember."""
+    clear_terminal()
+    P = C.PURP; B = C.BOLD; R = C.RST; CY = C.CYAN
+    GR = C.GRAY; W = C.WHT; Y = C.YEL; G = C.GRN
+
+    print(f"\n  {P}{B}{'='*54}{R}")
+    print(f"  {P}{B}    BhasaGrid — Cheat Sheet  (most used commands){R}")
+    print(f"  {P}{B}{'='*54}{R}")
+    print()
+
+    rows = [
+        ("What do you want to do?",        "Command to type",           ""),
+        ("─"*32,                            "─"*22,                       ""),
+        ("Run app on my phone",             "orbit run",                 "= orbit dev"),
+        ("Open the download portal locally","orbit portal",              "localhost:5173"),
+        ("Open both portals locally",       "orbit test",                "= orbit both"),
+        ("Deploy portal to internet",       "orbit ship",                "= firebase portal"),
+        ("Deploy everything to Firebase",   "orbit deploy",              "= firebase all"),
+        ("Check if everything is OK",       "orbit check",               "= orbit health"),
+        ("Something broken? Full rebuild",  "orbit fix",                 "= orbit fresh"),
+        ("Build Android APK (debug)",       "orbit debug",               ""),
+        ("Build Android APK (release)",     "orbit release",             ""),
+        ("Git commit / push / status",      "orbit git",                 ""),
+        ("Full production release",         "orbit all",                 "Android+Web+Firebase"),
+        ("─"*32,                            "─"*22,                       ""),
+        ("See ALL commands",                "orbit help",                ""),
+    ]
+
+    for what, cmd_str, note in rows:
+        if what.startswith("─"):
+            print(f"  {GR}{what}  {cmd_str}{R}")
+        elif what.startswith("What"):
+            print(f"  {Y}{B}{what:<34}{R}  {Y}{B}{cmd_str:<22}{R}  {Y}{B}{note}{R}")
+        else:
+            print(f"  {W}{what:<34}{R}  {CY}{B}{cmd_str:<22}{R}  {GR}{note}{R}")
+
+    print(f"\n  {P}{B}{'='*54}{R}")
+    print(f"  {Y}  Press ENTER to go back   |   [Q] to quit{R}\n")
+
+    while True:
+        choice = get_key()
+        if choice == 'q':
+            print(f"\n  {C.RED}[*] Exiting...{R}")
+            time.sleep(0.2)
+            sys.exit(0)
+        elif choice in ['\r', '\n']:
+            break
+
+    print(f"  {CY}[*] Rebooting BhasaGrid Hub...{R}")
+    time.sleep(0.5)
+    os.execv(sys.executable, [sys.executable] + sys.argv + ["--restarted"])
+
 
 def main():
     flush_input()
@@ -1893,17 +2467,11 @@ def main():
         try:
             with open(last_launch_file, "r") as f:
                 last_time = float(f.read().strip())
-                # If started again within 5 minutes, treat as a quick reload
-                if now - last_time < 300:
+                # If started again within 30 minutes, treat as a quick reload
+                if now - last_time < 1800:
                     recent_launch = True
         except:
             pass
-    
-    try:
-        with open(last_launch_file, "w") as f:
-            f.write(str(now))
-    except:
-        pass
 
     parser = argparse.ArgumentParser(description="BhasaGrid Project Manager")
     parser.add_argument("task", nargs="?", help="Task to run")
@@ -1919,9 +2487,36 @@ def main():
         if task in ["version", "--version", "-version", "-v", "--v"]:
             print(f"BhasaGrid Manager Version: {C.GRN}{VERSION}{C.RST}")
             sys.exit(0)
-        # (Task mapping remains same for CLI consistency)
+        # ── Intuitive aliases (easy to remember) ─────────────────────────
+        # orbit run    = orbit dev    (run app on phone)
+        # orbit ship   = firebase portal  (deploy portal to internet)
+        # orbit deploy = firebase (full firebase deploy)
+        # orbit test   = both portals locally
+        # orbit phone  = orbit phys
+        # orbit check  = orbit health
+        # orbit fix    = orbit fresh (clean rebuild)
+        # orbit decoy  = orbit calcx
+        ALIASES = {
+            "run":    "dev",
+            "ship":   "firebase",   # handled specially below
+            "deploy": "firebase",
+            "test":   "both",
+            "phone":  "phys",
+            "check":  "health",
+            "fix":    "fresh",
+            "decoy":  "calcx",
+            "react":  "start",
+            "prod":   "release",
+        }
+        if task in ALIASES:
+            # ship = firebase portal specifically
+            if task == "ship":
+                args.target = "portal"
+            task = ALIASES[task]
+
+        # ── Main command routing ──────────────────────────────────────────
         if task == "debug": build_android_debug()
-        elif task in ["release", "prod"]: build_android_release()
+        elif task == "release": build_android_release()
         elif task == "android": build_android_both()
         elif task == "clean": clean_android()
         elif task == "fresh": fresh_build_android()
@@ -1929,7 +2524,6 @@ def main():
         elif task == "install": install_on_device()
         elif task == "phys": debug_physical_device_workflow()
         elif task == "start": start_dev_server()
-        elif task == "react": start_dev_server()
         elif task == "portal": start_react_portal_server()
         elif task == "download": start_download_portal_server()
         elif task == "both": start_both_portals()
@@ -1939,6 +2533,11 @@ def main():
         elif task == "electron": launch_electron_dev()
         elif task == "firebase": deploy_firebase(args.target)
         elif task == "rules": deploy_firestore_rules()
+        elif task == "auth":
+            status = None
+            if args.target:
+                status = args.target.lower() in ["on", "active", "activate", "true", "1"]
+            toggle_portal_auth(status)
         elif task == "git": git_ops_menu()
         elif task == "health": check_project_health()
         elif task == "cleanup": cleanup_release()
@@ -1947,21 +2546,40 @@ def main():
         elif task == "browser": set_preferred_browser()
         elif task == "reset": reset_terminal_choice()
         elif task == "register": register_globally()
+        elif task == "backup": backup_project_config()
+        elif task == "calcx":
+            if args.target == "clean": clean_decoy_app()
+            else: install_decoy_dependencies()
         elif task == "exit": sys.exit(0)
         elif task in ["help", "h"]: show_help_shortcuts()
+        elif task in ["cheat", "quick", "ref"]: show_cheat_sheet()
         elif task == "all": full_release()
         else:
             log_event("cli", "runTask", "FAILED", f"Unknown task/command '{args.task}'")
             import difflib
-            valid_cmds = ["debug", "release", "android", "clean", "fresh", "cleandebug", "install", "phys", "start", "portal", "download", "both", "dev", "desktop", "web", "electron", "firebase", "rules", "git", "health", "cleanup", "gui", "setup", "browser", "reset", "register", "exit", "help", "all"]
-            matches = difflib.get_close_matches(task, valid_cmds, n=1)
+            all_cmds = ["debug", "release", "android", "clean", "fresh", "install",
+                        "phys", "start", "portal", "download", "both", "dev",
+                        "desktop", "web", "electron", "firebase", "rules", "git",
+                        "health", "cleanup", "gui", "setup", "browser", "reset",
+                        "register", "exit", "help", "cheat", "all", "auth",
+                        "backup", "calcx",
+                        # aliases
+                        "run", "ship", "deploy", "test", "phone", "check", "fix", "decoy"]
+            matches = difflib.get_close_matches(task, all_cmds, n=1)
             if matches:
                 print(f"  Did you mean: {C.CYAN}{matches[0]}{C.RST}?")
-            print(f"  Run {C.CYAN}orbit help{C.RST} to list all valid commands.")
+            print(f"  Run {C.CYAN}orbit cheat{C.RST} for quick reference  |  {C.CYAN}orbit help{C.RST} for all commands.")
             sys.exit(1)
         sys.exit(0)
 
     # --- INTERACTIVE HUB SYSTEM ---
+    # Register this run in the launch tracker to cache future boot sequences
+    try:
+        with open(last_launch_file, "w") as f:
+            f.write(str(now))
+    except:
+        pass
+
     if not is_restarted:
         time.sleep(0.5) # Smooth transition
     
@@ -1975,32 +2593,26 @@ def main():
         while True:
             choice = None
             flush_input()
-            clear_terminal()
-            print(f"\n  {C.BLUE}{C.BOLD}BhasaGrid PROJECT HUB{C.RST} {C.GRAY}│ v{VERSION}{C.RST}")
-            if is_admin():
-                print(f"  {C.RED}{C.BOLD}[ADMIN MODE]{C.RST} {C.GRAY}Elevated privileges active.{C.RST}")
-            print(f"  {C.GRAY}{'─' * 45}{C.RST}")
+            
+            # Rendering elegant tabbed header and clean dashboard card UI
+            print_hub_header(active_tab=current_cat)
 
             if current_cat == "HUB":
-                print(f"  {C.WHT}Select a category to explore:{C.RST}\n")
-                print(f"  {C.GRN}[A]{C.RST}  {C.WHT}Android{C.RST}             {C.GRAY}(APK builds, install to device){C.RST}")
-                print(f"  {C.PURP}[B]{C.RST}  {C.WHT}Build & Release{C.RST}     {C.GRAY}(Desktop, Web, macOS, Linux, Full Release){C.RST}")
-                print(f"  {C.BLUE}[D]{C.RST}  {C.WHT}Development{C.RST}         {C.GRAY}(Expo server, Electron testing){C.RST}")
-                print(f"  {C.CYAN}[P]{C.RST}  {C.WHT}Portals & Browsers{C.RST}  {C.GRAY}(Vite, Legacy, Browser Choice){C.RST}")
-                print(f"  {C.YEL}[O]{C.RST}  {C.WHT}Ops & Deployment{C.RST}    {C.GRAY}(Firebase, Git, Health Check){C.RST}")
-                print(f"  {C.GRAY}[X]{C.RST}  {C.WHT}Advanced Options{C.RST}    {C.GRAY}(Setup, Cleanup, Globals){C.RST}")
+                items = [
+                    f"{C.NEON_GREEN}[A] 📱  Android Console{C.RST}              {C.LIGHT_GRAY}Build debug/release APKs, install to phone{C.RST}",
+                    f"{C.NEON_PURP}[B] 🖥   Build & Release{C.RST}             {C.LIGHT_GRAY}Windows desktop apps, production web, macOS{C.RST}",
+                    f"{C.NEON_BLUE}[D] ⚙️   Development Hub{C.RST}             {C.LIGHT_GRAY}Start Expo Metro bundler, Electron local test{C.RST}",
+                    f"{C.NEON_CYAN}[P] 🌐  Portals & Browsers{C.RST}           {C.LIGHT_GRAY}Vite React/Legacy portal host, browser choice{C.RST}",
+                    f"{C.GOLD}[O] 🚀  Ops & Deployment{C.RST}              {C.LIGHT_GRAY}Firebase hosting, Firestore rules, Git sync{C.RST}",
+                    f"{C.LIGHT_GRAY}[X] 🛠   Advanced Options{C.RST}            {C.LIGHT_GRAY}Setup wizard, version self-upgrade, CalcX{C.RST}",
+                    "",
+                    f"{C.LAVENDER}[G] 💎  LAUNCH PREMIUM WEB GUI{C.RST}        {C.MINT}[Recomm. Glassmorphic Web Dashboard]{C.RST}",
+                    f"{C.ROSE}[R] 🔄  Reboot Hub console{C.RST}           {C.RED}[Q] 🚪  Quit Terminal Session{C.RST}",
+                    f"{C.NEON_YELLOW}[H] 💡  Quick Cheat Sheet{C.RST}"
+                ]
+                draw_card("NAVIGATION DASHBOARD", items, f"SELECT TAB KEY (A, B, D, P, O, X, G, R, Q, H)", color_theme=C.NEON_PURP, width=78)
                 
-                if is_admin():
-                    print(f"  {C.RED}[K]{C.RST}  {C.WHT}Kernel Shell{C.RST}        {C.GRAY}(Direct manual command entry){C.RST}")
-                else:
-                    print(f"  {C.YEL}[E]{C.RST}  {C.WHT}Elevate to Admin{C.RST}    {C.GRAY}(Restart with Administrator rights){C.RST}")
-                
-                print(f"\n  {C.BLUE}[G]{C.RST}  {C.BOLD}LAUNCH GUI CONSOLE{C.RST} {C.GRAY}(Premium Flask Interface){C.RST}")
-                print(f"  {C.CYAN}[R]{C.RST}  {C.WHT}Restart Manager{C.RST}")
-                print(f"  {C.RED}[Q]{C.RST}  {C.WHT}Quit Manager{C.RST}")
-                print(f"  {C.YEL}[H]{C.RST}  {C.WHT}Help / Shortcuts{C.RST}")
-                
-                print(f"\n  {C.BOLD}Hub >{C.RST} ", end='', flush=True)
+                print(f"\n  {C.NEON_PURP}orbit {C.NEON_CYAN}❯{C.RST} ", end='', flush=True)
                 choice = get_key()
                 
                 if choice == 'a': current_cat = "ANDROID"
@@ -2012,30 +2624,32 @@ def main():
                 elif choice == 'k': launch_system_shell()
                 elif choice == 'e': elevate_privileges()
                 elif choice == 'g': launch_gui()
-                elif choice == 'h': show_help_shortcuts()
+                elif choice == 'h': show_cheat_sheet()
                 elif choice == 'r':
                     print(f"\n  {C.CYAN}[*] Shutting down services...{C.RST}")
                     time.sleep(0.8)
                     print(f"  {C.CYAN}[*] Rebooting BhasaGrid Hub...{C.RST}")
                     time.sleep(0.7)
-                    # Pass --restarted flag to skip animations on reload
                     os.execv(sys.executable, [sys.executable] + sys.argv + ["--restarted"])
                 elif choice == 'q': break
                 continue
 
             elif current_cat == "ANDROID":
-                print(f"  {C.GRN}{C.BOLD}ANDROID{C.RST}")
-                print(f"  1. Build Debug APK")
-                print(f"  2. Build Release APK")
-                print(f"  3. Build Both APKs (Debug + Release)")
-                print(f"  4. Clean Project")
-                print(f"  5. Fresh Build (Clean + Both)")
-                print(f"  6. {C.GRN}Clean + Build Debug APK{C.RST}  {C.GRN}{C.BOLD}[RECOMMENDED FOR DEV/TESTS]{C.RST}")
-                print(f"  7. Install Debug APK to Device")
-                print(f"  8. {C.CYAN}Physical Device Debug{C.RST} (Build + Auto-Install)")
-                print(f"\n  [B] Back to Hub")
+                items = [
+                    f"{C.NEON_CYAN}1.{C.RST} {C.WHT}Build Debug APK{C.RST}             {C.GRAY}(Standard debug output){C.RST}",
+                    f"{C.NEON_CYAN}2.{C.RST} {C.WHT}Build Release APK{C.RST}           {C.GRAY}(Signed production ready){C.RST}",
+                    f"{C.NEON_CYAN}3.{C.RST} {C.WHT}Build Debug + Release{C.RST}       {C.GRAY}(Both targets cascaded){C.RST}",
+                    f"{C.NEON_CYAN}4.{C.RST} {C.WHT}Clean Project Gradle Cache{C.RST}  {C.GRAY}(Removes locks/caches){C.RST}",
+                    f"{C.NEON_CYAN}5.{C.RST} {C.WHT}Fresh Rebuild Full Chain{C.RST}    {C.GRAY}(Clean → Build both APKs){C.RST}",
+                    f"{C.NEON_GREEN}6. Clean & Build Debug APK{C.RST}        {C.NEON_BLUE}{C.BOLD}[MOST POPULAR DEV FLOW]{C.RST}",
+                    f"{C.NEON_CYAN}7.{C.RST} {C.WHT}Install APK to Phone via ADB{C.RST}   {C.GRAY}(Requires USB Debugging){C.RST}",
+                    f"{C.NEON_GREEN}8. Physical Dev Run (Build+Push){C.RST}   {C.LAVENDER}[Auto-deploy device hook]{C.RST}",
+                    "",
+                    f"{C.ROSE}[B] ⬅  Back to Navigation Dashboard{C.RST}"
+                ]
+                draw_card("ANDROID AUTOMATION WORKSPACE", items, f"PRESS KEY (1-8, B)", color_theme=C.NEON_GREEN, width=78)
                 
-                print(f"\n  {C.BOLD}Android >{C.RST} ", end='', flush=True)
+                print(f"\n  {C.NEON_GREEN}orbit {C.NEON_CYAN}❯{C.RST} ", end='', flush=True)
                 c = get_key()
                 if c == 'b': current_cat = "HUB"; continue
                 if c == '1': build_android_debug()
@@ -2053,15 +2667,18 @@ def main():
                     set_terminal_mode(False)
 
             elif current_cat == "BUILD":
-                print(f"  {C.PURP}{C.BOLD}BUILD & RELEASE{C.RST}")
-                print(f"  1. Build Windows Desktop App  {C.GRAY}(.exe){C.RST}")
-                print(f"  2. Build macOS Standalone     {C.GRAY}(.dmg){C.RST}")
-                print(f"  3. Build Linux Standalone     {C.GRAY}(.AppImage){C.RST}")
-                print(f"  4. Build Web Application      {C.GRAY}(dist/){C.RST}")
-                print(f"  5. {C.BOLD}FULL PROJECT RELEASE{C.RST}        {C.GRAY}(Android + Desktop + Web + Deploy){C.RST}")
-                print(f"\n  [B] Back to Hub")
+                items = [
+                    f"{C.NEON_CYAN}1.{C.RST} {C.WHT}Build Windows Desktop App{C.RST}     {C.GRAY}(Native Win32 portable executable){C.RST}",
+                    f"{C.NEON_CYAN}2.{C.RST} {C.WHT}Build macOS DMG Package{C.RST}       {C.GRAY}(Standalone app bundle installer){C.RST}",
+                    f"{C.NEON_CYAN}3.{C.RST} {C.WHT}Build Linux Standalone App{C.RST}    {C.GRAY}(Portable universal AppImage){C.RST}",
+                    f"{C.NEON_CYAN}4.{C.RST} {C.WHT}Build Production Web Bundle{C.RST}   {C.GRAY}(Highly optimized web dist/ assets){C.RST}",
+                    f"{C.GOLD}5. FULL CASCADE PRODUCTION RELEASE{C.RST}  {C.NEON_PINK}[Android + Desktop + Web + Cloud]{C.RST}",
+                    "",
+                    f"{C.ROSE}[B] ⬅  Back to Navigation Dashboard{C.RST}"
+                ]
+                draw_card("CROSS-PLATFORM COMPILATION ENGINE", items, f"PRESS KEY (1-5, B)", color_theme=C.NEON_PINK, width=78)
                 
-                print(f"\n  {C.BOLD}Build >{C.RST} ", end='', flush=True)
+                print(f"\n  {C.NEON_PINK}orbit {C.NEON_CYAN}❯{C.RST} ", end='', flush=True)
                 c = get_key()
                 if c == 'b': current_cat = "HUB"; continue
                 if c == '1': build_desktop()
@@ -2076,13 +2693,16 @@ def main():
                     set_terminal_mode(False)
 
             elif current_cat == "DEV":
-                print(f"  {C.BLUE}{C.BOLD}DEVELOPMENT{C.RST}")
-                print(f"  1. Start Expo Dev Server      {C.GRAY}(localhost:8081){C.RST}")
-                print(f"  2. {C.CYAN}Launch Electron Testing{C.RST}    {C.GRAY}(opens Electron → localhost:8081){C.RST}")
-                print(f"  3. Physical Device Flow       {C.GRAY}(Build + Install + Start){C.RST}")
-                print(f"\n  [B] Back to Hub")
+                items = [
+                    f"{C.NEON_CYAN}1.{C.RST} {C.WHT}Start Expo Metro Dev Server{C.RST}   {C.GRAY}(Port 8081 - Live hot-reloads){C.RST}",
+                    f"{C.NEON_CYAN}2.{C.RST} {C.WHT}Launch Electron Local Test{C.RST}    {C.GRAY}(Integrates desktop modules){C.RST}",
+                    f"{C.NEON_CYAN}3.{C.RST} {C.WHT}Physical Device Dev Flow{C.RST}      {C.GRAY}(Build APK + Install + Expo Server){C.RST}",
+                    "",
+                    f"{C.ROSE}[B] ⬅  Back to Navigation Dashboard{C.RST}"
+                ]
+                draw_card("ACTIVE DEVELOPMENT & EMULATION", items, f"PRESS KEY (1-3, B)", color_theme=C.NEON_BLUE, width=78)
                 
-                print(f"\n  {C.BOLD}Dev >{C.RST} ", end='', flush=True)
+                print(f"\n  {C.NEON_BLUE}orbit {C.NEON_CYAN}❯{C.RST} ", end='', flush=True)
                 c = get_key()
                 if c == 'b': current_cat = "HUB"; continue
                 if c == '1': start_dev_server()
@@ -2095,14 +2715,17 @@ def main():
                     set_terminal_mode(False)
 
             elif current_cat == "PORTAL":
-                print(f"  {C.CYAN}{C.BOLD}PORTALS & BROWSERS{C.RST}")
-                print(f"  1. Start React Portal         {C.GRAY}(port 5173){C.RST}")
-                print(f"  2. Start Legacy Portal        {C.GRAY}(port 5679){C.RST}")
-                print(f"  3. Start Both Portals")
-                print(f"  4. Select Preferred Browser")
-                print(f"\n  [B] Back to Hub")
+                items = [
+                    f"{C.NEON_CYAN}1.{C.RST} {C.WHT}Start React Download Portal{C.RST}   {C.MINT}[Modern Vite - Port 5173]{C.RST}",
+                    f"{C.NEON_CYAN}2.{C.RST} {C.WHT}Start Legacy Static Portal{C.RST}    {C.GRAY}[Legacy Static - Port 5679]{C.RST}",
+                    f"{C.NEON_CYAN}3.{C.RST} {C.WHT}Launch Both Portals in Dev{C.RST}    {C.GRAY}(Simultaneous test environment){C.RST}",
+                    f"{C.NEON_CYAN}4.{C.RST} {C.WHT}Configure Target Browser{C.RST}       {C.GRAY}(Incognito / specific browser select){C.RST}",
+                    "",
+                    f"{C.ROSE}[B] ⬅  Back to Navigation Dashboard{C.RST}"
+                ]
+                draw_card("PORTAL CONTROLLERS & WEBSERVER HOSTS", items, f"PRESS KEY (1-4, B)", color_theme=C.NEON_CYAN, width=78)
                 
-                print(f"\n  {C.BOLD}Portal >{C.RST} ", end='', flush=True)
+                print(f"\n  {C.NEON_CYAN}orbit {C.NEON_CYAN}❯{C.RST} ", end='', flush=True)
                 c = get_key()
                 if c == 'b': current_cat = "HUB"; continue
                 if c == '1': start_react_portal_server()
@@ -2116,20 +2739,25 @@ def main():
                     set_terminal_mode(False)
 
             elif current_cat == "OPS":
-                print(f"  {C.YEL}{C.BOLD}OPS & DEPLOYMENT{C.RST}")
-                print(f"  1. Deploy to Firebase")
-                print(f"  2. Deploy Firestore Rules Only")
-                print(f"  3. Git Operations             {C.GRAY}(Sync, Branch, Status, Reset){C.RST}")
-                print(f"  4. Project Health Check")
-                print(f"\n  [B] Back to Hub")
+                items = [
+                    f"{C.NEON_CYAN}1.{C.RST} {C.WHT}Deploy Application to Firebase{C.RST} {C.GRAY}(Hosting, Functions & Assets){C.RST}",
+                    f"{C.NEON_CYAN}2.{C.RST} {C.WHT}Deploy Firestore Security Rules{C.RST} {C.GRAY}(Rapid Firestore permissions push){C.RST}",
+                    f"{C.NEON_CYAN}3.{C.RST} {C.WHT}Toggle Portal Access Gateway{C.RST}   {C.GRAY}(Turn auth requirement ON / OFF){C.RST}",
+                    f"{C.NEON_CYAN}4.{C.RST} {C.WHT}Interactive Version Git Menu{C.RST}   {C.GRAY}(Commits, push, branch, sync status){C.RST}",
+                    f"{C.NEON_CYAN}5.{C.RST} {C.WHT}Run Project Diagnostic Audit{C.RST}   {C.GRAY}(Ports, environment vars, integrity){C.RST}",
+                    "",
+                    f"{C.ROSE}[B] ⬅  Back to Navigation Dashboard{C.RST}"
+                ]
+                draw_card("OPERATIONS, DEPLOYMENT & SYSTEMS CLOUD", items, f"PRESS KEY (1-5, B)", color_theme=C.GOLD, width=78)
                 
-                print(f"\n  {C.BOLD}Ops >{C.RST} ", end='', flush=True)
+                print(f"\n  {C.GOLD}orbit {C.NEON_CYAN}❯{C.RST} ", end='', flush=True)
                 c = get_key()
                 if c == 'b': current_cat = "HUB"; continue
                 if c == '1': deploy_firebase()
                 elif c == '2': deploy_firestore_rules()
-                elif c == '3': git_ops_menu()
-                elif c == '4': check_project_health()
+                elif c == '3': toggle_portal_auth()
+                elif c == '4': git_ops_menu()
+                elif c == '5': check_project_health()
                 
                 if c: 
                     set_terminal_mode(True)
@@ -2137,18 +2765,23 @@ def main():
                     set_terminal_mode(False)
 
             elif current_cat == "ADV":
-                print(f"  {C.GRAY}{C.BOLD}ADVANCED TOOLS & CALCX{C.RST}")
-                print(f"  1. Launch GUI Project Console")
-                print(f"  2. Launch Setup Wizard")
-                print(f"  3. Cleanup Release Folder")
-                print(f"  4. Reset Terminal Choice")
-                print(f"  5. Register Manager Globally  {C.GRAY}(command: orbit){C.RST}")
-                print(f"  6. Upgrade Manager Version / Self-Config")
-                print(f"  7. {C.YEL}Start CalcX Expo Server{C.RST}        {C.GRAY}(Standalone Master Calculator){C.RST}")
-                print(f"  8. {C.CYAN}Switch Project Environment (Dev/Prod){C.RST}")
-                print(f"\n  [B] Back to Hub")
+                items = [
+                    f"{C.NEON_CYAN}1.{C.RST} {C.WHT}Open Legacy Desktop GUI{C.RST}        {C.GRAY}(Native Tkinter Windows app window){C.RST}",
+                    f"{C.NEON_CYAN}2.{C.RST} {C.WHT}Launch Initial Setup Wizard{C.RST}    {C.GRAY}(Deletes configs & rebuilds settings){C.RST}",
+                    f"{C.NEON_CYAN}3.{C.RST} {C.WHT}Cleanup Old Dist/Release Folders{C.RST}{C.GRAY}(Reclaims hard drive space){C.RST}",
+                    f"{C.NEON_CYAN}4.{C.RST} {C.WHT}Reset Global Terminal Choice{C.RST}    {C.GRAY}(Resets window launch options){C.RST}",
+                    f"{C.NEON_CYAN}5.{C.RST} {C.WHT}Register 'orbit' Globally{C.RST}      {C.GRAY}(Adds PATH hook to run from anywhere){C.RST}",
+                    f"{C.NEON_CYAN}6.{C.RST} {C.WHT}Upgrade Version & Self-Config{C.RST}   {C.GRAY}(Modifies source file version hook){C.RST}",
+                    f"{C.NEON_CYAN}7.{C.RST} {C.WHT}Start CalcX Decoy Expo Server{C.RST}  {C.GRAY}(Calculator disguise app dev host){C.RST}",
+                    f"{C.NEON_CYAN}8.{C.RST} {C.WHT}Switch Project Stealth Level{C.RST}   {C.GRAY}(Dev/Stealth environment stealth swap){C.RST}",
+                    f"{C.NEON_CYAN}9.{C.RST} {C.WHT}Clean & Install CalcX Decoy{C.RST}    {C.GRAY}(Calculator build cascade wipe){C.RST}",
+                    f"{C.NEON_CYAN}0.{C.RST} {C.WHT}Backup System Env Configs{C.RST}      {C.GRAY}(Saves active setups into single ZIP){C.RST}",
+                    "",
+                    f"{C.ROSE}[B] ⬅  Back to Navigation Dashboard{C.RST}"
+                ]
+                draw_card("SYSTEM KERNEL & ADVANCED DIAGNOSTICS", items, f"PRESS KEY (0-9, B)", color_theme=C.LIGHT_GRAY, width=78)
                 
-                print(f"\n  {C.BOLD}Advanced >{C.RST} ", end='', flush=True)
+                print(f"\n  {C.LIGHT_GRAY}orbit {C.NEON_CYAN}❯{C.RST} ", end='', flush=True)
                 c = get_key()
                 if c == 'b': current_cat = "HUB"; continue
                 if c == '1': launch_tkinter_gui()
@@ -2163,11 +2796,27 @@ def main():
                     choice = ask_server_terminal("CalcX Master Calculator")
                     if choice == '1':
                         print(f"{C.CYAN}Starting in current terminal. Press Ctrl+C to stop.{C.RST}")
-                        subprocess.call(["npm", "start"], cwd=calc_dir, shell=True)
+                        p = subprocess.Popen(["npm", "start"], cwd=calc_dir, shell=True)
+                        register_active_service("CalcX Decoy Server", p.pid)
+                        try:
+                            p.wait()
+                        except KeyboardInterrupt:
+                            p.terminate()
+                        unregister_active_service("CalcX Decoy Server")
                     else:
-                        print("Launching in a new window...")
-                        cmd = f'start cmd /k "cd /d \"{calc_dir}\" && npm start"'
-                        os.system(cmd)
+                        print("Launching in a new console window...")
+                        if os.name == 'nt':
+                            p = subprocess.Popen(
+                                ["cmd.exe", "/k", "npm start"],
+                                cwd=calc_dir,
+                                creationflags=subprocess.CREATE_NEW_CONSOLE
+                            )
+                        else:
+                            p = subprocess.Popen(
+                                ["gnome-terminal", "--", "bash", "-c", f"cd '{calc_dir}' && npm start"],
+                                start_new_session=True
+                            )
+                        register_active_service("CalcX Decoy Server", p.pid)
                         print(f"\n[SUCCESS] CalcX Expo server launched in new window.")
                 elif c == '8':
                     print("\n--- [SWITCH ENVIRONMENT] ---")
@@ -2189,8 +2838,15 @@ def main():
                             print(f"  {C.RED}Error updating .env: {e}{C.RST}")
                     else:
                         print(f"  {C.RED}.env file not found in {UNIVERSAL_DIR}!{C.RST}")
+                elif c == '9':
+                    clean_decoy_app()
+                elif c == '0':
+                    backup_project_config()
                 
-                if c: input(f"\n  {C.GRAY}Press Enter to continue...{C.RST}")
+                if c: 
+                    set_terminal_mode(True)
+                    input(f"\n  {C.GRAY}Press Enter to continue...{C.RST}")
+                    set_terminal_mode(False)
 
             # Final safety check to prevent loop runaway
             if not choice and current_cat == "HUB":

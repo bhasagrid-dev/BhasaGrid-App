@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Firebase: Deploy Download Portal",
+      "type": "shell",
+      "command": "firebase",
+      "args": ["deploy", "--only", "hosting", "--project", "innerorbit-portal"],
+      "options": {
+        "cwd": "${workspaceFolder}/download-portal"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Firebase: Deploy Main Web App",
+      "type": "shell",
+      "command": "firebase",
+      "args": ["deploy", "--only", "hosting", "--project", "innerorbit-bc8ce"],
+      "options": {
+        "cwd": "${workspaceFolder}/bhasagrid-universal"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ]
+}

@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <a href="index.html" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-color), var(--accent-hover, var(--accent-orange))); border: none; box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);">Download Portal</a>
-                <a href="https://github.com/bhasagrid-dev/BhasaGrid-Project" class="btn-secondary">GitHub</a>
+                <a href="https://github.com/bhasagrid-dev/BhasaGrid-App" class="btn-secondary">GitHub</a>
             </div>
         </div>
     </header>
@@ -107,9 +107,9 @@
                     <h5 class="nav-group-title">Core Features</h5>
                     <ul class="nav-group-list">
                         <li>
-                            <a href="#camouflage" class="nav-link">3. Secure Communications</a>
+                            <a href="#multilingual" class="nav-link">3. Multilingual Privacy</a>
                             <ul class="sidebar-subnav">
-                                <li><a href="#camouflage" class="subnav-link">Stealth Camouflage</a></li>
+                                <li><a href="#multilingual" class="subnav-link">Indic & Sarvam AI</a></li>
                                 <li><a href="#sealed-sender" class="subnav-link">Sealed-Sender Sync</a></li>
                                 <li><a href="#media-vault" class="subnav-link">3-Layer Media Vault</a></li>
                             </ul>
@@ -137,7 +137,16 @@
                             <ul class="sidebar-subnav">
                                 <li><a href="#auth-hygiene" class="subnav-link">Credential Hygiene</a></li>
                                 <li><a href="#faq" class="subnav-link">Frequently Asked FAQ</a></li>
-                                <li><a href="#troubleshooting" class="subnav-link">Troubleshooting</a></li>
+                    <h5 class="nav-group-title">Terminal Install</h5>
+                    <ul class="nav-group-list">
+                        <li>
+                            <a href="#terminal-install" class="nav-link">7. Terminal Installation</a>
+                            <ul class="sidebar-subnav">
+                                <li><a href="#terminal-install" class="subnav-link">Overview</a></li>
+                                <li><a href="#terminal-windows" class="subnav-link">Windows</a></li>
+                                <li><a href="#terminal-linux" class="subnav-link">Linux / macOS</a></li>
+                                <li><a href="#terminal-android" class="subnav-link">Android Termux</a></li>
+                                <li><a href="#terminal-commands" class="subnav-link">CLI Commands</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -250,7 +259,7 @@
                 <!-- 2.2 Android & Hermes -->
                 <section id="android-hermes" class="doc-section">
                     <h2>Android Stabilization & Hermes Engine</h2>
-                    <p>Android platforms leverage the performance-oriented Hermes JavaScript engine, which has historically lacked full WebAssembly and cryptographic primitives.</p>
+                    <p>Android platforms leverage the performance-oriented Hermes JavaScript engine, which has historically lacked full WebAssembly and cryptographic primitives. Read more about <a href="https://reactnative.dev/docs/hermes" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">React Native's Hermes Engine</a> for compilation benefits, and check the <a href="https://developer.android.com/privacy-and-security/keystore" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">Android Keystore System & StrongBox API</a> for physical key insulation details.</p>
 
                     <h3>WASM Lazy Silencing Shims</h3>
                     <p>To avoid crashes when importing heavy cryptographic libraries, `libsodium-wrappers` are lazily initialized. The app shims the global WebAssembly context via `firebase-polyfills.js` and suppresses console warning logs during fallback evaluation.</p>
@@ -274,7 +283,7 @@ if (typeof WebAssembly === 'undefined') {
                 <!-- 2.3 Web & Electron -->
                 <section id="web-desktop" class="doc-section">
                     <h2>Web Portal & Electron Desktop Shell</h2>
-                    <p>The desktop wraps the Web client inside an Electron shell to allow background integration.</p>
+                    <p>The desktop wraps the Web client inside an Electron shell to allow background integration. Developers should consult the official <a href="https://www.electronjs.org/docs/latest/tutorial/security" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">Electron Security Best Practices</a> and the W3C <a href="https://www.w3.org/TR/WebCryptoAPI/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">Web Cryptography API Specification</a> for browser-native SubtleCrypto details.</p>
                     <ul class="feature-list">
                         <li><strong>System Tray Minimization:</strong> The Electron wrapper intercepts window close calls and hides the process to the system tray, keeping secure listeners active.</li>
                         <li><strong>Web Crypto API:</strong> Web clients use browser-native `SubtleCrypto` for hardware-accelerated AES-GCM operations.</li>
@@ -284,23 +293,23 @@ if (typeof WebAssembly === 'undefined') {
 
                 <hr class="section-divider">
 
-                <!-- 3.1 Stealth Camouflage -->
-                <section id="camouflage" class="doc-section">
-                    <h2>Secure Communications: Calculator Camouflage</h2>
-                    <p>To protect users against physical search or coercive inspection, mobile clients camouflage themselves as utility games or calculators.</p>
+                <!-- 3.1 Multilingual Privacy & Indic Dialects -->
+                <section id="multilingual" class="doc-section">
+                    <h2>Multilingual Privacy & Indian Language Support</h2>
+                    <p>Designed specifically for India’s multilingual demographic, BhasaGrid enables natural, private, and secure regional communication across major Indian scripts while protecting metadata and user credentials. Learn about the underlying AI language models on the <a href="https://www.sarvam.ai/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">Sarvam AI Platform</a> and discover India's national language translation initiative at the <a href="https://bhashini.gov.in/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">Bhashini Translation Portal</a>.</p>
                     
                     <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
                         <div class="feature-item" style="padding: 1.5rem;">
-                            <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">1. CalcX Disguise</h4>
-                            <p style="font-size: 0.9rem; margin-bottom: 0;">Presents a fully functional scientific calculator UI with complex evaluation logic. Access requires entering a customizable secret sequence (e.g. `7331 =`).</p>
+                            <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">1. Multilingual Accessibility</h4>
+                            <p style="font-size: 0.9rem; margin-bottom: 0;">Integrates real-time, lightweight script transliteration and bidirectional translation directly within chats. Supports composition of messages in Devanagari, Bengali, Tamil, Telugu, and other regional scripts.</p>
                         </div>
                         <div class="feature-item" style="padding: 1.5rem;">
-                            <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">2. Interactive Game Decoys</h4>
-                            <p style="font-size: 0.9rem; margin-bottom: 0;">Optionally configures playable decoders like Ludo, Guess Number, or Tic-Tac-Toe. Unlocking requires a triple-tap gesture on configured UI coordinates.</p>
+                            <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">2. Sarvam AI Multilingual Integration</h4>
+                            <p style="font-size: 0.9rem; margin-bottom: 0;">Integrates Sarvam AI’s advanced language models directly within the chat architecture to power dialect-aware voice translation, regional speech synthesis, and contextual native keyboard assistance.</p>
                         </div>
                         <div class="feature-item" style="padding: 1.5rem;">
-                            <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">3. Decoy Emergency Profiles</h4>
-                            <p style="font-size: 0.9rem; margin-bottom: 0;">Supports a configured "Decoy PIN" that opens a completely clean, empty dummy profile with mock messaging feeds to handle emergency inspections.</p>
+                            <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">3. Real-Time Secure Messaging</h4>
+                            <p style="font-size: 0.9rem; margin-bottom: 0;">Engineered with a lightweight real-time delivery protocol that operates seamlessly on low-bandwidth networks while preserving full cryptographic integrity.</p>
                         </div>
                     </div>
                 </section>
@@ -310,7 +319,7 @@ if (typeof WebAssembly === 'undefined') {
                 <!-- 3.2 Sealed-Sender Sync -->
                 <section id="sealed-sender" class="doc-section">
                     <h2>Sealed-Sender Messaging & Real-time Synchronization</h2>
-                    <p>To mask metadata, BhasaGrid utilizes Sealed-Sender envelopes when writing data to real-time streams.</p>
+                    <p>To mask metadata, BhasaGrid utilizes Sealed-Sender envelopes when writing data to real-time streams. For details on how sender identity encapsulation prevents transport metadata tracking, refer to the <a href="https://signal.org/blog/sealed-sender/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">Signal Technology Blog: Sealed Sender</a>.</p>
                     
                     <div class="code-block-wrapper">
                         <div class="code-header">
@@ -335,7 +344,7 @@ if (typeof WebAssembly === 'undefined') {
                 <!-- 3.3 Media Vault -->
                 <section id="media-vault" class="doc-section">
                     <h2>3-Layer Media Vault Pipeline</h2>
-                    <p>High-resolution 4K media undergoes a Zero-Knowledge 3-Layer pipeline prior to cloud transmission. All operations are capped at a strict <strong>100MB limit</strong> to protect memory bounds.</p>
+                    <p>High-resolution 4K media undergoes a Zero-Knowledge 3-Layer pipeline prior to cloud transmission. All operations are capped at a strict <strong>100MB limit</strong> to protect memory bounds. Technical specifications can be reviewed at the <a href="https://pq-crystals.org/kyber/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">PQ-Crystals Kyber Specification</a> and the IETF draft for the <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">AEGIS Encryption Algorithm</a>.</p>
                     
                     <div class="steps-container" style="margin-top: 1.5rem;">
                         <div class="step">
@@ -413,6 +422,25 @@ if (typeof WebAssembly === 'undefined') {
                             </tbody>
                         </table>
                     </div>
+                    
+                    <div style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent-color); border-radius: 4px; font-size: 0.9rem; line-height: 1.6;">
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">📚 Cryptographic Standards & Reference Specifications:</strong>
+                        <p style="margin-bottom: 0.75rem;">To learn more about the formal mathematical proofs, specifications, and security analyses behind our encryption primitives, refer to the official documentation from these peer-reviewed, industry-standard sources:</p>
+                        <ul style="margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-secondary);">
+                            <li>
+                                <strong>Double Ratchet Algorithm:</strong> Review the official <a href="https://signal.org/docs/specifications/doubleratchet/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">Signal Protocol Specification</a>, detailing the Diffie-Hellman ratchet and key derivation chains.
+                            </li>
+                            <li>
+                                <strong>Post-Quantum Cryptography (ML-KEM & PQXDH):</strong> Refer to the <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">NIST Post-Quantum Cryptography Standardization Project</a>, describing the ML-KEM lattice-based key encapsulation algorithm.
+                            </li>
+                            <li>
+                                <strong>AES-GCM-SIV (Nonce-Reuse Resistant):</strong> Review the <a href="https://tools.ietf.org/html/rfc8452" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">IETF RFC 8452 Specification</a>, outlining AEAD construction and synthetic initialization vectors (SIV).
+                            </li>
+                            <li>
+                                <strong>ChaCha20-Poly1305 Stream Cipher:</strong> Review the <a href="https://tools.ietf.org/html/rfc7539" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">IETF RFC 7539 Specification</a>, documenting the high-performance software stream cipher configuration.
+                            </li>
+                        </ul>
+                    </div>
                 </section>
 
                 <hr class="section-divider">
@@ -420,7 +448,7 @@ if (typeof WebAssembly === 'undefined') {
                 <!-- 4.2 CTR Recovery -->
                 <section id="ctr-recovery" class="doc-section">
                     <h2>Cross-Platform Decryption & CTR Recovery</h2>
-                    <p>To maintain backward compatibility with old web messages that wrote a dummy AES-GCM tag (due to library limits), native clients implement a cascading CTR Recovery solver.</p>
+                    <p>To maintain backward compatibility with old web messages that wrote a dummy AES-GCM tag (due to library limits), native clients implement a cascading CTR Recovery solver. For deep-dives into block cipher mode standards, see the <a href="https://csrc.nist.gov/publications/detail/sp/800-38a/final" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">NIST Special Publication 800-38A</a> detailing block cipher modes of operation.</p>
 
                     <h3>Combination Cascade</h3>
                     <p>If decryption fails, the recovery block attempts <strong>3 key styles × 4 IV padding strategies = 12 combined attempts</strong> to decrypt old shims safely:</p>
@@ -445,7 +473,7 @@ const ivPaddingOptions = [
                 <!-- 4.3 Memory Wiping -->
                 <section id="memory-wipe" class="doc-section">
                     <h2>Zero-Leak RAM Shredding & Memory Hygiene</h2>
-                    <p>To defend against physical RAM forensic dumps, BhasaGrid utilizes memory shredding for volatile credentials.</p>
+                    <p>To defend against physical RAM forensic dumps, BhasaGrid utilizes memory shredding for volatile credentials. Review the industry guidelines on dynamic RAM memory clearance under the <a href="https://mas.owasp.org/MASVS/04-MASVS-CRYPTO/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline;">OWASP Mobile Application Security Verification Standard (MASVS-CRYPTO)</a>.</p>
 
                     <div class="steps-container">
                         <div class="step">
@@ -481,69 +509,159 @@ export function secureWipe(buffer: Uint8Array): void {
 
                 <hr class="section-divider">
 
-                <!-- 5.1 Credential Hygiene -->
-                <section id="auth-hygiene" class="doc-section">
-                    <h2>Support & FAQ: Credential Hygiene & Auth UX</h2>
-                    <p>To avoid security lockouts, BhasaGrid uses a unified identity model combining password recovery with Google OAuth account linking.</p>
-                    
-                    <ul class="feature-list">
-                        <li><strong>Plain-Text Queryable Invariant:</strong> To allow contact locator queries, the 4-digit social handle `userId` is queryable in plain text on Firestore, while critical validation PINs are always encrypted under `v5.5`.</li>
-                        <li><strong>Lazy Profile Migration:</strong> The system transparently checks database profiles on login, auto-migrating and updating plain credentials to `v5.5` standards.</li>
-                        <li><strong>Account Linking Nudges:</strong> Users authenticated with Google OAuth are optionally nudged via non-blocking modals (`AccountLinkModal.js`) to set a secondary password for secure recovery.</li>
-                    </ul>
-                </section>
+                <!-- 7. Terminal Installation -->
+                <section id="terminal-install" class="doc-section">
+                    <h2>Terminal Installation</h2>
+                    <p>BhasaGrid can be installed directly from any terminal — Windows PowerShell, Linux/macOS Bash, or Android Termux — using the <strong>BhasaGrid CLI</strong>. Users run a single bootstrap command once; after that, the <code>bhasagrid</code> command is available globally on their system.</p>
 
-                <hr class="section-divider">
+                    <div class="alert-box" style="margin: 1.5rem 0; background: rgba(168, 85, 247, 0.04); border-color: rgba(168, 85, 247, 0.2); padding: 1.25rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--accent-color);">⚡ How It Works</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">The bootstrap script automatically installs Node.js (if not present) and the BhasaGrid CLI via npm. After that, running <code>bhasagrid --install</code> launches an interactive guided installer: terms acceptance, account authentication, path selection, animated download, and post-install options — all inside the terminal.</p>
+                    </div>
 
-                <!-- 5.2 FAQ -->
-                <section id="faq" class="doc-section">
-                    <h2>Frequently Asked Questions</h2>
-                    
-                    <div class="faq-list">
-                        <details class="faq-item">
-                            <summary>How is my 4-digit User ID different from my private login PIN?</summary>
-                            <div class="faq-content">
-                                <p>Your <strong>User ID</strong> is a public social address handle used by contacts to find you on Firestore. Your <strong>PIN</strong> is a private validation credential that is encrypted client-side and never shared or queried in plain text.</p>
+                    <div class="steps-container" style="margin-top: 1.5rem;">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Bootstrap (One-Time)</h3>
+                                <p>Paste a single command in your terminal. It sets up Node.js and the <code>bhasagrid</code> CLI automatically.</p>
                             </div>
-                        </details>
-                        <details class="faq-item">
-                            <summary>Can I decrypt old messages across different devices?</summary>
-                            <div class="faq-content">
-                                <p>Yes. The clients integrate a multi-strategy GCM-to-CTR legacy recovery cascade. If standard GCM decryption fails, the recovery solver tries 12 key-IV combinations to gracefully unwrap older format envelopes.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Accept Terms &amp; Sign In</h3>
+                                <p>Review and accept the Terms of Service, then authenticate with your BhasaGrid portal account (same email &amp; password as <a href="index.html" style="color: var(--accent-color);">bhasagrid.in</a>).</p>
                             </div>
-                        </details>
-                        <details class="faq-item">
-                            <summary>How does the memory-leak secure wiping protect me?</summary>
-                            <div class="faq-content">
-                                <p>Usually, data typed into inputs stays in your device's memory (RAM) for long periods. BhasaGrid bypasses this by storing inputs as mutable Uint8Arrays and physically zeroing out (`secureWipe`) the buffers as soon as operations complete, resisting forensic hardware extraction.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Choose Path &amp; Download</h3>
+                                <p>Select your install path (default: <code>C:\Program Files\BhasaGrid</code>) and watch the animated download progress bar with real-time speed and ETA.</p>
                             </div>
-                        </details>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>Post-Install Options</h3>
+                                <p>Choose to launch BhasaGrid immediately, create a desktop shortcut, and/or add it to system startup — exactly like a native installer.</p>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
                 <hr class="section-divider">
 
-                <!-- 5.3 Troubleshooting -->
-                <section id="troubleshooting" class="doc-section">
-                    <h2>Troubleshooting Matrix</h2>
-                    <p>Quick operational checks to solve synchronization or connection anomalies.</p>
-                    
-                    <div class="troubleshooting-items">
-                        <div class="troubleshooting-item">
-                            <h3>❌ 🔒 [Native Legacy Fail] Error</h3>
-                            <p><strong>Description:</strong> Indicates GCM decryption rejected a message due to a bad authentication tag.</p>
-                            <p><strong>Solution:</strong> The fallback recovery block should trigger automatically. If it fails, check the key-length variables in local logs, restart the application to pull updated peer capabilities, and re-sync.</p>
-                        </div>
-                        <div class="troubleshooting-item">
-                            <h3>❌ Grey Lock or Empty Encrypted Text</h3>
-                            <p><strong>Description:</strong> The envelope was decrypted successfully, but the inner sealed-sender JSON failed to parse.</p>
-                            <p><strong>Solution:</strong> Ensure your client is updated to the `v5.5` baseline. Verify that the envelope payload starts with the correct sealed structure `{"s":...,"m":...}`.</p>
-                        </div>
-                        <div class="troubleshooting-item">
-                            <h3>❌ Metro Logs Disconnected</h3>
-                            <p><strong>Description:</strong> Connection dropped after native clients backgrounded.</p>
-                            <p><strong>Solution:</strong> Tap the screen to foreground the client. The auto-resume hook in `auth-context.js` will send a WebSocket ping to re-establish connections.</p>
-                        </div>
+                <!-- 7.1 Windows -->
+                <section id="terminal-windows" class="doc-section">
+                    <h2>Terminal Install: Windows</h2>
+                    <p>Supported on <strong>PowerShell</strong> and <strong>Command Prompt</strong>. Open PowerShell and run:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-header"><span>PowerShell — One-Time Bootstrap</span></div>
+                        <pre><code class="language-powershell">irm https://bhasagrid.in/get.ps1 | iex</code></pre>
+                    </div>
+
+                    <p style="margin-top: 1.25rem;">After bootstrap completes, the <code>bhasagrid</code> command is available in any new terminal window:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-header"><span>PowerShell / Command Prompt — Install App</span></div>
+                        <pre><code class="language-powershell">bhasagrid --install</code></pre>
+                    </div>
+
+                    <div style="margin-top: 1.25rem; padding: 1rem; background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent-color); border-radius: 4px; font-size: 0.875rem; line-height: 1.6;">
+                        <strong style="color: var(--text-primary);">Note:</strong> The bootstrap script will automatically install <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">Node.js LTS</a> via <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">winget</a> if it is not already present on your system. No manual setup required.
+                    </div>
+                </section>
+
+                <hr class="section-divider">
+
+                <!-- 7.2 Linux / macOS -->
+                <section id="terminal-linux" class="doc-section">
+                    <h2>Terminal Install: Linux &amp; macOS</h2>
+                    <p>Supported on any POSIX-compatible shell (bash, zsh). Run the following in your terminal:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-header"><span>Bash / Zsh — One-Time Bootstrap</span></div>
+                        <pre><code class="language-bash">curl -fsSL https://bhasagrid.in/get | bash</code></pre>
+                    </div>
+
+                    <p style="margin-top: 1.25rem;">Then install:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-header"><span>Linux / macOS — Install App</span></div>
+                        <pre><code class="language-bash">bhasagrid --install</code></pre>
+                    </div>
+
+                    <div style="margin-top: 1.25rem; padding: 1rem; background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent-color); border-radius: 4px; font-size: 0.875rem; line-height: 1.6;">
+                        <strong style="color: var(--text-primary);">macOS:</strong> Node.js is installed via <a href="https://brew.sh/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">Homebrew</a> if not present. <strong style="color: var(--text-primary);">Linux:</strong> Installed via <a href="https://github.com/nvm-sh/nvm" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">nvm (Node Version Manager)</a>.
+                    </div>
+                </section>
+
+                <hr class="section-divider">
+
+                <!-- 7.3 Android Termux -->
+                <section id="terminal-android" class="doc-section">
+                    <h2>Terminal Install: Android Termux</h2>
+                    <p>BhasaGrid can be sideloaded on Android via <a href="https://termux.dev/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">Termux</a>, the Android terminal emulator. First install Termux from <a href="https://f-droid.org/packages/com.termux/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">F-Droid</a>, then run:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-header"><span>Termux — One-Time Bootstrap</span></div>
+                        <pre><code class="language-bash">curl -fsSL https://bhasagrid.in/get | bash</code></pre>
+                    </div>
+
+                    <div class="code-block-wrapper" style="margin-top: 1rem;">
+                        <div class="code-header"><span>Termux — Download &amp; Install APK</span></div>
+                        <pre><code class="language-bash">bhasagrid --install</code></pre>
+                    </div>
+
+                    <p style="margin-top: 1.25rem;">The CLI will download the latest <code>.apk</code> and open it with the Android system installer. Make sure <strong>"Install from Unknown Sources"</strong> is enabled for Termux in Android Settings → Apps → Termux → Install Unknown Apps.</p>
+
+                    <div style="margin-top: 1.25rem; padding: 1rem; background: rgba(255,193,7,0.05); border-left: 3px solid #f59e0b; border-radius: 4px; font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary);">
+                        <strong style="color: #f59e0b;">⚠ iOS Notice:</strong> Terminal installation is <strong>not supported on iPhone</strong> due to Apple's App Store sandbox restrictions. BhasaGrid for iOS will be available via <a href="https://testflight.apple.com/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">TestFlight</a> or the App Store in a future release.
+                    </div>
+                </section>
+
+                <hr class="section-divider">
+
+                <!-- 7.4 CLI Commands -->
+                <section id="terminal-commands" class="doc-section">
+                    <h2>CLI Reference</h2>
+                    <p>Once the BhasaGrid CLI is installed, the following commands are available in any terminal:</p>
+
+                    <div style="overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <table style="width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.01);">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-color); background: rgba(255,255,255,0.02);">
+                                    <th style="padding: 12px 16px; text-align: left; color: var(--accent-color); font-weight: 600;">Command</th>
+                                    <th style="padding: 12px 16px; text-align: left; color: var(--accent-color); font-weight: 600;">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 12px 16px; font-family: monospace; font-size: 0.9rem;">bhasagrid --install</td>
+                                    <td style="padding: 12px 16px;">Download &amp; install BhasaGrid (guided interactive flow)</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 12px 16px; font-family: monospace; font-size: 0.9rem;">bhasagrid --version</td>
+                                    <td style="padding: 12px 16px;">Show the currently installed CLI version</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 12px 16px; font-family: monospace; font-size: 0.9rem;">bhasagrid --check</td>
+                                    <td style="padding: 12px 16px;">Check if a newer version is available</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 16px; font-family: monospace; font-size: 0.9rem;">bhasagrid --help</td>
+                                    <td style="padding: 12px 16px;">Display all available commands and links</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 1.25rem; padding: 1rem; background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent-color); border-radius: 4px; font-size: 0.875rem; line-height: 1.6;">
+                        <strong style="color: var(--text-primary);">Already have Node.js?</strong> Skip the bootstrap entirely and install directly via npm:<br>
+                        <code style="display: inline-block; margin-top: 0.5rem; padding: 0.25rem 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px;">npm install -g bhasagrid</code>
                     </div>
                 </section>
 
@@ -622,24 +740,23 @@ export function secureWipe(buffer: Uint8Array): void {
                         <li><a href="#mobile-guide">Universal Core</a></li>
                         <li><a href="#android-hermes">Android & Hermes</a></li>
                         <li><a href="#web-desktop">Web & Electron</a></li>
-                        <li><a href="#camouflage">Stealth Camouflage</a></li>
+                        <li><a href="#multilingual">Indic & Sarvam AI</a></li>
                         <li><a href="#sealed-sender">Sealed-Sender Sync</a></li>
                         <li><a href="#media-vault">3-Layer Media Vault</a></li>
                         <li><a href="#cascading-stack">Encryption Stack</a></li>
                         <li><a href="#ctr-recovery">CTR Recovery Primes</a></li>
                         <li><a href="#memory-wipe">RAM Shredding Hygiene</a></li>
+                        <li><a href="#terminal-install">Terminal Install</a></li>
+                        <li><a href="#terminal-windows">→ Windows</a></li>
+                        <li><a href="#terminal-linux">→ Linux / macOS</a></li>
+                        <li><a href="#terminal-android">→ Android Termux</a></li>
+                        <li><a href="#terminal-commands">→ CLI Commands</a></li>
                     </ul>
                 </div>
             </aside>
         </main>
     </div>
 
-    <!-- Footer (Matching portal) -->
-    <footer class="bg-footer" style="background: #1e293b; border-top: 1px solid rgba(168, 85, 247, 0.2); padding: 2rem; text-align: center; color: #94a3b8; font-size: 0.875rem;">
-        <div class="container">
-            <p>&copy; 2026 BhasaGrid. All rights reserved. Privacy First, Always.</p>
-        </div>
-    </footer>
 
     <!-- Scripts -->
     <script>
@@ -795,6 +912,7 @@ export function secureWipe(buffer: Uint8Array): void {
             });
 
             // 3. Highlight Parent Left Sidebar Primary Link
+            let activePrimaryLink = null;
             if (activeSubLink) {
                 const parentGroup = activeSubLink.closest('.nav-group-list > li');
                 if (parentGroup) {
@@ -802,7 +920,34 @@ export function secureWipe(buffer: Uint8Array): void {
                     primaryLinks.forEach(link => link.classList.remove('active'));
                     if (primaryLink) {
                         primaryLink.classList.add('active');
+                        activePrimaryLink = primaryLink;
                     }
+                }
+            }
+
+            // 4. Auto-scroll left sidebar to keep the active link visible
+            const targetForScroll = activeSubLink || activePrimaryLink;
+            if (targetForScroll && window.lastActiveLink !== targetForScroll) {
+                window.lastActiveLink = targetForScroll;
+                targetForScroll.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // 5. Update Dynamic Sticky Breadcrumb text in real-time
+            if (activeSubLink) {
+                const parentNavGroup = activeSubLink.closest('.nav-group');
+                const groupTitle = parentNavGroup ? parentNavGroup.querySelector('.nav-group-title').innerText : '';
+                const activeText = activeSubLink.innerText;
+                const breadcrumbElement = document.querySelector('.breadcrumb');
+                if (breadcrumbElement && groupTitle && activeText) {
+                    breadcrumbElement.innerText = `${groupTitle} / ${activeText}`;
+                }
+            } else if (activePrimaryLink) {
+                const parentNavGroup = activePrimaryLink.closest('.nav-group');
+                const groupTitle = parentNavGroup ? parentNavGroup.querySelector('.nav-group-title').innerText : '';
+                const activeText = activePrimaryLink.innerText;
+                const breadcrumbElement = document.querySelector('.breadcrumb');
+                if (breadcrumbElement && groupTitle && activeText) {
+                    breadcrumbElement.innerText = `${groupTitle} / ${activeText}`;
                 }
             }
         });
@@ -817,7 +962,7 @@ export function secureWipe(buffer: Uint8Array): void {
             function updateTheme(theme) {
                 document.documentElement.setAttribute('data-theme', theme);
                 localStorage.setItem('bhasagrid-theme', theme);
-                toggleBtn.setAttribute('data-tooltip', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+                toggleBtn.setAttribute('data-tooltip', theme === 'dark' ? 'Dark Mode' : 'Light Mode');
                 
                 if (theme === 'dark') {
                     indicator.style.left = '36px';

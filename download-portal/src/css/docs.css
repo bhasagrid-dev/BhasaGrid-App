@@ -279,12 +279,21 @@ a {
 }
 
 .breadcrumb {
-    font-size: 0.8rem;
-    color: var(--text-tertiary);
-    margin-bottom: 1.5rem;
-    font-weight: 500;
+    font-size: 0.775rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
+    position: sticky;
+    top: var(--header-height);
+    background: var(--bg-body);
+    padding: 0.85rem 0.5rem;
+    z-index: 10;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 /* Typography Polish */

@@ -69,7 +69,7 @@
     }
 
     // State
-    let isOffline = !navigator.onLine;
+    let isOffline = false; // Start assuming online, let verifyConnection confirm it
     let isSlow = false;
     let isBackOnline = false; // State to track "Back Online" notification
     let pingInterval;
@@ -137,8 +137,8 @@
         // Active check to confirm status (Ping)
         const start = Date.now();
         try {
-            // Request the explicit index.html file with a timestamp query param to completely bypass local browser proxies/cache
-            const pingUrl = `/index.html?t=${Date.now()}`;
+            // Request the static ping.txt file with a timestamp query param to completely bypass local browser proxies/cache and avoid HTML routing redirect loops
+            const pingUrl = `/ping.txt?t=${Date.now()}`;
             const response = await fetch(pingUrl, {
                 method: 'HEAD',
                 cache: 'no-store',
@@ -182,11 +182,10 @@
             console.log(`[NetMonitor] RTT: ${connection.rtt}ms, Downlink: ${connection.downlink}Mbps, Effective: ${connection.effectiveType}`);
         }
 
-        // 2. Fallback: If disconnected, explicitly check
+        // 2. Fallback: If disconnected, explicitly verify via active ping instead of blindly trusting navigator.onLine
         if (!navigator.onLine) {
-            isOffline = true;
-        } else {
-            isOffline = false;
+            // We do not set isOffline = true here because navigator.onLine is notoriously unreliable (e.g. Ethernet bugs).
+            // We let verifyConnection() make the final decision.
         }
 
         showStatus();
@@ -235,8 +234,8 @@
 
     window.addEventListener('offline', () => {
         isClosedByUser = false; // Reset dismissal on status changes
-        isOffline = true;
-        showStatus();
+        // Do NOT blindly redirect on 'offline' event. Verify it first.
+        verifyConnection();
     });
 
 })();

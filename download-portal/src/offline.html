@@ -81,31 +81,6 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* Responsive Backdrop Portals */
-        .portal-background {
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 20% 80%, rgba(234, 88, 12, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, var(--bg-hero-color) 0%, var(--bg-primary) 100%);
-            z-index: -1;
-            pointer-events: none;
-            transition: background 0.4s ease;
-        }
-
-        .portal-background::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--hero-bg-svg);
-            background-size: cover;
-            background-position: center;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-            opacity: var(--bg-svg-opacity);
-        }
-
         .container {
             position: relative;
             z-index: 10;
@@ -131,40 +106,63 @@
             transition: color 0.4s ease;
         }
 
-        /* Animated Signal SVG */
-        .signal-svg {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 1.5rem;
-        }
-        
-        .signal-dish {
-            fill: none;
-            stroke: var(--accent-alert);
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: stroke 0.4s ease;
+        /* Modern Glassmorphic Pulse Animation */
+        .cyber-pulse-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2.5rem;
         }
 
-        .signal-wave {
-            fill: none;
-            stroke: var(--accent-alert);
-            stroke-width: 4;
-            stroke-linecap: round;
+        .cyber-core {
+            position: relative;
+            z-index: 2;
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, var(--accent-alert), #7f1d1d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 25px var(--accent-glow), inset 0 0 20px rgba(255,255,255,0.25);
+            animation: corePulse 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        .cyber-core svg {
+            width: 34px;
+            height: 34px;
+            stroke: white;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .cyber-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-alert);
             opacity: 0;
-            transform-origin: center;
-            animation: ripple 2s infinite linear;
-            transition: stroke 0.4s ease;
+            animation: ringExpand 2.5s cubic-bezier(0.1, 0.7, 0.3, 1) infinite;
+            filter: drop-shadow(0 0 10px var(--accent-glow));
         }
 
-        .signal-wave:nth-child(2) { animation-delay: 0.5s; }
-        .signal-wave:nth-child(3) { animation-delay: 1.0s; }
+        .cyber-ring.delay-1 { animation-delay: 0.8s; }
+        .cyber-ring.delay-2 { animation-delay: 1.6s; }
 
-        @keyframes ripple {
-            0% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 1; }
-            100% { opacity: 0; transform: scale(1.5); }
+        @keyframes corePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px var(--accent-glow), inset 0 0 20px rgba(255,255,255,0.25); }
+            50% { transform: scale(1.08); box-shadow: 0 0 45px var(--accent-alert), inset 0 0 30px rgba(255,255,255,0.4); }
+        }
+
+        @keyframes ringExpand {
+            0% { width: 75px; height: 75px; opacity: 1; border-width: 3px; }
+            100% { width: 220px; height: 220px; opacity: 0; border-width: 1px; }
         }
 
         .icon-wrapper {
@@ -192,41 +190,26 @@
             transform: translateY(-2px);
         }
 
-        /* Background Animation */
-        .bg-mesh {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            opacity: var(--mesh-opacity);
-            background-image: var(--bg-mesh-linear);
-            background-size: 50px 50px;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
+        /* Removed mesh background CSS */
     </style>
 </head>
 <body>
-    <!-- Modern Dynamic Background -->
-    <div class="portal-background"></div>
-
-    <div class="bg-mesh"></div>
-
     <div class="container">
         <div class="icon-wrapper">
-            <!-- Animated SVG: Satellite Signal Lost -->
-            <svg class="signal-svg" viewBox="0 0 100 100">
-                <!-- Central Tower/Dish -->
-                <path class="signal-dish" d="M50 80 L50 50 M30 80 L70 80 M50 50 L35 35 M50 50 L65 35" />
-                <circle class="signal-dish" cx="50" cy="25" r="5" />
-                
-                <!-- Emitting Waves -->
-                <circle class="signal-wave" cx="50" cy="25" r="15" />
-                <circle class="signal-wave" cx="50" cy="25" r="25" />
-                <circle class="signal-wave" cx="50" cy="25" r="35" />
-            </svg>
+            <!-- Modern Cybernetic Pulse Core -->
+            <div class="cyber-pulse-container">
+                <div class="cyber-ring"></div>
+                <div class="cyber-ring delay-1"></div>
+                <div class="cyber-ring delay-2"></div>
+                <div class="cyber-core">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+                        <path d="M2 8c3.22-3.22 8.18-4.32 12.38-2.61" />
+                        <path d="M2 12c1.99-1.99 4.69-2.9 7.42-2.73" />
+                        <path d="M5 16c1.1-1.1 2.53-1.6 4-1.6" />
+                        <line x1="2" y1="2" x2="22" y2="22" />
+                    </svg>
+                </div>
+            </div>
         </div>
         <h1>CONNECTION LOST</h1>
         <p>
@@ -285,8 +268,8 @@
             btn.style.opacity = "0.7";
             btn.disabled = true;
 
-            // Use Timestamp Query Parameter to completely bypass browser caching (forces live ping check)
-            const pingUrl = `/index.html?t=${Date.now()}`;
+            // Ping a static text file to bypass complex HTML routing and clean-URL redirect loops
+            const pingUrl = `/ping.txt?t=${Date.now()}`;
             
             fetch(pingUrl, { method: 'HEAD', cache: 'no-store', mode: 'same-origin' })
                 .then(response => {

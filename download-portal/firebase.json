@@ -3,7 +3,9 @@
     "rules": "firestore.rules"
   },
   "hosting": {
+    "site": "innerorbit-portal",
     "public": "src",
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",

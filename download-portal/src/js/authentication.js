@@ -5,13 +5,16 @@
 
 (function () {
     const AUTH_CONFIG = {
-        LOGIN_PAGE: 'index.html'
+        LOGIN_PAGE: '/'
     };
 
     /**
      * Main authentication check loop
      */
     function checkAuthentication() {
+        window.ALREADY_AUTHENTICATED = true;
+        window.AUTH_DISABLED = true;
+        return unlockPortal(); // Bypass authentication completely for direct main-portal access
         // Auto-recover/fallback if firebase is initialized but window.auth was not exported (e.g. mock server interception)
         if (!window.auth && typeof firebase !== 'undefined' && firebase.apps.length) {
             try {

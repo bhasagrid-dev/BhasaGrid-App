@@ -100,3 +100,48 @@ The following table represents the sequential history of commits pushed to the r
 > 1. **Decoupled Local `.env` Stores**: Both the main app `bhasagrid-universal/.env` and the portal `download-portal/.env` are isolated locally. The root `.env` now serves purely as a reference/backup template.
 > 2. **Physical Configuration Writing**: Synchronization scripts now physically write configurations to disk before deploying, removing any dependencies on volatile in-memory middleware that might disappear after directory cleanup.
 > 3. **Non-destructive Deployments**: Interactive commands verify and warn before executing any remote updates to prevent accidental cross-project overwrites.
+
+---
+
+## 🔄 May 30, 2026 — Operations Ledger
+
+Today we achieved a massive upgrade to our core visual systems, visual terminal panels, multi-user system gates, and global DNS pointing routing structure. Below is a full, immutable audit of all modifications:
+
+### 1. Web GUI v10.0 Upgrades & Guardian Cockpit
+* **Objective**: Re-architect the Web GUI to contain the **Guardian Recovery Cockpit** with full real-time background orchestration control.
+* **Added APIs (`app.py`)**:
+  * `/api/watcher/status` / `/api/watcher/toggle` to dynamically read/control the background file watcher process.
+  * `/api/backups` / `/api/restore` to query raw zip files in `C:\BhasaGrid-BackUps`, unpack metadata in memory, and execute headless rollbacks with real-time log streaming.
+* **Added Cockpit GUI (`index.html`)**: Added a beautiful glassmorphic multi-column workspace layout with iOS-style toggles, manual incremental/full backup buttons, a live scrollable checkpoint table, and dynamic background badge status polling.
+
+### 2. Terminal Card Box Border Fixes & VENV Indicators
+* **Fixed Borders (`manager.py:draw_card`)**: Refactored the terminal panel engine to strip out ANSI formatting escapes using regular expressions, calculating exact visible padding `width - item_len - 2` to render completely closed, pixel-perfect enclosed panels (`╭`, `╮`, `╰`, `╯`) on all terminal sizes.
+* **Environment Indicator (`manager.py:print_hub_header`)**: Programmed dynamic system-level checks detecting virtual environment prefixes (`sys.prefix != sys.base_prefix`). Prints a dedicated **`VENV ACTIVE`** (neon green) or **`GLOBAL ENV`** (warning yellow) badge on the hub metadata header.
+
+### 3. Multi-User Cryptographic Gate Authentication Suite
+* **AES-128 CBC Pure-Python Engine (`tools/auth.py`)**: Programmed a custom, 100% dependency-free Rijndael block cipher in pure Python, providing encrypted user registries (`auth_users.json`) with a default profile `admin` (PIN `2026`). Includes a comprehensive CLI management suite (`add`, `delete`, `list`, `reset`).
+* **CLI Authentication Gate (`manager.py`)**: Blocks manager startup until successful credential inputs (masked as `*` during typing), terminating the shell session on the 3rd failed attempt. Bypassed automatically when `--silent` is passed.
+* **Web Login Gate (`login.html` & `app.py`)**: Created a gorgeous glassmorphic login panel and Flask session interceptor that locks all dashboard endpoints, API queries, and log streams to authenticated session users only.
+
+### 4. Global Dual-Domain Architecture Deployment (`bhasagrid.com` & `bhasagrid.in`)
+* **Objective**: Map the newly acquired premium TLD `bhasagrid.com` as the primary brand portal while routing all legacy `.in` traffic to it.
+* **Firebase Connected**: Successfully connected `bhasagrid.com` to `innerorbit-portal` and `web.bhasagrid.com` to `innerorbit-bc8ce`.
+* **Hostinger DNS Mapped**: Configured all necessary Pointing A Records, CNAMEs, and ownership verification TXT records inside the Hostinger DNS Zone Editor. Deleted Hostinger's default parking IP (`2.57.91.91`). Both domains have successfully passed verification and are in the **"Minting Certificate"** SSL deployment phase!
+* **Hostinger 301 Redirect**: Set up automated edge URL forwarding within the Hostinger hPanel Subdomain manager to dynamically translate `.in` requests to their `.com` equivalents.
+
+### 5. Perfect Right-Side Border Alignment on CLI Authentication Box
+* **Objective**: Correct alignment discrepancy on the right side of the security terminal authentication gate block (`draw_auth_box` in `tools/auth.py`).
+* **Alignment Fix**: Refactored the raw printed text string padding and top/bottom borders to exactly 62 visible characters wide. Standardized on the en-dash `–` and perfectly balanced prefix/suffix strings to guarantee that the terminal box border closes pixel-perfectly with no wrapping or right-side offsets.
+
+### 6. BhasaGrid Brand Rebranding & Upgrade to v10.1 in CLI Splash
+* **Objective**: Replace the deprecated legacy "INNERORBIT" big text ASCII logo from the `manager.py` startup splash screen and increment system version to `10.1`.
+* **Rebrand Fix**: Replaced the legacy double-width ASCII block graphics in `manager.py`'s `show_splash` function with a gorgeous, high-fidelity custom `BHASAGRID` ASCII block logo. Bumped the global `VERSION` variable directly to `10.1` and tested the boot sequence to verify clean rendering across all terminals.
+
+### 7. Enforced Premium Custom Domain Web Redirection
+* **Objective**: Ensure that any users visiting default Firebase subdomains (`*.web.app` or `*.firebaseapp.com`) are automatically redirected to your clean, custom branded primary domains.
+* **Redirection Fixes**:
+  * **Download Portal**: Embedded an optimized JavaScript redirect block inside the `<head>` of [download-portal/src/index.html](file:///C:/BhasaGrid-Application-Project/download-portal/src/index.html).
+  * **Main Web Application**: Created a React Native web-only root wrapper at [bhasagrid-universal/app/+html.js](file:///C:/BhasaGrid-Application-Project/bhasagrid-universal/app/+html.js). This ensures that Expo Router compiles the premium domain enforcement redirect directly into `dist/index.html` at build time.
+  * **Result**: Automatic edge-forwarding translates default domains instantly (e.g. `innerorbit-bc8ce.web.app` ➔ `web.bhasagrid.com`).
+
+

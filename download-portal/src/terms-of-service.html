@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <a href="index.html" class="btn-secondary">Back to Portal</a>
-                <a href="https://github.com/bhasagrid-dev/BhasaGrid-Project" class="btn-primary">GitHub</a>
+                <a href="https://github.com/bhasagrid-dev/BhasaGrid-App" class="btn-primary">GitHub</a>
             </div>
         </div>
     </header>
@@ -80,7 +80,7 @@
                                 <li><a href="#ip" class="subnav-link">5. Intellectual Property</a></li>
                                 <li><a href="#privacy" class="subnav-link">6. Privacy & Data</a></li>
                                 <li><a href="#encryption" class="subnav-link">7. Encryption</a></li>
-                                <li><a href="#stealth" class="subnav-link">8. Stealth Features</a></li>
+                                <li><a href="#stealth" class="subnav-link">8. Social Privacy</a></li>
                                 <li><a href="#contact" class="subnav-link">9. Contact Info</a></li>
                             </ul>
                         </li>
@@ -164,7 +164,7 @@
                     <h2>3. Acceptable Use Policy</h2>
                     
                     <h3>3.1 Permitted Uses</h3>
-                    <p>BhasaGrid is designed for private, secure messaging, sharing photos and media with contacts, using stealth features (calculator mode, games), and personal communication.</p>
+                    <p>BhasaGrid is designed for private, secure messaging, sharing photos and media with contacts, multilingual communication, and personal communication.</p>
 
                     <h3>3.2 Prohibited Activities</h3>
                     <p>You may NOT use BhasaGrid to:</p>
@@ -235,10 +235,13 @@
                 <hr class="section-divider">
 
                 <section id="stealth" class="doc-section">
-                    <h2>8. Stealth Features</h2>
-                    <p><strong>Calculator Mode:</strong> Disguises app as calculator; requires PIN for access.</p>
-                    <p><strong>Decoy PIN:</strong> Opens empty account for emergencies (optional).</p>
-                    <p><strong>Intended Use:</strong> Personal privacy and protection. <strong>Prohibited:</strong> Evading lawful surveillance or hiding illegal activities.</p>
+                    <h2>8. Social Privacy Concepts (High-Level Overview)</h2>
+                    <p>BhasaGrid explores next-generation high-level social privacy concepts designed to enhance user autonomy. These experimental frameworks are currently not fully finalized and are not presented as core active or finalized features of the platform architecture:</p>
+                    <ul>
+                        <li><strong>Social Stealth & Camouflage:</strong> High-level design concepts to allow optional aesthetic customization and interface configurations.</li>
+                        <li><strong>Decoy Frameworks:</strong> Theoretical emergency recovery profiles designed to protect private credentials.</li>
+                        <li><strong>Status:</strong> These features are under active research and development, and their final specifications are subject to complete architectural changes.</li>
+                    </ul>
                 </section>
 
                 <hr class="section-divider">
@@ -262,12 +265,6 @@
         </main>
     </div>
 
-    <!-- Unified Footer -->
-    <footer class="bg-footer" style="background: #1e293b; border-top: 1px solid rgba(168, 85, 247, 0.2); padding: 2rem; text-align: center; color: #94a3b8; font-size: 0.875rem;">
-        <div class="container">
-            <p>&copy; 2026 BhasaGrid. All rights reserved. Privacy First, Always.</p>
-        </div>
-    </footer>
 
     <!-- Scripts -->
     <script>
@@ -315,13 +312,32 @@
                 currentSectionId = sections[0].getAttribute('id');
             }
 
+            let activeLink = null;
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 const href = link.getAttribute('href');
                 if (href && (href.endsWith('#' + currentSectionId) || href === '#' + currentSectionId)) {
                     link.classList.add('active');
+                    activeLink = link;
                 }
             });
+
+            // Auto-scroll left sidebar to keep the active link visible
+            if (activeLink && window.lastActiveLink !== activeLink) {
+                window.lastActiveLink = activeLink;
+                activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Dynamic Sticky Breadcrumb text in real-time
+            if (activeLink) {
+                const parentNavGroup = activeLink.closest('.nav-group');
+                const groupTitle = parentNavGroup ? parentNavGroup.querySelector('.nav-group-title').innerText : '';
+                const activeText = activeLink.innerText;
+                const breadcrumbElement = document.querySelector('.breadcrumb');
+                if (breadcrumbElement && groupTitle && activeText) {
+                    breadcrumbElement.innerText = `${groupTitle} / ${activeText}`;
+                }
+            }
         });
 
         // Theme Toggle Logic
@@ -334,7 +350,7 @@
             function updateTheme(theme) {
                 document.documentElement.setAttribute('data-theme', theme);
                 localStorage.setItem('bhasagrid-theme', theme);
-                toggleBtn.setAttribute('data-tooltip', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+                toggleBtn.setAttribute('data-tooltip', theme === 'dark' ? 'Dark Mode' : 'Light Mode');
                 
                 if (theme === 'dark') {
                     indicator.style.left = '36px';

@@ -37,38 +37,38 @@ const styles = {
 const PRIVACY_LEVELS = [
     {
         id: 0,
-        title: "Normal Chat",
-        desc: "Standard E2E Encryption",
+        title: "Privacy First",
+        desc: "Zero-Knowledge Encryption",
         color: "#22d3ee",
-        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
     },
     {
         id: 1,
-        title: "Private Language",
-        desc: "Anti-Peek Text Reversal",
+        title: "Multilingual AI",
+        desc: "Sarvam AI Voice & Translation",
         color: "#a855f7",
-        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 21l21-9-9-2.1L12 3 9.9 9.9 3 12l9 2.1z"></path></svg>
+        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
     },
     {
         id: 2,
-        title: "Camouflage Mode",
-        desc: "Disguised UI (Calc/News)",
+        title: "Real-Time Sync",
+        desc: "Ultra-Low Latency Messaging",
         color: "#f59e0b",
-        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
     },
     {
         id: 3,
-        title: "Auto Safety",
-        desc: "Auto-Screen Shield",
-        color: "#ef4444",
-        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        title: "Regional Support",
+        desc: "Inclusive Indian Languages",
+        color: "#10b981",
+        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
     },
     {
         id: 4,
-        title: "Emergency",
-        desc: "Decoy mode activated",
+        title: "Modern Security",
+        desc: "Post-Quantum Cryptography",
         color: "#f43f5e",
-        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
     }
 ];
 
@@ -176,6 +176,7 @@ const Navbar = (props) => {
                     width: menuOpen ? '100%' : '100%',
                     maxWidth: menuOpen ? '100%' : '100%',
                     zIndex: 1000,
+                    overflow: 'visible', // Override crystal-card hidden overflow to prevent tooltip clipping
                     borderRadius: menuOpen ? '0' : '0',
                     borderTop: 'none',
                     padding: '0',
@@ -244,9 +245,10 @@ const Navbar = (props) => {
 
                         <NavLink href="#hero">Home</NavLink>
                         <NavLink href="docs.html">Docs</NavLink>
-                        <NavLink href="https://github.com/bhasagrid-dev/BhasaGrid-Project">GitHub</NavLink>
+                        <NavLink href="https://github.com/bhasagrid-dev/BhasaGrid-App">GitHub</NavLink>
 
                         {/* NEW: Permanent Secure Logout */}
+                        { !window.AUTH_DISABLED && (
                         <button
                             onClick={() => window.logout()}
                             style={{
@@ -275,12 +277,12 @@ const Navbar = (props) => {
                             <span>Logout</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                         </button>
+                        )}
 
                         {/* Integrated Pill Theme Toggler */}
                         <div
-                            onClick={props.toggleTheme}
                             aria-label="Toggle Theme"
-                            data-tooltip={props.theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                            data-tooltip={props.theme === 'system' ? 'System Default' : props.theme === 'light' ? 'Light Mode' : 'Dark Mode'}
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -288,10 +290,9 @@ const Navbar = (props) => {
                                 border: '1px solid var(--glass-border)',
                                 borderRadius: '100px',
                                 padding: '3px',
-                                width: '68px',
+                                width: '104px',
                                 height: '34px',
                                 position: 'relative',
-                                cursor: 'pointer',
                                 outline: 'none',
                                 WebkitTapHighlightColor: 'transparent',
                                 marginRight: '15px',
@@ -310,37 +311,60 @@ const Navbar = (props) => {
                             <div style={{
                                 position: 'absolute',
                                 top: '2px',
-                                left: props.theme === 'dark' ? '36px' : '2px',
+                                left: props.theme === 'dark' ? '70px' : props.theme === 'light' ? '36px' : '3px',
                                 width: '28px',
                                 height: '28px',
                                 borderRadius: '50%',
-                                background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-orange))',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                                transition: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s'
+                                background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))',
+                                boxShadow: '0 0 12px rgba(6, 182, 212, 0.5), inset 0 2px 4px rgba(255,255,255,0.6)',
+                                transition: 'left 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s',
+                                pointerEvents: 'none'
                             }} />
 
+                            {/* System Icon */}
+                            <div
+                                onClick={(e) => { e.stopPropagation(); props.setTheme('system'); }}
+                                style={{
+                                flex: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 2,
+                                color: props.theme === 'system' ? '#ffffff' : 'var(--text-secondary)',
+                                transition: 'color 0.3s',
+                                cursor: 'pointer'
+                            }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            </div>
+
                             {/* Sun Icon */}
-                            <div style={{
+                            <div
+                                onClick={(e) => { e.stopPropagation(); props.setTheme('light'); }}
+                                style={{
                                 flex: 1,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 zIndex: 2,
                                 color: props.theme === 'light' ? '#ffffff' : 'var(--text-secondary)',
-                                transition: 'color 0.3s'
+                                transition: 'color 0.3s',
+                                cursor: 'pointer'
                             }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                             </div>
 
                             {/* Moon Icon */}
-                            <div style={{
+                            <div
+                                onClick={(e) => { e.stopPropagation(); props.setTheme('dark'); }}
+                                style={{
                                 flex: 1,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 zIndex: 2,
                                 color: props.theme === 'dark' ? '#ffffff' : 'var(--text-secondary)',
-                                transition: 'color 0.3s'
+                                transition: 'color 0.3s',
+                                cursor: 'pointer'
                             }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                             </div>
@@ -400,7 +424,7 @@ const Navbar = (props) => {
                 {[
                     { label: 'Home', href: '#hero', icon: '→' },
                     { label: 'Documentation', href: 'docs.html', icon: '↗' },
-                    { label: 'GitHub', href: 'https://github.com/bhasagrid-dev/BhasaGrid-Project', icon: '↗' }
+                    { label: 'GitHub', href: 'https://github.com/bhasagrid-dev/BhasaGrid-App', icon: '↗' }
                 ].map((item, idx) => (
                     <a
                         key={idx}
@@ -432,7 +456,6 @@ const Navbar = (props) => {
                     
                     {/* Integrated Pill Theme Toggler for Mobile */}
                     <div
-                        onClick={props.toggleTheme}
                         aria-label="Toggle Theme"
                         style={{
                             display: 'flex',
@@ -441,10 +464,9 @@ const Navbar = (props) => {
                             border: '1px solid var(--glass-border)',
                             borderRadius: '100px',
                             padding: '3px',
-                            width: '68px',
+                            width: '104px',
                             height: '34px',
                             position: 'relative',
-                            cursor: 'pointer',
                             outline: 'none',
                             WebkitTapHighlightColor: 'transparent',
                             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -454,49 +476,74 @@ const Navbar = (props) => {
                         <div style={{
                             position: 'absolute',
                             top: '2px',
-                            left: props.theme === 'dark' ? '36px' : '2px',
+                            left: props.theme === 'dark' ? '70px' : props.theme === 'light' ? '36px' : '3px',
                             width: '28px',
                             height: '28px',
                             borderRadius: '50%',
-                            background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-orange))',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                            transition: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                            background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))',
+                            boxShadow: '0 0 12px rgba(6, 182, 212, 0.5), inset 0 2px 4px rgba(255,255,255,0.6)',
+                            transition: 'left 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                            pointerEvents: 'none'
                         }} />
 
+                        {/* System Icon */}
+                        <div
+                            onClick={(e) => { e.stopPropagation(); props.setTheme('system'); }}
+                            style={{
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2,
+                            color: props.theme === 'system' ? '#ffffff' : 'var(--text-secondary)',
+                            transition: 'color 0.3s',
+                            cursor: 'pointer'
+                        }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        </div>
+
                         {/* Sun Icon */}
-                        <div style={{
+                        <div
+                            onClick={(e) => { e.stopPropagation(); props.setTheme('light'); }}
+                            style={{
                             flex: 1,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             zIndex: 2,
                             color: props.theme === 'light' ? '#ffffff' : 'var(--text-secondary)',
-                            transition: 'color 0.3s'
+                            transition: 'color 0.3s',
+                            cursor: 'pointer'
                         }}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
                         </div>
 
                         {/* Moon Icon */}
-                        <div style={{
+                        <div
+                            onClick={(e) => { e.stopPropagation(); props.setTheme('dark'); }}
+                            style={{
                             flex: 1,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             zIndex: 2,
                             color: props.theme === 'dark' ? '#ffffff' : 'var(--text-secondary)',
-                            transition: 'color 0.3s'
+                            transition: 'color 0.3s',
+                            cursor: 'pointer'
                         }}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                         </div>
                     </div>
                 </div>
 
+                { !window.AUTH_DISABLED && (
                 <a href="#" className="mobile-nav-item" onClick={(e) => { e.preventDefault(); window.logout(); }} style={{ borderColor: 'rgba(239, 68, 68, 0.35)', background: 'rgba(239, 68, 68, 0.08)' }}>
                     <span style={{ color: '#ff4a4a', WebkitTextFillColor: '#ff4a4a', background: 'none', backgroundClip: 'unset', WebkitBackgroundClip: 'unset' }}>Logout</span>
                     <div className="icon" style={{ opacity: 1 }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff4a4a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </div>
                 </a>
+                )}
             </div>
         </>
     );
@@ -529,12 +576,12 @@ const HeroSection = () => {
     }, []);
 
     return (
-        <section id="hero" className="bg-hero" ref={componentRef} style={{ paddingTop: '80px' }}>
+        <section id="hero" className="bg-hero" ref={componentRef} style={{ paddingTop: '160px', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
             <div style={{ width: '100%', padding: '0 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 10, textAlign: 'center' }}>
 
                 <div id="hero-text" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto' }}>
-                    <h1 style={{ fontSize: 'clamp(2.2rem, 10vw, 5.5rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
-                        The Future of <br />
+                    <h1 style={{ color: '#ffffff', fontSize: 'clamp(3rem, 10vw, 5rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
+                        Secure Multilingual <br />
                         <span style={{
                             background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-orange), var(--accent-pink))',
                             WebkitBackgroundClip: 'text',
@@ -542,10 +589,10 @@ const HeroSection = () => {
                             backgroundClip: 'text',
                             backgroundSize: '200% auto',
                             animation: 'gradientShift 5s ease infinite'
-                        }}>Social Privacy.</span>
+                        }}>Communication.</span>
                     </h1>
                     <p style={{ fontSize: 'clamp(1rem, 4vw, 1.3rem)', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '800px', margin: '0 auto 2.5rem' }}>
-                        More than just encryption. Control who sees what with 5 levels of social stealth—from casual chats to complete invisibility.
+                        BhasaGrid is a privacy-first communication platform designed for India’s multilingual population, enabling secure and natural communication across languages while preserving user privacy, accessibility, and real-time connectivity.
                     </p>
 
                     <div style={{ width: '100%', margin: '0 auto' }}>
@@ -576,8 +623,8 @@ const HeroSection = () => {
                                     }}>
                                         <div style={{ color: level.color }}>{level.icon}</div>
                                         <div>
-                                            <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>{level.title}</div>
-                                            <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)' }}>{level.desc}</div>
+                                            <div style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-primary)' }}>{level.title}</div>
+                                            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>{level.desc}</div>
                                         </div>
                                     </div>
                                 ))}
@@ -654,7 +701,7 @@ const HeroSection = () => {
                             }
                         }
                     `}</style>
- 
+
                         <div className="flex-btn-group" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                             <a href="#download" className="btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', fontSize: '0.95rem', padding: '12px 24px' }}>
                                 Download App
@@ -669,11 +716,11 @@ const HeroSection = () => {
 
             {/* Scroll Down Indicator */}
             <div className="scroll-indicator" style={{
-                position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)',
+                position: 'absolute', bottom: '25px', left: '50%', transform: 'translateX(-50%)',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px',
                 color: 'var(--text-secondary)', zIndex: 20, cursor: 'pointer',
                 opacity: 0.8
-            }} onClick={() => document.getElementById('social-privacy').scrollIntoView({ behavior: 'smooth' })}>
+            }} onClick={() => document.getElementById('download').scrollIntoView({ behavior: 'smooth' })}>
                 <span style={{ fontSize: '0.8rem', letterSpacing: '2px', textTransform: 'uppercase' }}>Scroll</span>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: 'bounce 2s infinite' }}>
                     <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
@@ -690,7 +737,7 @@ const HeroSection = () => {
     );
 };
 
-// --- NEW SOCIAL PRIVACY COMPARISON COMPONENT ---
+// --- NEW DYNAMIC MULTILINGUAL PRIVACY COMPARISON COMPONENT ---
 const SocialPrivacyComparison = () => {
     useLayoutEffect(() => {
         gsap.utils.toArray('.comparison-card').forEach((card, i) => {
@@ -713,10 +760,10 @@ const SocialPrivacyComparison = () => {
             <div style={{ width: '100%', padding: '0 24px' }}>
                 <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
                     <h2 style={{ fontWeight: 800, marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
-                        Social Privacy vs. <span style={{ color: 'var(--text-secondary)' }}>Normal Apps</span>
+                        Secure Multilingualism vs. <span style={{ color: 'var(--text-secondary)' }}>Normal Apps</span>
                     </h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto' }}>
-                        Most apps think privacy ends at encryption. We believe it begins with how you exist in the digital world.
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto' }}>
+                        Most apps require personal phone numbers and ignore regional linguistic diversity. We bridge Indian languages securely while preserving absolute privacy and metadata protection.
                     </p>
                 </div>
 
@@ -729,16 +776,16 @@ const SocialPrivacyComparison = () => {
                         </div>
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', color: 'var(--text-secondary)' }}>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: '#ef4444' }}>✕</span> Visible notifications on lock screen
+                                <span style={{ color: '#ef4444' }}>✕</span> Require phone number or email linkage
                             </li>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: '#ef4444' }}>✕</span> Anyone can see you're using the app
+                                <span style={{ color: '#ef4444' }}>✕</span> Lack native translation for local regional dialects
                             </li>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: '#ef4444' }}>✕</span> Metadata is often logged
+                                <span style={{ color: '#ef4444' }}>✕</span> Collect metadata logs and user profiles
                             </li>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: '#ef4444' }}>✕</span> "Delete" doesn't always mean delete
+                                <span style={{ color: '#ef4444' }}>✕</span> Heavy bandwidth requirements unoptimized for rural networks
                             </li>
                         </ul>
                     </div>
@@ -763,21 +810,21 @@ const SocialPrivacyComparison = () => {
                             }
                         `}</style>
                         <div style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '2rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            {PRIVACY_LEVELS[2].icon}
+                            {PRIVACY_LEVELS[3].icon}
                             BhasaGrid
                         </div>
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', color: 'var(--text-primary)' }}>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Camouflage Mode:</strong> App looks like a calculator
+                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Zero-Knowledge IDs:</strong> Complete anonymous registration
                             </li>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Private Language:</strong> Slang auto-translation
+                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Indic Multilingualism:</strong> Real-time Indian script translations
                             </li>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Ghost Notifications:</strong> Discreet vibrations only
+                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Sarvam AI Integration:</strong> Next-gen speech-to-speech translation
                             </li>
                             <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Panic Wipe:</strong> Shake to destroy data
+                                <span style={{ color: 'var(--accent-cyan)' }}>✓</span> <strong>Metadata Shield:</strong> Advanced sealed-sender protocol
                             </li>
                         </ul>
                     </div>
@@ -805,12 +852,12 @@ const FeaturesSection = () => {
     }, []);
 
     const features = [
-        { title: "Stealth Mode", desc: "Disguised as a functional calculator.", icon: "calc" },
-        { title: "Dual-Layer Encryption", desc: "AES-256 + RSA-2048 encryption.", icon: "lock" },
-        { title: "Self-Destruct", desc: "Messages vanish without a trace.", icon: "bomb" },
-        { title: "Cross-Platform", desc: "Seamless sync across all devices.", icon: "sync" },
-        { title: "Anonymous ID", desc: "No phone number required.", icon: "user" },
-        { title: "Panic Switch", desc: "Instant wipe with a secret gesture.", icon: "alert" }
+        { title: "Privacy-First Chat", desc: "Zero-Knowledge identity model with Signal-grade end-to-end encryption.", icon: "lock" },
+        { title: "Indic Multilingualism", desc: "Simultaneous translation across major official Indian regional languages.", icon: "translate" },
+        { title: "Sarvam AI Integration", desc: "Integrated Sarvam AI models for dialect-aware translation & voice synthesis.", icon: "cpu" },
+        { title: "Real-Time Sync", desc: "High-throughput messaging optimized for low-bandwidth rural networks.", icon: "sync" },
+        { title: "Anonymous Identity", desc: "Secure 4-digit social address handles without exposing personal phone numbers.", icon: "user" },
+        { title: "Quantum Protection", desc: "Kyber/ML-KEM lattice cryptography envelopes safeguarding files.", icon: "shield" }
     ];
 
     return (
@@ -819,10 +866,10 @@ const FeaturesSection = () => {
                 <div style={{ width: '100%' }}>
                     <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
                         <h2 style={{ fontWeight: 800, marginBottom: '1rem', color: 'var(--text-primary)' }}>
-                            Your Privacy, <span className="gradient-text">Your Control</span>
+                            Communication, <span className="gradient-text">Without Barriers</span>
                         </h2>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-                            Built for those who demand absolute secrecy. Your data never leaves your device unencrypted.
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '650px', margin: '0 auto' }}>
+                            Built for a multilingual India. Experience seamless regional translation, secure zero-knowledge architecture, and next-gen AI-driven chat capabilities.
                         </p>
                     </div>
 
@@ -835,8 +882,9 @@ const FeaturesSection = () => {
                                     alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem',
                                     color: 'var(--accent-purple)'
                                 }}>
-                                    {/* Icons would go here */}
-                                    <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{f.icon === 'calc' ? '±' : f.icon === 'lock' ? '🔒' : '★'}</div>
+                                    <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                                        {f.icon === 'lock' ? '🔒' : f.icon === 'translate' ? '文' : f.icon === 'cpu' ? '🤖' : f.icon === 'sync' ? '⚡' : f.icon === 'user' ? '👤' : '🛡️'}
+                                    </div>
                                 </div>
                                 <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>{f.title}</h3>
                                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.desc}</p>
@@ -1085,7 +1133,7 @@ const Footer = () => {
                         <div style={{ display: 'flex', gap: '1rem' }}>
                             {[
                                 { id: 'x', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg> },
-                                { id: 'gh', url: 'https://github.com/bhasagrid-dev/BhasaGrid-Project', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg> },
+                                { id: 'gh', url: 'https://github.com/bhasagrid-dev/BhasaGrid-App', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg> },
                                 { id: 'dc', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z" /></svg> }
                             ].map(social => (
                                 <a key={social.id} href={social.url || "#"} target={social.url ? "_blank" : undefined} rel={social.url ? "noopener noreferrer" : undefined} style={{
@@ -1131,10 +1179,13 @@ const Footer = () => {
 
 const App = () => {
     const [revealed, setRevealed] = useState(window.ALREADY_AUTHENTICATED || false);
-    const [theme, setTheme] = useState(localStorage.getItem('bhasagrid-theme') || 'dark');
+    const [theme, setTheme] = useState(localStorage.getItem('bhasagrid-theme') || 'system');
 
     useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
+        const actualTheme = theme === 'system' 
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : theme;
+        document.documentElement.setAttribute('data-theme', actualTheme);
         localStorage.setItem('bhasagrid-theme', theme);
     }, [theme]);
 
@@ -1169,7 +1220,7 @@ const App = () => {
 
     return (
         <div style={{ overflowX: 'hidden' }}>
-            <Navbar revealed={revealed} theme={theme} toggleTheme={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')} />
+            <Navbar revealed={revealed} theme={theme} setTheme={setTheme} />
             <div className={revealed ? 'reveal-visible' : 'reveal-hidden'} style={{ transitionDelay: '1.2s' }}>
                 <HeroSection />
                 <SocialPrivacyComparison />
